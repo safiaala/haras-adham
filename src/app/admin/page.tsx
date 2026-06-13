@@ -26,6 +26,7 @@ export default function AdminPage() {
     { href:'/admin/offres',     emoji:'💼', titre:'Offres',      count:nbOffres,   desc:'Gérer les offres d\'emploi' },
     { href:'/admin/prestations', emoji:'🏇', titre:'Prestations', count:null,       desc:'Sections et photos' },
     { href:'/admin/pages',      emoji:'📝', titre:'Pages',       count:null,       desc:'Accueil, Contact, Navigation' },
+    { href:'/admin/editeur',    emoji:'🎨', titre:'Éditeur',     count:null,       desc:'Modifier toutes les pages par blocs' },
   ]
 
   return (
