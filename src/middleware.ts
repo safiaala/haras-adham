@@ -1,0 +1,15 @@
+import { NextRequest, NextResponse } from 'next/server'
+
+export function middleware(req: NextRequest) {
+  const isAdmin = req.nextUrl.pathname.startsWith('/admin')
+  const isAuthApi = req.nextUrl.pathname === '/api/admin/auth'
+  if (!isAdmin || isAuthApi) return NextResponse.next()
+
+  const cookie = req.cookies.get('admin_auth')
+  if (cookie?.value !== process.env.ADMIN_PASSWORD) {
+    return NextResponse.redirect(new URL('/admin/login', req.url))
+  }
+  return NextResponse.next()
+}
+
+export const config = { matcher: ['/admin/:path*', '/api/admin/:path*'] }
