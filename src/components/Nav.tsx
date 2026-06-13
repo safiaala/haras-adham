@@ -83,7 +83,7 @@ export default function Nav() {
           <Link href="/" style={{ display:'flex', alignItems:'center', gap:9, textDecoration:'none' }}>
             <div style={{ width:32, height:32, borderRadius:'50%', border:'1.5px solid #B8943A', display:'flex', alignItems:'center', justifyContent:'center', background:'#f0ece4', fontSize:15 }}>🐴</div>
             <div>
-              <div style={{ fontFamily:'Noto Serif,serif', fontSize:17, fontWeight:700, letterSpacing:'-.02em', color:'#13201A' }}>Haras <span style={{ color:'#B8943A' }}>Adham</span></div>
+              <div style={{ fontFamily:'Noto Serif,serif', fontSize:17, fontWeight:700, letterSpacing:'-.02em', color:'#13201A' }}>{t(locale,'brand.name')} <span style={{ color:'#B8943A' }}>Adham</span></div>
               <div style={{ fontSize:'7.5px', letterSpacing:'.22em', textTransform:'uppercase', color:'#888', marginTop:-1 }}>{t(locale,'nav.elevage')}</div>
             </div>
           </Link>
@@ -118,7 +118,7 @@ export default function Nav() {
       {open && (
         <div style={{ position:'fixed', inset:0, background:'#13201A', zIndex:100, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:20 }}>
           <button onClick={() => setOpen(false)} style={{ position:'absolute', top:16, right:20, background:'transparent', border:'none', color:'#fff', fontSize:26, cursor:'pointer' }}>✕</button>
-          <div style={{ fontFamily:'Noto Serif,serif', fontSize:26, color:'#B8943A', marginBottom:16, fontStyle:'italic' }}>Haras Adham</div>
+          <div style={{ fontFamily:'Noto Serif,serif', fontSize:26, color:'#B8943A', marginBottom:16, fontStyle:'italic' }}>{t(locale,'brand.name')} Adham</div>
           {visibleLinks.map(l => (
             <Link key={l.href} href={l.href} onClick={() => setOpen(false)} style={{ fontFamily:'Plus Jakarta Sans,sans-serif', fontSize:16, letterSpacing:'.1em', textTransform:'uppercase', color:'#fff', textDecoration:'none' }}>
               {t(locale, l.key)}

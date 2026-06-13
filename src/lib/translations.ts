@@ -3,6 +3,7 @@ import { Locale } from './locale'
 export const T: Record<Locale, Record<string, string>> = {
   fr: {
     // Nav
+    'brand.name': 'Élevage',
     'nav.elevage': 'Élevage · Compétition · Passion',
     'nav.contact': 'Contact',
     'nav.accueil': 'Accueil',
@@ -85,6 +86,7 @@ export const T: Record<Locale, Record<string, string>> = {
     'btn.rejoindre': 'Nous rejoindre',
   },
   en: {
+    'brand.name': 'Breeding',
     'nav.elevage': 'Breeding · Competition · Passion',
     'nav.contact': 'Contact',
     'nav.accueil': 'Home',
@@ -158,6 +160,7 @@ export const T: Record<Locale, Record<string, string>> = {
     'btn.rejoindre': 'Join us',
   },
   es: {
+    'brand.name': 'Cría',
     'nav.elevage': 'Cría · Competición · Pasión',
     'nav.contact': 'Contacto',
     'nav.accueil': 'Inicio',
@@ -231,6 +234,7 @@ export const T: Record<Locale, Record<string, string>> = {
     'btn.rejoindre': 'Unirse',
   },
   ar: {
+    'brand.name': 'مزرعة',
     'nav.elevage': 'تربية · منافسة · شغف',
     'nav.contact': 'اتصل بنا',
     'nav.accueil': 'الرئيسية',
