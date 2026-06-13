@@ -7,6 +7,7 @@ import { t } from '@/lib/translations'
 
 const disciplines = ['all','cso','dressage','endurance','tbourida','poulain']
 const statutColor: Record<string,string> = { disponible:'tag-green', vendu:'tag-red', pension:'tag-blue', reproduction:'tag-purple' }
+const SEXE_KEY: Record<string,string> = { 'Étalon':'sexe.etalon', 'Jument':'sexe.jument', 'Hongre':'sexe.hongre', 'Cheval':'sexe.cheval', 'Poulain':'sexe.poulain', 'Pouliche':'sexe.pouliche' }
 
 export default function ChevauxListe() {
   const [chevaux, setChevaux] = useState<Cheval[]>([])
@@ -54,7 +55,10 @@ export default function ChevauxListe() {
               }
               <div style={{ padding:'12px 14px' }}>
                 <div style={{ fontFamily:'Noto Serif,serif', fontSize:15, color:'#13201A', marginBottom:4 }}>{c.nom}</div>
-                <div style={{ fontSize:10, color:'#888', marginBottom:6 }}>{c.age ? `${c.age} ans` : ''}{c.age && c.race ? ' · ' : ''}{c.race}</div>
+                <div style={{ fontSize:10, color:'#888', marginBottom:6 }}>
+                  {c.age ? `${c.age} ans` : ''}{c.age && c.race ? ' · ' : ''}{c.race}
+                  {c.sexe ? ` · ${t(locale, SEXE_KEY[c.sexe] || 'sexe.cheval')}` : ''}
+                </div>
                 <div style={{ display:'flex', gap:4, flexWrap:'wrap' }}>
                   {c.discipline && <span className="tag tag-blue">{c.discipline.toUpperCase()}</span>}
                   {c.statut && <span className={`tag ${statutColor[c.statut]||'tag-green'}`}>{c.statut}</span>}
