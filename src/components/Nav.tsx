@@ -27,11 +27,24 @@ export default function Nav() {
   const path = usePathname()
   const [open, setOpen] = useState(false)
   const [locale, setLocale] = useState<Locale>('fr')
-  const [activePages, setActivePages] = useState<string[]>(['accueil','chevaux','etalons','prestations','evenements','histoire','actualites','jobs','contact'])
+  const [activePages, setActivePages] = useState<string[]>([])
+  const [loaded, setLoaded] = useState(false)
+
+  async function loadPages() {
+    const { data, error } = await supabase.from('pages').select('slug,actif')
+    if (data) {
+      setActivePages(data.filter(p => p.actif).map(p => p.slug))
+    } else {
+      // fallback si erreur
+      setActivePages(['accueil','chevaux','etalons','prestations','evenements','histoire','actualites','jobs','contact'])
+    }
+    setLoaded(true)
+  }
 
   useEffect(() => {
     const saved = localStorage.getItem('locale') as Locale
     if (saved && ['fr','en','es','ar'].includes(saved)) setLocale(saved)
+
     const handler = (e: Event) => {
       const l = (e as CustomEvent).detail as Locale
       setLocale(l)
@@ -40,11 +53,17 @@ export default function Nav() {
     }
     window.addEventListener('locale-change', handler)
 
-    supabase.from('pages').select('slug,actif').then(({ data }) => {
-      if (data) setActivePages(data.filter(p => p.actif).map(p => p.slug))
-    })
+    loadPages()
 
-    return () => window.removeEventListener('locale-change', handler)
+    // Mise à jour en temps réel quand les pages changent
+    const channel = supabase.channel('pages-changes')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'pages' }, () => loadPages())
+      .subscribe()
+
+    return () => {
+      window.removeEventListener('locale-change', handler)
+      supabase.removeChannel(channel)
+    }
   }, [])
 
   function changeLocale(l: Locale) {
