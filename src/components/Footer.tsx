@@ -59,7 +59,7 @@ export default function Footer() {
           </div>
           <div>
             <div style={{ fontSize:9, letterSpacing:'.18em', textTransform:'uppercase', color:'#B8943A', marginBottom:10 }}>{t(locale,'footer.contact')}</div>
-            <p style={{ fontSize:12, lineHeight:2 }}>{t(locale,'contact.country')}<br/>contact@harasadham.ma</p>
+            <p style={{ fontSize:12, lineHeight:2 }}>contact@harasadham.ma</p>
             <Link href="/contact" style={{ display:'inline-block', marginTop:12, fontSize:10, letterSpacing:'.1em', textTransform:'uppercase', padding:'8px 16px', background:'#B8943A', color:'#fff', textDecoration:'none' }}>
               {t(locale,'btn.contact')}
             </Link>

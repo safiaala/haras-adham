@@ -49,7 +49,7 @@ export default function ContactPage() {
   const sujets = ['opt1','opt2'].map(k => t(locale, `contact.sujet.${k}`))
 
   const infos = [
-    { icon:'location_on', key:'contact.addr', val: cfg.addr || t(locale,'contact.country') },
+    { icon:'location_on', key:'contact.addr', val: cfg.addr || '', sub: t(locale,'contact.country') },
     { icon:'phone',       key:'contact.tel',  val: cfg.tel  || 'À compléter' },
     { icon:'mail',        key:'contact.email',val: cfg.email || 'contact@harasadham.ma' },
     { icon:'schedule',    key:'contact.horaires', val: t(locale,'contact.horaires.val') },
@@ -71,11 +71,14 @@ export default function ContactPage() {
                     {c.icon === 'location_on' ? (
                       <a href={cfg.lat && cfg.lng
                           ? `https://www.google.com/maps?q=${cfg.lat},${cfg.lng}`
-                          : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.val)}`}
+                          : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.val + ' ' + (c as {sub?:string}).sub)}`}
                         target="_blank" rel="noreferrer"
-                        style={{ color:'rgba(255,255,255,.78)', fontSize:12, textDecoration:'none', display:'flex', alignItems:'center', gap:6 }}>
-                        {c.val}
-                        <span style={{ fontFamily:'Material Symbols Outlined', fontSize:14, color:'#B8943A' }}>open_in_new</span>
+                        style={{ color:'rgba(255,255,255,.78)', fontSize:12, textDecoration:'none', display:'inline-flex', alignItems:'center', gap:6 }}>
+                        <div>
+                          {c.val && <div>{c.val}</div>}
+                          <div style={{ color:'rgba(255,255,255,.55)', fontSize:11 }}>{(c as {sub?:string}).sub}</div>
+                        </div>
+                        <span style={{ fontFamily:'Material Symbols Outlined', fontSize:14, color:'#B8943A', flexShrink:0 }}>open_in_new</span>
                       </a>
                     ) : c.icon === 'mail' ? (
                       <div style={{ display:'flex', alignItems:'center', gap:8 }}>
