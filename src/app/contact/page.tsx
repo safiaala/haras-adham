@@ -68,7 +68,13 @@ export default function ContactPage() {
                   <span style={{ fontFamily:'Material Symbols Outlined', color:'#B8943A', flexShrink:0, marginTop:1 }}>{c.icon}</span>
                   <div>
                     <div style={{ fontSize:9, letterSpacing:'.14em', textTransform:'uppercase', color:'rgba(255,255,255,.38)', marginBottom:2 }}>{t(locale,c.key)}</div>
-                    {c.icon === 'mail' ? (
+                    {c.icon === 'location_on' ? (
+                      <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.val)}`} target="_blank" rel="noreferrer"
+                        style={{ color:'rgba(255,255,255,.78)', fontSize:12, textDecoration:'none', display:'flex', alignItems:'center', gap:6 }}>
+                        {c.val}
+                        <span style={{ fontFamily:'Material Symbols Outlined', fontSize:14, color:'#B8943A' }}>open_in_new</span>
+                      </a>
+                    ) : c.icon === 'mail' ? (
                       <div style={{ display:'flex', alignItems:'center', gap:8 }}>
                         <a href={`mailto:${c.val}`} style={{ color:'#B8943A', fontSize:12, textDecoration:'none' }}>{c.val}</a>
                         <CopyBtn value={c.val} locale={locale}/>
