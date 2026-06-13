@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const isAdmin = req.nextUrl.pathname.startsWith('/admin')
   const isAuthApi = req.nextUrl.pathname === '/api/admin/auth'
   if (!isAdmin || isAuthApi) return NextResponse.next()
