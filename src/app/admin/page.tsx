@@ -1,14 +1,22 @@
+'use client'
 import Link from 'next/link'
-import { supabaseAdmin } from '@/lib/supabase-admin'
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
 
-export default async function AdminPage() {
-  const [{ count: nbChevaux }, { count: nbEtalons }, { count: nbEvents }, { count: nbNews }, { count: nbOffres }] = await Promise.all([
-    supabaseAdmin.from('chevaux').select('*', { count:'exact', head:true }),
-    supabaseAdmin.from('etalons').select('*', { count:'exact', head:true }),
-    supabaseAdmin.from('evenements').select('*', { count:'exact', head:true }),
-    supabaseAdmin.from('actualites').select('*', { count:'exact', head:true }),
-    supabaseAdmin.from('offres').select('*', { count:'exact', head:true }),
-  ])
+export default function AdminPage() {
+  const [counts, setCounts] = useState([0,0,0,0,0])
+
+  useEffect(() => {
+    Promise.all([
+      supabase.from('chevaux').select('*', { count:'exact', head:true }),
+      supabase.from('etalons').select('*', { count:'exact', head:true }),
+      supabase.from('evenements').select('*', { count:'exact', head:true }),
+      supabase.from('actualites').select('*', { count:'exact', head:true }),
+      supabase.from('offres').select('*', { count:'exact', head:true }),
+    ]).then(results => setCounts(results.map(r => r.count ?? 0)))
+  }, [])
+
+  const [nbChevaux, nbEtalons, nbEvents, nbNews, nbOffres] = counts
 
   const sections = [
     { href:'/admin/chevaux',    emoji:'🐴', titre:'Chevaux',     count:nbChevaux,  desc:'Gérer la collection' },
