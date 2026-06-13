@@ -1,12 +1,24 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useLocale } from '@/lib/useLocale'
 import { t } from '@/lib/translations'
+import { supabase } from '@/lib/supabase'
 
 export default function ContactPage() {
   const locale = useLocale()
   const [form, setForm] = useState({ nom:'', email:'', sujet:'', message:'' })
   const [status, setStatus] = useState<'idle'|'sending'|'ok'|'error'>('idle')
+  const [cfg, setCfg] = useState<Record<string,string>>({})
+
+  useEffect(() => {
+    supabase.from('config').select('*').then(({ data }) => {
+      if (data) {
+        const map: Record<string,string> = {}
+        data.forEach(r => { map[r.cle] = r.valeur })
+        setCfg(map)
+      }
+    })
+  }, [])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -19,6 +31,13 @@ export default function ContactPage() {
 
   const sujets = ['opt1','opt2','opt3','opt4','opt5','opt6','opt7'].map(k => t(locale, `contact.sujet.${k}`))
 
+  const infos = [
+    { icon:'location_on', key:'contact.addr', val: cfg.addr || 'Maroc' },
+    { icon:'phone',       key:'contact.tel',  val: cfg.tel  || 'À compléter' },
+    { icon:'mail',        key:'contact.email',val: cfg.email || 'contact@harasadham.ma' },
+    { icon:'schedule',    key:'contact.horaires', val: t(locale,'contact.horaires.val') },
+  ]
+
   return (
     <>
       <section style={{ background:'#13201A', padding:'65px 60px' }}>
@@ -28,12 +47,7 @@ export default function ContactPage() {
             <h1 style={{ fontFamily:'Noto Serif,serif', fontSize:'clamp(2.2rem,4vw,3.5rem)', color:'#fff', lineHeight:1.1, marginBottom:18 }}>{t(locale,'contact.title')}</h1>
             <p style={{ fontSize:13, color:'rgba(255,255,255,.58)', lineHeight:1.8, marginBottom:28 }}>{t(locale,'contact.desc')}</p>
             <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
-              {[
-                { icon:'location_on', key:'contact.addr', val:'Maroc' },
-                { icon:'phone',       key:'contact.tel',  val:'À compléter' },
-                { icon:'mail',        key:'contact.email',val:'contact@harasadham.ma' },
-                { icon:'schedule',    key:'contact.horaires', val:t(locale,'contact.horaires.val') },
-              ].map(c => (
+              {infos.map(c => (
                 <div key={c.key} style={{ display:'flex', gap:12, alignItems:'start' }}>
                   <span style={{ fontFamily:'Material Symbols Outlined', color:'#B8943A', flexShrink:0, marginTop:1 }}>{c.icon}</span>
                   <div>
