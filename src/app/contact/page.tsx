@@ -29,7 +29,7 @@ export default function ContactPage() {
     } catch { setStatus('error') }
   }
 
-  const sujets = ['opt1','opt2','opt3','opt4','opt5','opt6','opt7'].map(k => t(locale, `contact.sujet.${k}`))
+  const sujets = ['opt1','opt2'].map(k => t(locale, `contact.sujet.${k}`))
 
   const infos = [
     { icon:'location_on', key:'contact.addr', val: cfg.addr || t(locale,'contact.country') },
