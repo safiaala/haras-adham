@@ -51,7 +51,13 @@ export default function ContactPage() {
                   <span style={{ fontFamily:'Material Symbols Outlined', color:'#B8943A', flexShrink:0, marginTop:1 }}>{c.icon}</span>
                   <div>
                     <div style={{ fontSize:9, letterSpacing:'.14em', textTransform:'uppercase', color:'rgba(255,255,255,.38)', marginBottom:2 }}>{t(locale,c.key)}</div>
-                    <div style={{ color:'rgba(255,255,255,.78)', fontSize:12 }}>{c.val}</div>
+                    {c.icon === 'mail' ? (
+                      <a href={`mailto:${c.val}`} style={{ color:'#B8943A', fontSize:12, textDecoration:'none' }}>{c.val}</a>
+                    ) : c.icon === 'phone' ? (
+                      <a href={`tel:${c.val}`} style={{ color:'rgba(255,255,255,.78)', fontSize:12, textDecoration:'none' }}>{c.val}</a>
+                    ) : (
+                      <div style={{ color:'rgba(255,255,255,.78)', fontSize:12 }}>{c.val}</div>
+                    )}
                   </div>
                 </div>
               ))}
