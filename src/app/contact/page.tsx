@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase'
 
 export default function ContactPage() {
   const locale = useLocale()
-  const [form, setForm] = useState({ nom:'', email:'', sujet:'', message:'' })
+  const [form, setForm] = useState({ nom:'', email:'', tel:'', sujet:'', message:'' })
   const [status, setStatus] = useState<'idle'|'sending'|'ok'|'error'>('idle')
   const [cfg, setCfg] = useState<Record<string,string>>({})
 
@@ -57,17 +57,26 @@ export default function ContactPage() {
               ))}
             </div>
             <div style={{ display:'flex', gap:12, marginTop:24 }}>
-              <a href="https://www.youtube.com/@harasadham1227" target="_blank" rel="noreferrer" style={{ fontSize:10, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', textDecoration:'none' }}>YouTube →</a>
-              <a href="https://www.instagram.com/haras.adham.maroc/" target="_blank" rel="noreferrer" style={{ fontSize:10, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', textDecoration:'none' }}>Instagram →</a>
+              <a href="https://www.youtube.com/@harasadham1227" target="_blank" rel="noreferrer"
+                style={{ display:'flex', alignItems:'center', gap:7, fontSize:10, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', textDecoration:'none', border:'.5px solid rgba(184,148,58,.35)', padding:'7px 13px' }}>
+                <span style={{ fontFamily:'Material Symbols Outlined', fontSize:16 }}>play_circle</span>YouTube
+              </a>
+              <a href="https://www.instagram.com/haras.adham.maroc/" target="_blank" rel="noreferrer"
+                style={{ display:'flex', alignItems:'center', gap:7, fontSize:10, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', textDecoration:'none', border:'.5px solid rgba(184,148,58,.35)', padding:'7px 13px' }}>
+                <span style={{ fontFamily:'Material Symbols Outlined', fontSize:16 }}>photo_camera</span>Instagram
+              </a>
             </div>
           </div>
 
           <div style={{ background:'#fbf9f5', padding:32 }}>
             {status === 'ok' ? (
               <div style={{ textAlign:'center', padding:40 }}>
-                <div style={{ fontSize:32, marginBottom:12 }}>✓</div>
-                <div style={{ fontFamily:'Noto Serif,serif', fontSize:18, color:'#13201A', marginBottom:8 }}>{t(locale,'contact.ok')}</div>
-                <p style={{ fontSize:13, color:'#6b6b6b' }}>{t(locale,'contact.ok.desc')}</p>
+                <div style={{ width:60, height:60, borderRadius:'50%', background:'#EAF3DE', display:'flex', alignItems:'center', justifyContent:'center', margin:'0 auto 16px', fontSize:26 }}>✓</div>
+                <div style={{ fontFamily:'Noto Serif,serif', fontSize:20, color:'#13201A', marginBottom:12 }}>{t(locale,'contact.ok')}</div>
+                <p style={{ fontSize:13, color:'#6b6b6b', lineHeight:1.8, maxWidth:320, margin:'0 auto 20px' }}>{t(locale,'contact.ok.desc')}</p>
+                <button onClick={() => setStatus('idle')} className="btn-outline" style={{ fontSize:10 }}>
+                  {locale === 'ar' ? 'إرسال رسالة أخرى' : locale === 'es' ? 'Enviar otro mensaje' : locale === 'en' ? 'Send another message' : 'Envoyer un autre message'}
+                </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} style={{ display:'flex', flexDirection:'column', gap:14 }}>
@@ -79,6 +88,11 @@ export default function ContactPage() {
                         style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', background:'#fff' }}/>
                     </div>
                   ))}
+                </div>
+                <div>
+                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>{t(locale,'contact.tel')}</label>
+                  <input type="tel" value={form.tel} onChange={e => setForm({...form,tel:e.target.value})}
+                    style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', background:'#fff' }}/>
                 </div>
                 <div>
                   <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>{t(locale,'contact.sujet')}</label>
