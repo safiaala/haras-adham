@@ -27,6 +27,7 @@ export default function AdminPage() {
     { href:'/admin/prestations', emoji:'🏇', titre:'Prestations', count:null,       desc:'Sections et photos' },
     { href:'/admin/pages',      emoji:'📝', titre:'Pages',       count:null,       desc:'Accueil, Contact, Navigation' },
     { href:'/admin/editeur',    emoji:'🎨', titre:'Éditeur',     count:null,       desc:'Modifier toutes les pages par blocs' },
+    { href:'/admin/navigation', emoji:'🔀', titre:'Navigation',  count:null,       desc:'Activer/désactiver les pages du menu' },
   ]
 
   return (

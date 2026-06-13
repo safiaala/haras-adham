@@ -3,24 +3,48 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { LOCALES, Locale } from '@/lib/locale'
+import { t } from '@/lib/translations'
+import { supabase } from '@/lib/supabase'
 
-const NAV_LABELS: Record<Locale, Record<string, string>> = {
-  fr: { '/':'Accueil', '/chevaux':'Chevaux', '/etalons':'Étalons', '/prestations':'Prestations', '/evenements':'Événements', '/histoire':'Histoire', '/actualites':'Actualités', '/jobs':'Jobs', contact:'Contact' },
-  en: { '/':'Home', '/chevaux':'Horses', '/etalons':'Stallions', '/prestations':'Services', '/evenements':'Events', '/histoire':'History', '/actualites':'News', '/jobs':'Jobs', contact:'Contact' },
-  es: { '/':'Inicio', '/chevaux':'Caballos', '/etalons':'Sementales', '/prestations':'Servicios', '/evenements':'Eventos', '/histoire':'Historia', '/actualites':'Noticias', '/jobs':'Empleo', contact:'Contacto' },
-  ar: { '/':'الرئيسية', '/chevaux':'الخيول', '/etalons':'الفحول', '/prestations':'الخدمات', '/evenements':'الفعاليات', '/histoire':'التاريخ', '/actualites':'الأخبار', '/jobs':'وظائف', contact:'اتصل بنا' },
+const ALL_LINKS = [
+  { href:'/',             key:'nav.accueil' },
+  { href:'/chevaux',      key:'nav.chevaux' },
+  { href:'/etalons',      key:'nav.etalons' },
+  { href:'/prestations',  key:'nav.prestations' },
+  { href:'/evenements',   key:'nav.evenements' },
+  { href:'/histoire',     key:'nav.histoire' },
+  { href:'/actualites',   key:'nav.actualites' },
+  { href:'/jobs',         key:'nav.jobs' },
+]
+
+const SLUG_MAP: Record<string, string> = {
+  '/':'accueil', '/chevaux':'chevaux', '/etalons':'etalons',
+  '/prestations':'prestations', '/evenements':'evenements',
+  '/histoire':'histoire', '/actualites':'actualites', '/jobs':'jobs',
 }
-
-const links = ['/', '/chevaux', '/etalons', '/prestations', '/evenements', '/histoire', '/actualites', '/jobs']
 
 export default function Nav() {
   const path = usePathname()
   const [open, setOpen] = useState(false)
   const [locale, setLocale] = useState<Locale>('fr')
+  const [activePages, setActivePages] = useState<string[]>(['accueil','chevaux','etalons','prestations','evenements','histoire','actualites','jobs','contact'])
 
   useEffect(() => {
     const saved = localStorage.getItem('locale') as Locale
     if (saved && ['fr','en','es','ar'].includes(saved)) setLocale(saved)
+    const handler = (e: Event) => {
+      const l = (e as CustomEvent).detail as Locale
+      setLocale(l)
+      document.documentElement.lang = l
+      document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr'
+    }
+    window.addEventListener('locale-change', handler)
+
+    supabase.from('pages').select('slug,actif').then(({ data }) => {
+      if (data) setActivePages(data.filter(p => p.actif).map(p => p.slug))
+    })
+
+    return () => window.removeEventListener('locale-change', handler)
   }, [])
 
   function changeLocale(l: Locale) {
@@ -31,7 +55,7 @@ export default function Nav() {
     window.dispatchEvent(new CustomEvent('locale-change', { detail: l }))
   }
 
-  const labels = NAV_LABELS[locale]
+  const visibleLinks = ALL_LINKS.filter(l => activePages.includes(SLUG_MAP[l.href] || ''))
 
   return (
     <>
@@ -41,18 +65,19 @@ export default function Nav() {
             <div style={{ width:32, height:32, borderRadius:'50%', border:'1.5px solid #B8943A', display:'flex', alignItems:'center', justifyContent:'center', background:'#f0ece4', fontSize:15 }}>🐴</div>
             <div>
               <div style={{ fontFamily:'Noto Serif,serif', fontSize:17, fontWeight:700, letterSpacing:'-.02em', color:'#13201A' }}>Haras <span style={{ color:'#B8943A' }}>Adham</span></div>
-              <div style={{ fontSize:'7.5px', letterSpacing:'.22em', textTransform:'uppercase', color:'#888', marginTop:-1 }}>Élevage · Compétition · Passion</div>
+              <div style={{ fontSize:'7.5px', letterSpacing:'.22em', textTransform:'uppercase', color:'#888', marginTop:-1 }}>{t(locale,'nav.elevage')}</div>
             </div>
           </Link>
 
           <div style={{ display:'flex', gap:18, alignItems:'center' }} className="hidden md:flex">
-            {links.map(l => (
-              <Link key={l} href={l} style={{ fontFamily:'Plus Jakarta Sans,sans-serif', fontSize:11, letterSpacing:'.11em', textTransform:'uppercase', color: path === l ? '#B8943A' : 'rgba(19,32,26,.55)', paddingBottom:2, borderBottom: path === l ? '2px solid #B8943A' : '2px solid transparent', textDecoration:'none', transition:'.2s', whiteSpace:'nowrap' }}>{labels[l]}</Link>
+            {visibleLinks.map(l => (
+              <Link key={l.href} href={l.href} style={{ fontFamily:'Plus Jakarta Sans,sans-serif', fontSize:11, letterSpacing:'.11em', textTransform:'uppercase', color: path===l.href ? '#B8943A' : 'rgba(19,32,26,.55)', paddingBottom:2, borderBottom: path===l.href ? '2px solid #B8943A' : '2px solid transparent', textDecoration:'none', transition:'.2s', whiteSpace:'nowrap' }}>
+                {t(locale, l.key)}
+              </Link>
             ))}
           </div>
 
           <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-            {/* Sélecteur de langue */}
             <div style={{ display:'flex', gap:2 }}>
               {LOCALES.map(l => (
                 <button key={l.code} onClick={() => changeLocale(l.code as Locale)}
@@ -61,7 +86,9 @@ export default function Nav() {
                 </button>
               ))}
             </div>
-            <Link href="/contact" style={{ fontSize:10, letterSpacing:'.12em', textTransform:'uppercase', padding:'8px 14px', background:'#13201A', color:'#fff', textDecoration:'none', fontFamily:'Plus Jakarta Sans,sans-serif', transition:'.2s', whiteSpace:'nowrap' }}>{labels.contact}</Link>
+            <Link href="/contact" style={{ fontSize:10, letterSpacing:'.12em', textTransform:'uppercase', padding:'8px 14px', background:'#13201A', color:'#fff', textDecoration:'none', fontFamily:'Plus Jakarta Sans,sans-serif', whiteSpace:'nowrap' }}>
+              {t(locale,'nav.contact')}
+            </Link>
             <button onClick={() => setOpen(true)} style={{ background:'transparent', border:'none', cursor:'pointer', padding:4, display:'flex' }} className="md:hidden">
               <span style={{ fontFamily:'Material Symbols Outlined', fontSize:22, color:'#13201A' }}>menu</span>
             </button>
@@ -73,10 +100,14 @@ export default function Nav() {
         <div style={{ position:'fixed', inset:0, background:'#13201A', zIndex:100, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:20 }}>
           <button onClick={() => setOpen(false)} style={{ position:'absolute', top:16, right:20, background:'transparent', border:'none', color:'#fff', fontSize:26, cursor:'pointer' }}>✕</button>
           <div style={{ fontFamily:'Noto Serif,serif', fontSize:26, color:'#B8943A', marginBottom:16, fontStyle:'italic' }}>Haras Adham</div>
-          {links.map(l => (
-            <Link key={l} href={l} onClick={() => setOpen(false)} style={{ fontFamily:'Plus Jakarta Sans,sans-serif', fontSize:16, letterSpacing:'.1em', textTransform:'uppercase', color:'#fff', textDecoration:'none' }}>{labels[l]}</Link>
+          {visibleLinks.map(l => (
+            <Link key={l.href} href={l.href} onClick={() => setOpen(false)} style={{ fontFamily:'Plus Jakarta Sans,sans-serif', fontSize:16, letterSpacing:'.1em', textTransform:'uppercase', color:'#fff', textDecoration:'none' }}>
+              {t(locale, l.key)}
+            </Link>
           ))}
-          <Link href="/contact" onClick={() => setOpen(false)} style={{ fontFamily:'Plus Jakarta Sans,sans-serif', fontSize:16, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', textDecoration:'none' }}>{labels.contact}</Link>
+          <Link href="/contact" onClick={() => setOpen(false)} style={{ fontFamily:'Plus Jakarta Sans,sans-serif', fontSize:16, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', textDecoration:'none' }}>
+            {t(locale,'nav.contact')}
+          </Link>
           <div style={{ display:'flex', gap:8, marginTop:16 }}>
             {LOCALES.map(l => (
               <button key={l.code} onClick={() => changeLocale(l.code as Locale)}
