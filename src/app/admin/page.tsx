@@ -24,7 +24,8 @@ export default function AdminPage() {
     { href:'/admin/evenements', emoji:'📅', titre:'Événements',  count:nbEvents,   desc:'Gérer l\'agenda' },
     { href:'/admin/actualites', emoji:'📰', titre:'Actualités',  count:nbNews,     desc:'Gérer les articles' },
     { href:'/admin/offres',     emoji:'💼', titre:'Offres',      count:nbOffres,   desc:'Gérer les offres d\'emploi' },
-    { href:'/admin/pages',      emoji:'📝', titre:'Pages',       count:null,       desc:'Accueil, Prestations, Contact' },
+    { href:'/admin/prestations', emoji:'🏇', titre:'Prestations', count:null,       desc:'Sections et photos' },
+    { href:'/admin/pages',      emoji:'📝', titre:'Pages',       count:null,       desc:'Accueil, Contact, Navigation' },
   ]
 
   return (
