@@ -1,8 +1,11 @@
 'use client'
 import { useEffect, useState, use } from 'react'
 import { supabase } from '@/lib/supabase'
-import { Section, SectionType, SectionData, SECTION_TYPES, defaultData, PAGES } from '@/lib/sections'
+import { Section, SectionType, SectionData, SECTION_TYPES, defaultData, PAGES, TranslatableFields, TRANSLATABLE_FIELDS_BY_TYPE } from '@/lib/sections'
 import { uploadImage } from '@/lib/cloudinary'
+import { LOCALES, Locale } from '@/lib/locale'
+
+const LOCALE_FLAGS: Record<Locale, string> = { fr:'🇫🇷', en:'🇬🇧', es:'🇪🇸', ar:'🇸🇦' }
 
 export default function PageEditor({ params }: { params: Promise<{ page: string }> }) {
   const { page } = use(params)
@@ -110,23 +113,7 @@ export default function PageEditor({ params }: { params: Promise<{ page: string 
 
       {/* PANNEAU ÉDITION */}
       {editing && (
-        <div style={{ background:'#fff', borderLeft:'.5px solid rgba(195,200,195,.3)', padding:28, overflowY:'auto', maxHeight:'100vh', position:'sticky', top:0 }}>
-          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20 }}>
-            <div>
-              <div style={{ fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#888' }}>Modifier</div>
-              <div style={{ fontFamily:'Noto Serif,serif', fontSize:16, color:'#13201A' }}>{typeInfo?.emoji} {typeInfo?.label}</div>
-            </div>
-            <button onClick={() => setEditing(null)} style={{ background:'transparent', border:'none', fontSize:20, cursor:'pointer', color:'#888' }}>✕</button>
-          </div>
-
-          <SectionForm section={editing} onChange={setEditing}/>
-
-          {msg && <p style={{ fontSize:12, color:'#3B6D11', textAlign:'center', margin:'8px 0' }}>{msg}</p>}
-          <div style={{ display:'flex', gap:10, marginTop:16 }}>
-            <button onClick={() => setEditing(null)} className="btn-outline" style={{ flex:1 }}>Annuler</button>
-            <button onClick={saveSection} disabled={saving} className="btn-gold" style={{ flex:1 }}>{saving ? 'Sauvegarde...' : 'Sauvegarder'}</button>
-          </div>
-        </div>
+        <EditingPanel editing={editing} setEditing={setEditing} typeInfo={typeInfo} msg={msg} saving={saving} saveSection={saveSection}/>
       )}
 
       {/* MODAL AJOUT */}
@@ -156,7 +143,77 @@ export default function PageEditor({ params }: { params: Promise<{ page: string 
   )
 }
 
-function SectionForm({ section, onChange }: { section: Section; onChange: (s: Section) => void }) {
+function EditingPanel({ editing, setEditing, typeInfo, msg, saving, saveSection }: {
+  editing: Section; setEditing: (s: Section|null) => void
+  typeInfo: typeof SECTION_TYPES[0]|undefined; msg: string; saving: boolean; saveSection: () => void
+}) {
+  const [locale, setLocale] = useState<Locale>('fr')
+
+  function setTranslation(field: string, value: unknown) {
+    if (locale === 'fr') {
+      const newData = { ...editing.data, [field]: value }
+      setEditing({ ...editing, data: newData })
+    } else {
+      const translations = { ...(editing.data.translations || {}), [locale]: { ...(editing.data.translations?.[locale] || {}), [field]: value } }
+      setEditing({ ...editing, data: { ...editing.data, translations } })
+    }
+  }
+
+  const localizedSection: Section = locale === 'fr' ? editing : {
+    ...editing,
+    data: { ...editing.data, ...(editing.data.translations?.[locale] || {}) }
+  }
+
+  return (
+    <div style={{ background:'#fff', borderLeft:'.5px solid rgba(195,200,195,.3)', padding:28, overflowY:'auto', maxHeight:'100vh', position:'sticky', top:0 }}>
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
+        <div>
+          <div style={{ fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#888' }}>Modifier</div>
+          <div style={{ fontFamily:'Noto Serif,serif', fontSize:16, color:'#13201A' }}>{typeInfo?.emoji} {typeInfo?.label}</div>
+        </div>
+        <button onClick={() => setEditing(null)} style={{ background:'transparent', border:'none', fontSize:20, cursor:'pointer', color:'#888' }}>✕</button>
+      </div>
+
+      {/* ONGLETS LANGUE */}
+      <div style={{ display:'flex', gap:4, marginBottom:16, borderBottom:'.5px solid rgba(195,200,195,.3)', paddingBottom:12 }}>
+        {LOCALES.map(l => (
+          <button key={l.code} onClick={() => setLocale(l.code as Locale)}
+            style={{ fontSize:11, padding:'5px 10px', border:`.5px solid ${locale===l.code ? '#B8943A' : 'rgba(195,200,195,.4)'}`, background: locale===l.code ? 'rgba(184,148,58,.1)' : 'transparent', color: locale===l.code ? '#B8943A' : '#888', cursor:'pointer', fontFamily:'Plus Jakarta Sans,sans-serif', display:'flex', alignItems:'center', gap:4 }}>
+            {LOCALE_FLAGS[l.code as Locale]} {l.label}
+          </button>
+        ))}
+      </div>
+      {locale !== 'fr' && (
+        <div style={{ background:'#FAEEDA', border:'.5px solid rgba(184,148,58,.3)', padding:'8px 12px', marginBottom:14, fontSize:11, color:'#854F0B' }}>
+          ✏️ Vous éditez la traduction <strong>{locale.toUpperCase()}</strong>. Les champs vides afficheront le français par défaut.
+        </div>
+      )}
+
+      <SectionForm section={localizedSection} locale={locale} onChange={(s) => {
+        if (locale === 'fr') {
+          setEditing(s)
+        } else {
+          const translatableFields = TRANSLATABLE_FIELDS_BY_TYPE[editing.type]
+          const translation: Partial<TranslatableFields> = {}
+          translatableFields.forEach(f => {
+            const v = (s.data as Record<string, unknown>)[f]
+            if (v !== undefined) (translation as Record<string, unknown>)[f] = v
+          })
+          const translations = { ...(editing.data.translations || {}), [locale]: translation }
+          setEditing({ ...editing, data: { ...editing.data, translations } })
+        }
+      }}/>
+
+      {msg && <p style={{ fontSize:12, color:'#3B6D11', textAlign:'center', margin:'8px 0' }}>{msg}</p>}
+      <div style={{ display:'flex', gap:10, marginTop:16 }}>
+        <button onClick={() => setEditing(null)} className="btn-outline" style={{ flex:1 }}>Annuler</button>
+        <button onClick={saveSection} disabled={saving} className="btn-gold" style={{ flex:1 }}>{saving ? 'Sauvegarde...' : 'Sauvegarder'}</button>
+      </div>
+    </div>
+  )
+}
+
+function SectionForm({ section, onChange, locale }: { section: Section; onChange: (s: Section) => void; locale?: Locale }) {
   const [uploading, setUploading] = useState<string|null>(null)
 
   function set(path: string, value: unknown) {
