@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase'
 import { Cheval } from '@/lib/types'
 import { uploadImage } from '@/lib/cloudinary'
 
-const emptyCheval = (): Partial<Cheval> => ({ nom:'', annee_naissance:undefined, race:'Barbe Marocain', sexe:'', discipline:'', pedigree:'', statut:'disponible', description:'', prix:'', photos:[], en_vedette:false })
+const emptyCheval = (): Partial<Cheval> => ({ nom:'', annee_naissance:undefined, race:'Barbe Marocain', sexe:'', discipline:'', pedigree:'', nom_pere:'', nom_mere:'', statut:'disponible', description:'', prix:'', photos:[], en_vedette:false })
 
 export default function AdminChevauxPage() {
   const [list, setList] = useState<Cheval[]>([])
@@ -145,6 +145,10 @@ export default function AdminChevauxPage() {
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
                   {sel('Discipline','discipline',['cso','dressage','endurance','tbourida','poulain'])}
                   {sel('Statut','statut',['disponible','vendu','pension','reproduction'])}
+                </div>
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+                  {inp('Nom du père','nom_pere')}
+                  {inp('Nom de la mère','nom_mere')}
                 </div>
                 {inp('Pedigree','pedigree')}
                 {inp('Prix','prix')}

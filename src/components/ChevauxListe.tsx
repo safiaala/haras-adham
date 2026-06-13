@@ -59,6 +59,13 @@ export default function ChevauxListe() {
                   {c.annee_naissance ? `${c.annee_naissance}` : ''}{c.annee_naissance && c.race ? ' · ' : ''}{c.race}
                   {c.sexe ? ` · ${t(locale, SEXE_KEY[c.sexe] || 'sexe.cheval')}` : ''}
                 </div>
+                {(c.nom_pere || c.nom_mere) && (
+                  <div style={{ fontSize:10, color:'#888', marginBottom:6 }}>
+                    {c.nom_pere && <span>♂ {c.nom_pere}</span>}
+                    {c.nom_pere && c.nom_mere && <span> · </span>}
+                    {c.nom_mere && <span>♀ {c.nom_mere}</span>}
+                  </div>
+                )}
                 <div style={{ display:'flex', gap:4, flexWrap:'wrap' }}>
                   {c.discipline && <span className="tag tag-blue">{c.discipline.toUpperCase()}</span>}
                   {c.statut && <span className={`tag ${statutColor[c.statut]||'tag-green'}`}>{c.statut}</span>}
