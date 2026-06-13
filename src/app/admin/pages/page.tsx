@@ -53,6 +53,17 @@ const sections = [
     ]
   },
   {
+    titre: 'Étalons — Conseil Génétique',
+    champs: [
+      { cle:'etalons_conseil_badge', label:'Badge', type:'text' },
+      { cle:'etalons_conseil_titre', label:'Titre', type:'text' },
+      { cle:'etalons_conseil_item1', label:'Point 1', type:'text' },
+      { cle:'etalons_conseil_item2', label:'Point 2', type:'text' },
+      { cle:'etalons_conseil_item3', label:'Point 3', type:'text' },
+      { cle:'etalons_conseil_cta',   label:'Bouton (texte)', type:'text' },
+    ]
+  },
+  {
     titre: 'Localisation Google Maps',
     champs: [
       { cle:'lat', label:'Latitude (ex: 33.8869)', type:'text' },

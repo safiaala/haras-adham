@@ -6,13 +6,23 @@ import { useLocale } from '@/lib/useLocale'
 import { t } from '@/lib/translations'
 import Link from 'next/link'
 
+type Cfg = Record<string, string>
+
 export default function EtalonsList() {
   const [etalons, setEtalons] = useState<Etalon[]>([])
+  const [cfg, setCfg] = useState<Cfg>({})
   const locale = useLocale()
 
   useEffect(() => {
     supabase.from('etalons').select('*').eq('actif', true).order('created_at', { ascending:false })
       .then(({ data }) => setEtalons(data || []))
+    supabase.from('config').select('*').then(({ data }) => {
+      if (data) {
+        const map: Cfg = {}
+        data.forEach(r => { map[r.cle] = r.valeur })
+        setCfg(map)
+      }
+    })
   }, [])
 
   return (
@@ -55,20 +65,22 @@ export default function EtalonsList() {
         </div>
       )}
 
-      <div style={{ background:'#f0ece4', padding:'50px 0', marginTop:50 }}>
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:50, alignItems:'start' }}>
-          <div>
-            <span style={{ fontSize:10, letterSpacing:'.28em', textTransform:'uppercase', color:'#B8943A', display:'block', marginBottom:8 }}>Science & Art</span>
-            <h2 style={{ fontFamily:'Noto Serif,serif', fontSize:'1.9rem', color:'#13201A', marginBottom:14 }}>{t(locale,'etalons.conseil')}</h2>
-            <ul style={{ listStyle:'none', padding:0, display:'flex', flexDirection:'column', gap:8, marginBottom:20 }}>
-              {['Analyse de pedigree comparative et étude de conformation','Suivi gynécologique et bilan de fertilité personnalisé','IAF, IAC et monte naturelle disponibles. Export international.'].map(item => (
-                <li key={item} style={{ display:'flex', gap:9, alignItems:'start', fontSize:12, color:'#6b6b6b' }}>
-                  <span style={{ color:'#B8943A', flexShrink:0 }}>✓</span>{item}
-                </li>
-              ))}
-            </ul>
-            <Link href="/contact" className="btn-dark">{t(locale,'etalons.rdv')}</Link>
-          </div>
+      <div style={{ background:'#f0ece4', padding:'50px 60px', marginTop:50 }}>
+        <div style={{ maxWidth:600 }}>
+          {cfg.etalons_conseil_badge && (
+            <span style={{ fontSize:10, letterSpacing:'.28em', textTransform:'uppercase', color:'#B8943A', display:'block', marginBottom:8 }}>{cfg.etalons_conseil_badge}</span>
+          )}
+          <h2 style={{ fontFamily:'Noto Serif,serif', fontSize:'1.9rem', color:'#13201A', marginBottom:14 }}>
+            {cfg.etalons_conseil_titre || t(locale,'etalons.conseil')}
+          </h2>
+          <ul style={{ listStyle:'none', padding:0, display:'flex', flexDirection:'column', gap:8, marginBottom:20 }}>
+            {[cfg.etalons_conseil_item1, cfg.etalons_conseil_item2, cfg.etalons_conseil_item3].filter(Boolean).map(item => (
+              <li key={item} style={{ display:'flex', gap:9, alignItems:'start', fontSize:12, color:'#6b6b6b' }}>
+                <span style={{ color:'#B8943A', flexShrink:0 }}>✓</span>{item}
+              </li>
+            ))}
+          </ul>
+          <Link href="/contact" className="btn-dark">{cfg.etalons_conseil_cta || t(locale,'etalons.rdv')}</Link>
         </div>
       </div>
     </section>
