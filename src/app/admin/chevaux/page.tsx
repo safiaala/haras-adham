@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase'
 import { Cheval } from '@/lib/types'
 import { uploadImage } from '@/lib/cloudinary'
 
-const emptyCheval = (): Partial<Cheval> => ({ nom:'', age:undefined, race:'Barbe Marocain', sexe:'', discipline:'', pedigree:'', statut:'disponible', description:'', prix:'', photos:[], en_vedette:false })
+const emptyCheval = (): Partial<Cheval> => ({ nom:'', annee_naissance:undefined, race:'Barbe Marocain', sexe:'', discipline:'', pedigree:'', statut:'disponible', description:'', prix:'', photos:[], en_vedette:false })
 
 export default function AdminChevauxPage() {
   const [list, setList] = useState<Cheval[]>([])
@@ -94,7 +94,7 @@ export default function AdminChevauxPage() {
             <table style={{ width:'100%', borderCollapse:'collapse', fontSize:12, fontFamily:'Plus Jakarta Sans,sans-serif' }}>
               <thead>
                 <tr style={{ background:'#f5f3ef' }}>
-                  {['Photo','Nom','Âge','Discipline','Statut','Vedette','Actions'].map(h => (
+                  {['Photo','Nom','Naissance','Discipline','Statut','Vedette','Actions'].map(h => (
                     <th key={h} style={{ padding:'10px 12px', textAlign:'left', fontSize:9, fontWeight:600, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', borderBottom:'.5px solid rgba(195,200,195,.4)' }}>{h}</th>
                   ))}
                 </tr>
@@ -106,7 +106,7 @@ export default function AdminChevauxPage() {
                       {c.photos?.[0] ? <img src={c.photos[0]} style={{ width:48, height:48, objectFit:'cover' }} alt=""/> : <div style={{ width:48, height:48, background:'#f0ece4', display:'flex', alignItems:'center', justifyContent:'center' }}>🐴</div>}
                     </td>
                     <td style={{ padding:'10px 12px', fontWeight:500 }}>{c.nom}</td>
-                    <td style={{ padding:'10px 12px', color:'#888' }}>{c.age ? `${c.age} ans` : '—'}</td>
+                    <td style={{ padding:'10px 12px', color:'#888' }}>{c.annee_naissance || '—'}</td>
                     <td style={{ padding:'10px 12px', color:'#888' }}>{c.discipline || '—'}</td>
                     <td style={{ padding:'10px 12px' }}>
                       <span className={`tag ${c.statut==='disponible'?'tag-green':c.statut==='vendu'?'tag-red':c.statut==='pension'?'tag-blue':'tag-purple'}`}>{c.statut}</span>
@@ -136,7 +136,7 @@ export default function AdminChevauxPage() {
               <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
                   {inp('Nom *','nom')}
-                  {inp('Âge','age','number')}
+                  {inp('Année de naissance','annee_naissance','number')}
                 </div>
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
                   {inp('Race','race')}

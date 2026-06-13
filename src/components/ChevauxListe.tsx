@@ -56,7 +56,7 @@ export default function ChevauxListe() {
               <div style={{ padding:'12px 14px' }}>
                 <div style={{ fontFamily:'Noto Serif,serif', fontSize:15, color:'#13201A', marginBottom:4 }}>{c.nom}</div>
                 <div style={{ fontSize:10, color:'#888', marginBottom:6 }}>
-                  {c.age ? `${c.age} ans` : ''}{c.age && c.race ? ' · ' : ''}{c.race}
+                  {c.annee_naissance ? `${c.annee_naissance}` : ''}{c.annee_naissance && c.race ? ' · ' : ''}{c.race}
                   {c.sexe ? ` · ${t(locale, SEXE_KEY[c.sexe] || 'sexe.cheval')}` : ''}
                 </div>
                 <div style={{ display:'flex', gap:4, flexWrap:'wrap' }}>

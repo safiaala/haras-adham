@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase'
 import { Etalon } from '@/lib/types'
 import { uploadImage } from '@/lib/cloudinary'
 
-const empty = (): Partial<Etalon> => ({ nom:'', age:undefined, race:'Barbe Marocain', robe:'', pedigree:'', palmares:'', description:'', tarif_saillie:'', methodes:[], photo:'', actif:true })
+const empty = (): Partial<Etalon> => ({ nom:'', annee_naissance:undefined, race:'Barbe Marocain', robe:'', pedigree:'', palmares:'', description:'', tarif_saillie:'', methodes:[], photo:'', actif:true })
 
 export default function AdminEtalonsPage() {
   const [list, setList] = useState<Etalon[]>([])
@@ -86,7 +86,7 @@ export default function AdminEtalonsPage() {
                       {e.photo ? <img src={e.photo} style={{ width:48, height:48, objectFit:'cover' }} alt=""/> : <div style={{ width:48, height:48, background:'#f0ece4', display:'flex', alignItems:'center', justifyContent:'center' }}>🐴</div>}
                     </td>
                     <td style={{ padding:'10px 12px', fontWeight:500 }}>{e.nom}</td>
-                    <td style={{ padding:'10px 12px', color:'#888' }}>{e.age ? `${e.age} ans` : '—'}</td>
+                    <td style={{ padding:'10px 12px', color:'#888' }}>{e.annee_naissance || '—'}</td>
                     <td style={{ padding:'10px 12px', color:'#888' }}>{e.robe || '—'}</td>
                     <td style={{ padding:'10px 12px' }}><span className={`tag ${e.actif ? 'tag-green' : 'tag-red'}`}>{e.actif ? 'Actif' : 'Inactif'}</span></td>
                     <td style={{ padding:'10px 12px' }}>
@@ -112,7 +112,7 @@ export default function AdminEtalonsPage() {
               <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
                   {inp('Nom *','nom')}
-                  {inp('Âge','age','number')}
+                  {inp('Année de naissance','annee_naissance','number')}
                 </div>
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
                   {inp('Race','race')}

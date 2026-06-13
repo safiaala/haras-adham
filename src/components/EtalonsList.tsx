@@ -40,7 +40,7 @@ export default function EtalonsList() {
               <div style={{ padding:'18px 20px' }}>
                 <div style={{ fontFamily:'Noto Serif,serif', fontSize:20, color:'#13201A', marginBottom:4 }}>{e.nom}</div>
                 {e.robe && <div style={{ fontSize:10, color:'#B8943A', letterSpacing:'.1em', textTransform:'uppercase', marginBottom:8 }}>{e.robe}</div>}
-                {e.age && <div style={{ fontSize:11, color:'#888', marginBottom:6 }}>{e.age} ans · {e.race}</div>}
+                {e.annee_naissance && <div style={{ fontSize:11, color:'#888', marginBottom:6 }}>{e.annee_naissance} · {e.race}</div>}
                 {e.description && <p style={{ fontSize:12, color:'#6b6b6b', lineHeight:1.7, marginBottom:10 }}>{e.description}</p>}
                 {e.palmares && (
                   <div style={{ background:'#f0ece4', padding:'8px 10px', marginBottom:10, borderLeft:'2px solid #B8943A' }}>

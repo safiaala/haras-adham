@@ -1,7 +1,7 @@
 export interface Cheval {
   id: string
   nom: string
-  age?: number
+  annee_naissance?: number
   race?: string
   sexe?: string
   discipline?: string
@@ -17,7 +17,7 @@ export interface Cheval {
 export interface Etalon {
   id: string
   nom: string
-  age?: number
+  annee_naissance?: number
   race?: string
   robe?: string
   pedigree?: string
