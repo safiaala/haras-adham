@@ -74,34 +74,56 @@ export function LogoD({ size = 36 }: { size?: number }) {
   )
 }
 
-// Option E : Tête de cheval trait minimaliste (inspiré logo réel Elevage Adhame)
-export function LogoE({ size = 40 }: { size?: number }) {
+// Logo Elevage Adhame — fidèle au dessin original (trait doré sur fond vert)
+export function LogoE({ size = 44 }: { size?: number }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="50" height="50" rx="3" fill="#13201A"/>
-      {/* Tête de cheval - trait doré style gravure */}
+    <svg width={size} height={size} viewBox="0 0 100 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="110" rx="4" fill="#13201A"/>
       <g stroke="#B8943A" strokeLinecap="round" strokeLinejoin="round" fill="none">
-        {/* Chanfrein / museau */}
-        <path d="M18 38 C17 36 16 34 16 32 C16 29 17 27 18 25" strokeWidth="1.8"/>
-        {/* Front */}
-        <path d="M18 25 C19 22 20 19 22 17" strokeWidth="1.8"/>
-        {/* Oreilles */}
-        <path d="M22 17 C22 15 23 13 24 12 C25 13 25 15 24 17" strokeWidth="1.5"/>
-        <path d="M24 12 C25 11 26 11 27 12" strokeWidth="1.2"/>
-        {/* Encolure arrière - grande courbe */}
-        <path d="M24 17 C27 16 31 15 34 16 C36 17 37 19 36 22 C35 26 32 29 29 31" strokeWidth="1.8"/>
-        {/* Bas de l'encolure */}
-        <path d="M29 31 C27 33 24 35 22 37 C20 38 18 38 18 38" strokeWidth="1.8"/>
+
+        {/* === TÊTE === */}
+        {/* Front (chanfrein droit — caractéristique Barbe) */}
+        <path d="M35 78 C34 72 33 66 33 60 C33 54 34 49 36 44" strokeWidth="2.2"/>
+        {/* Dessus de la tête */}
+        <path d="M36 44 C38 39 41 35 44 32" strokeWidth="2.2"/>
+
+        {/* === OREILLES === */}
+        {/* Oreille gauche (visible) */}
+        <path d="M44 32 C43 28 44 24 46 22 C48 24 48 28 47 32" strokeWidth="1.8"/>
+        {/* Oreille droite (derrière) */}
+        <path d="M47 32 C49 28 51 26 52 27 C52 29 51 31 49 33" strokeWidth="1.5"/>
+
+        {/* === ENCOLURE — grande courbe élégante === */}
+        {/* Dessus de l'encolure (crinière) */}
+        <path d="M47 32 C53 29 62 27 70 28 C76 29 80 33 79 39 C77 46 71 52 64 57 C58 61 52 64 47 68" strokeWidth="2.5"/>
+        {/* Bas de l'encolure / poitrail */}
+        <path d="M47 68 C44 72 40 76 37 78 C36 79 35 79 35 78" strokeWidth="2.2"/>
+
+        {/* === POITRAIL (bas) === */}
+        <path d="M47 68 C50 70 55 71 60 70 C65 69 70 66 72 63" strokeWidth="2"/>
+
+        {/* === MUSEAU / NASEAUX === */}
+        <path d="M33 60 C31 61 30 63 30 65 C30 68 32 70 34 70 C36 70 37 68 37 66" strokeWidth="1.8"/>
         {/* Naseau */}
-        <path d="M16 32 C15 33 15 34 16 35 C17 35 18 34 18 33" strokeWidth="1.3"/>
-        {/* Oeil */}
-        <circle cx="24" cy="21" r="1.2" fill="#B8943A" stroke="none"/>
-        {/* Bride / licol */}
-        <path d="M17 29 C20 30 23 30 26 29" strokeWidth="1"/>
-        <path d="M17 33 L28 33" strokeWidth="0.8" opacity="0.6"/>
-        {/* Crinière - quelques traits */}
-        <path d="M24 17 C23 19 22 21 22 23" strokeWidth="1" opacity="0.7"/>
-        <path d="M25 16 C24 18 23 20 23 22" strokeWidth="0.8" opacity="0.5"/>
+        <path d="M31 65 C30 66 30 68 31 69" strokeWidth="1.4"/>
+
+        {/* === OEIL === */}
+        <circle cx="44" cy="47" r="2.5" fill="#B8943A" stroke="none"/>
+        <circle cx="44" cy="47" r="3.8" strokeWidth="1" stroke="#B8943A" opacity="0.4"/>
+
+        {/* === BRIDE / LICOL === */}
+        {/* Montant de bride */}
+        <path d="M36 50 C40 51 44 51 48 50" strokeWidth="1.2" opacity="0.8"/>
+        {/* Muserolle */}
+        <path d="M33 63 C36 64 40 64 43 63" strokeWidth="1.2" opacity="0.8"/>
+        {/* Sous-gorge */}
+        <path d="M36 54 C38 56 40 58 41 62" strokeWidth="1" opacity="0.6"/>
+
+        {/* === CRINIÈRE — traits libres === */}
+        <path d="M47 32 C45 36 43 41 43 46" strokeWidth="1.4" opacity="0.75"/>
+        <path d="M49 31 C47 35 45 40 45 45" strokeWidth="1.1" opacity="0.55"/>
+        <path d="M51 30 C50 34 48 39 48 44" strokeWidth="0.9" opacity="0.4"/>
+
       </g>
     </svg>
   )
