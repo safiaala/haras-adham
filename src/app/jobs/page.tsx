@@ -7,12 +7,42 @@ export const dynamic = 'force-dynamic'
 const typeColor: Record<string,string> = { emploi:'tag-green', stage:'tag-blue', benevole:'tag-purple' }
 
 const metiers = [
-  { emoji:'🐴', titre:'Palefrenier / Soigneur', desc:'Soins quotidiens, alimentation, pansage. 7j/7.', formation:'BEPA / Bac Pro CGEA option équine.', tags:[['tag-green','CDI'],['tag-blue','Stage']] },
-  { emoji:'🎓', titre:'Moniteur d\'équitation', desc:'Cours adultes et enfants. Préparation examens FFE.', formation:'BPJEPS AE ou DEJEPS.', tags:[['tag-green','CDI']] },
-  { emoji:'🔨', titre:'Maréchal-ferrant', desc:'Pare et ferre. Artisan itinérant.', formation:'CAP + Brevet de Maîtrise.', tags:[['tag-purple','Artisan']] },
-  { emoji:'🏇', titre:'Cavalier de compétition', desc:'Monte et prépare pour les concours. Valorisation sportive.', formation:'BPJEPS ou Galop 7+.', tags:[['tag-blue','Compétition']] },
-  { emoji:'🐾', titre:'Vétérinaire équin', desc:'Médecine sportive, chirurgie, reproduction.', formation:'Doctorat vétérinaire + spécialisation.', tags:[['tag-red','Bac+6']] },
-  { emoji:'🌾', titre:'Directeur de haras', desc:'Gestion élevage, sélection, commercial.', formation:'BTSA ACSE + 5 ans d\'expérience.', tags:[['tag-green','Cadre']] },
+  {
+    emoji:'🐴', titre:'Palefrenier / Soigneur',
+    desc:'Soins quotidiens, alimentation, pansage. 7j/7.',
+    mission:'Le palefrenier est le gardien du bien-être des chevaux au quotidien. Il assure les soins de base (alimentation, pansage, curage des boxes), surveille l\'état de santé des animaux et alerte en cas d\'anomalie. Il travaille 7j/7 avec rigueur et une vraie passion du cheval.',
+    formation:'BEPA / Bac Pro CGEA option équine.', tags:[['tag-green','CDI'],['tag-blue','Stage']]
+  },
+  {
+    emoji:'🎓', titre:'Moniteur d\'équitation',
+    desc:'Cours adultes et enfants. Préparation examens FFE.',
+    mission:'Le moniteur encadre les cavaliers de tous niveaux, du premier galop aux examens FFE. Il programme les cours, adapte son enseignement à chaque profil (enfant, adulte, compétiteur) et veille à la sécurité en piste. Il participe également à la valorisation des chevaux de sport.',
+    formation:'BPJEPS AE ou DEJEPS.', tags:[['tag-green','CDI']]
+  },
+  {
+    emoji:'🔨', titre:'Maréchal-ferrant',
+    desc:'Pare et ferre. Artisan itinérant.',
+    mission:'Le maréchal-ferrant est un artisan spécialisé dans les soins des sabots. Il pare, ferre et orthopédie les pieds des chevaux en collaboration avec le vétérinaire. Son rôle est crucial pour la locomotion et la performance. Il intervient régulièrement au haras selon un calendrier établi (toutes les 6 à 8 semaines par cheval).',
+    formation:'CAP + Brevet de Maîtrise.', tags:[['tag-purple','Artisan']]
+  },
+  {
+    emoji:'🏇', titre:'Cavalier de compétition',
+    desc:'Monte et prépare pour les concours. Valorisation sportive.',
+    mission:'Le cavalier de compétition monte et prépare les chevaux du haras en vue des concours nationaux et internationaux. Il élabore les programmes d\'entraînement, gère la condition physique des chevaux et représente le haras en piste. Il contribue aussi à la mise en valeur et à la vente des chevaux en les mettant en lumière lors des compétitions.',
+    formation:'BPJEPS ou Galop 7+.', tags:[['tag-blue','Compétition']]
+  },
+  {
+    emoji:'🐾', titre:'Vétérinaire équin',
+    desc:'Médecine sportive, chirurgie, reproduction.',
+    mission:'Le vétérinaire équin assure le suivi médical complet des chevaux du haras : bilans de santé, vaccinations, vermifugations, gestion des urgences et des pathologies. Il supervise le programme de reproduction (échographies, inséminations, poulinages) et accompagne les cavaliers dans l\'optimisation de la performance sportive des chevaux.',
+    formation:'Doctorat vétérinaire + spécialisation.', tags:[['tag-red','Bac+6']]
+  },
+  {
+    emoji:'🌾', titre:'Directeur de haras',
+    desc:'Gestion élevage, sélection, commercial.',
+    mission:'Le directeur de haras pilote l\'ensemble des activités de la structure : gestion de l\'élevage, sélection génétique, supervision des équipes soignantes et sportives, relations commerciales (ventes, pensions, partenariats). Il définit la stratégie de développement du haras, assure sa rentabilité et représente l\'établissement auprès des instances équestres nationales.',
+    formation:'BTSA ACSE + 5 ans d\'expérience.', tags:[['tag-green','Cadre']]
+  },
 ]
 
 export default async function JobsPage() {
@@ -62,8 +92,13 @@ export default async function JobsPage() {
                 <summary style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'12px 14px', cursor:'pointer', listStyle:'none', fontFamily:'Plus Jakarta Sans,sans-serif', fontSize:13, fontWeight:500 }}>
                   <span>{m.emoji} {m.titre}</span><span style={{ fontSize:10, color:'#888' }}>▾</span>
                 </summary>
-                <div style={{ padding:'0 14px 12px', fontSize:12, color:'#6b6b6b', lineHeight:1.65 }}>
-                  {m.desc}<br/><br/><strong>Formation :</strong> {m.formation}<br/>
+                <div style={{ padding:'0 14px 14px', fontSize:12, color:'#6b6b6b', lineHeight:1.65 }}>
+                  <p style={{ marginBottom:10 }}>{m.desc}</p>
+                  <div style={{ background:'#f5f3ef', borderLeft:'2px solid #B8943A', padding:'10px 12px', marginBottom:10 }}>
+                    <div style={{ fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', marginBottom:4 }}>Mission & Rôle</div>
+                    <p style={{ fontSize:11, lineHeight:1.7 }}>{m.mission}</p>
+                  </div>
+                  <strong>Formation :</strong> {m.formation}
                   <div style={{ display:'flex', gap:4, marginTop:8 }}>
                     {m.tags.map(([cls,label]) => <span key={label} className={`tag ${cls}`}>{label}</span>)}
                   </div>
