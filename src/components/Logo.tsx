@@ -74,4 +74,37 @@ export function LogoD({ size = 36 }: { size?: number }) {
   )
 }
 
-export default LogoA
+// Option E : Tête de cheval trait minimaliste (inspiré logo réel Elevage Adhame)
+export function LogoE({ size = 40 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="50" height="50" rx="3" fill="#13201A"/>
+      {/* Tête de cheval - trait doré style gravure */}
+      <g stroke="#B8943A" strokeLinecap="round" strokeLinejoin="round" fill="none">
+        {/* Chanfrein / museau */}
+        <path d="M18 38 C17 36 16 34 16 32 C16 29 17 27 18 25" strokeWidth="1.8"/>
+        {/* Front */}
+        <path d="M18 25 C19 22 20 19 22 17" strokeWidth="1.8"/>
+        {/* Oreilles */}
+        <path d="M22 17 C22 15 23 13 24 12 C25 13 25 15 24 17" strokeWidth="1.5"/>
+        <path d="M24 12 C25 11 26 11 27 12" strokeWidth="1.2"/>
+        {/* Encolure arrière - grande courbe */}
+        <path d="M24 17 C27 16 31 15 34 16 C36 17 37 19 36 22 C35 26 32 29 29 31" strokeWidth="1.8"/>
+        {/* Bas de l'encolure */}
+        <path d="M29 31 C27 33 24 35 22 37 C20 38 18 38 18 38" strokeWidth="1.8"/>
+        {/* Naseau */}
+        <path d="M16 32 C15 33 15 34 16 35 C17 35 18 34 18 33" strokeWidth="1.3"/>
+        {/* Oeil */}
+        <circle cx="24" cy="21" r="1.2" fill="#B8943A" stroke="none"/>
+        {/* Bride / licol */}
+        <path d="M17 29 C20 30 23 30 26 29" strokeWidth="1"/>
+        <path d="M17 33 L28 33" strokeWidth="0.8" opacity="0.6"/>
+        {/* Crinière - quelques traits */}
+        <path d="M24 17 C23 19 22 21 22 23" strokeWidth="1" opacity="0.7"/>
+        <path d="M25 16 C24 18 23 20 23 22" strokeWidth="0.8" opacity="0.5"/>
+      </g>
+    </svg>
+  )
+}
+
+export default LogoE
