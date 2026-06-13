@@ -74,7 +74,10 @@ export default function ContactPage() {
                         <CopyBtn value={c.val} locale={locale}/>
                       </div>
                     ) : c.icon === 'phone' ? (
-                      <a href={`tel:${c.val}`} style={{ color:'rgba(255,255,255,.78)', fontSize:12, textDecoration:'none' }}>{c.val}</a>
+                      <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+                        <a href={`tel:${c.val}`} style={{ color:'rgba(255,255,255,.78)', fontSize:12, textDecoration:'none' }}>{c.val}</a>
+                        <CopyBtn value={c.val} locale={locale}/>
+                      </div>
                     ) : (
                       <div style={{ color:'rgba(255,255,255,.78)', fontSize:12 }}>{c.val}</div>
                     )}
