@@ -9,11 +9,11 @@ export default function Footer() {
   return (
     <footer style={{ background:'#13201A', color:'rgba(255,255,255,.5)', padding:'40px 60px 24px', marginTop:60 }}>
       <div style={{ maxWidth:1400, margin:'0 auto' }}>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:24 }}>
-          <div style={{ fontFamily:'Noto Serif,serif', fontSize:20, color:'#fff' }}>
-            Haras <span style={{ color:'#B8943A' }}>Adham</span>
+        <div style={{ marginBottom:24 }}>
+          <div style={{ fontFamily:'Noto Serif,serif', fontSize:20, color:'#fff', marginBottom:12 }}>
+            Elevage <span style={{ color:'#B8943A' }}>Adham</span>
           </div>
-          <Link href="/contact" style={{ fontSize:10, letterSpacing:'.12em', textTransform:'uppercase', padding:'10px 22px', background:'#B8943A', color:'#fff', textDecoration:'none', fontFamily:'Plus Jakarta Sans,sans-serif' }}>
+          <Link href="/contact" style={{ fontSize:10, letterSpacing:'.12em', textTransform:'uppercase', padding:'10px 22px', background:'#B8943A', color:'#fff', textDecoration:'none', fontFamily:'Plus Jakarta Sans,sans-serif', display:'inline-block' }}>
             {t(locale,'btn.contact')}
           </Link>
         </div>
