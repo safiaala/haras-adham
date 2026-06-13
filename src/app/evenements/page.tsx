@@ -2,6 +2,8 @@ import { supabase } from '@/lib/supabase'
 import { Evenement } from '@/lib/types'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
+
 const typeColor: Record<string,string> = { comp:'tag-blue', stage:'tag-green', vente:'tag-amber', autre:'tag-purple' }
 const typeLabel: Record<string,string> = { comp:'Compétition', stage:'Stage', vente:'Vente', autre:'Autre' }
 

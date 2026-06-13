@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { supabase } from '@/lib/supabase'
 import { Cheval } from '@/lib/types'
 
+export const dynamic = 'force-dynamic'
+
 async function getChevaux(): Promise<Cheval[]> {
   const { data } = await supabase.from('chevaux').select('*').eq('en_vedette', true).limit(4)
   return data || []

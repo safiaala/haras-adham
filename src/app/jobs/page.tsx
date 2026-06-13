@@ -2,6 +2,8 @@ import { supabase } from '@/lib/supabase'
 import { Offre } from '@/lib/types'
 import Link from 'next/link'
 
+export const dynamic = 'force-dynamic'
+
 const typeColor: Record<string,string> = { emploi:'tag-green', stage:'tag-blue', benevole:'tag-purple' }
 
 const metiers = [

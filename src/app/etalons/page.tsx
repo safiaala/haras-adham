@@ -1,6 +1,8 @@
 import { supabase } from '@/lib/supabase'
 import { Etalon } from '@/lib/types'
 
+export const dynamic = 'force-dynamic'
+
 export default async function EtalonsPage() {
   const { data: etalons } = await supabase.from('etalons').select('*').eq('actif', true).order('created_at', { ascending:false })
   const list: Etalon[] = etalons || []

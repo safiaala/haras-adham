@@ -1,6 +1,8 @@
 import { supabase } from '@/lib/supabase'
 import { Actualite } from '@/lib/types'
 
+export const dynamic = 'force-dynamic'
+
 export default async function ActualitesPage() {
   const { data } = await supabase.from('actualites').select('*').eq('publie', true).order('created_at', { ascending:false })
   const news: Actualite[] = data || []
