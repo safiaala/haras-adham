@@ -15,8 +15,8 @@ function CopyBtn({ value, locale }: { value: string; locale: string }) {
     ? (locale==='en' ? 'Copied!' : locale==='es' ? '¡Copiado!' : locale==='ar' ? 'تم النسخ!' : 'Copié !')
     : (locale==='en' ? 'Copy' : locale==='es' ? 'Copiar' : locale==='ar' ? 'نسخ' : 'Copier')
   return (
-    <button onClick={copy} style={{ fontSize:9, padding:'2px 8px', border:`.5px solid ${copied ? '#3B6D11' : 'rgba(184,148,58,.4)'}`, background: copied ? '#EAF3DE' : 'transparent', color: copied ? '#3B6D11' : '#B8943A', cursor:'pointer', fontFamily:'Plus Jakarta Sans,sans-serif', letterSpacing:'.06em', textTransform:'uppercase', borderRadius:1 }}>
-      {label}
+    <button onClick={copy} title={label} style={{ background:'transparent', border:'none', cursor:'pointer', color: copied ? '#3B6D11' : '#B8943A', padding:0, display:'flex', alignItems:'center' }}>
+      <span style={{ fontFamily:'Material Symbols Outlined', fontSize:16 }}>{copied ? 'check' : 'content_copy'}</span>
     </button>
   )
 }
