@@ -4,6 +4,23 @@ import { useLocale } from '@/lib/useLocale'
 import { t } from '@/lib/translations'
 import { supabase } from '@/lib/supabase'
 
+function CopyBtn({ value, locale }: { value: string; locale: string }) {
+  const [copied, setCopied] = useState(false)
+  function copy() {
+    navigator.clipboard.writeText(value)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+  const label = copied
+    ? (locale==='en' ? 'Copied!' : locale==='es' ? '¡Copiado!' : locale==='ar' ? 'تم النسخ!' : 'Copié !')
+    : (locale==='en' ? 'Copy' : locale==='es' ? 'Copiar' : locale==='ar' ? 'نسخ' : 'Copier')
+  return (
+    <button onClick={copy} style={{ fontSize:9, padding:'2px 8px', border:`.5px solid ${copied ? '#3B6D11' : 'rgba(184,148,58,.4)'}`, background: copied ? '#EAF3DE' : 'transparent', color: copied ? '#3B6D11' : '#B8943A', cursor:'pointer', fontFamily:'Plus Jakarta Sans,sans-serif', letterSpacing:'.06em', textTransform:'uppercase', borderRadius:1 }}>
+      {label}
+    </button>
+  )
+}
+
 export default function ContactPage() {
   const locale = useLocale()
   const [form, setForm] = useState({ nom:'', email:'', tel:'', sujet:'', message:'' })
@@ -52,7 +69,10 @@ export default function ContactPage() {
                   <div>
                     <div style={{ fontSize:9, letterSpacing:'.14em', textTransform:'uppercase', color:'rgba(255,255,255,.38)', marginBottom:2 }}>{t(locale,c.key)}</div>
                     {c.icon === 'mail' ? (
-                      <a href={`mailto:${c.val}`} style={{ color:'#B8943A', fontSize:12, textDecoration:'none' }}>{c.val}</a>
+                      <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+                        <a href={`mailto:${c.val}`} style={{ color:'#B8943A', fontSize:12, textDecoration:'none' }}>{c.val}</a>
+                        <CopyBtn value={c.val} locale={locale}/>
+                      </div>
                     ) : c.icon === 'phone' ? (
                       <a href={`tel:${c.val}`} style={{ color:'rgba(255,255,255,.78)', fontSize:12, textDecoration:'none' }}>{c.val}</a>
                     ) : (
