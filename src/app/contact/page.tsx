@@ -69,7 +69,10 @@ export default function ContactPage() {
                   <div>
                     <div style={{ fontSize:9, letterSpacing:'.14em', textTransform:'uppercase', color:'rgba(255,255,255,.38)', marginBottom:2 }}>{t(locale,c.key)}</div>
                     {c.icon === 'location_on' ? (
-                      <a href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.val)}`} target="_blank" rel="noreferrer"
+                      <a href={cfg.lat && cfg.lng
+                          ? `https://www.google.com/maps?q=${cfg.lat},${cfg.lng}`
+                          : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.val)}`}
+                        target="_blank" rel="noreferrer"
                         style={{ color:'rgba(255,255,255,.78)', fontSize:12, textDecoration:'none', display:'flex', alignItems:'center', gap:6 }}>
                         {c.val}
                         <span style={{ fontFamily:'Material Symbols Outlined', fontSize:14, color:'#B8943A' }}>open_in_new</span>

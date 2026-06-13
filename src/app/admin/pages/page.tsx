@@ -52,6 +52,13 @@ const sections = [
       { cle:'navsub', label:'Sous-titre logo (nav)', type:'text' },
     ]
   },
+  {
+    titre: 'Localisation Google Maps',
+    champs: [
+      { cle:'lat', label:'Latitude (ex: 33.8869)', type:'text' },
+      { cle:'lng', label:'Longitude (ex: -5.5473)', type:'text' },
+    ]
+  },
 ]
 
 export default function AdminPagesPage() {
