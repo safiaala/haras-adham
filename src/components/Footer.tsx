@@ -2,9 +2,40 @@
 import Link from 'next/link'
 import { useLocale } from '@/lib/useLocale'
 import { t } from '@/lib/translations'
+import { useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
+
+const ALL_LINKS = [
+  { href:'/',             key:'nav.accueil',    slug:'accueil' },
+  { href:'/chevaux',      key:'nav.chevaux',    slug:'chevaux' },
+  { href:'/etalons',      key:'nav.etalons',    slug:'etalons' },
+  { href:'/prestations',  key:'nav.prestations',slug:'prestations' },
+  { href:'/evenements',   key:'nav.evenements', slug:'evenements' },
+  { href:'/histoire',     key:'nav.histoire',   slug:'histoire' },
+  { href:'/actualites',   key:'nav.actualites', slug:'actualites' },
+  { href:'/jobs',         key:'nav.jobs',       slug:'jobs' },
+]
 
 export default function Footer() {
   const locale = useLocale()
+  const [activePages, setActivePages] = useState<string[]>([])
+
+  useEffect(() => {
+    supabase.from('pages').select('slug,actif').then(({ data }) => {
+      if (data) setActivePages(data.filter(p => p.actif).map(p => p.slug))
+    })
+
+    const channel = supabase.channel('footer-pages')
+      .on('postgres_changes', { event:'*', schema:'public', table:'pages' }, () => {
+        supabase.from('pages').select('slug,actif').then(({ data }) => {
+          if (data) setActivePages(data.filter(p => p.actif).map(p => p.slug))
+        })
+      }).subscribe()
+
+    return () => { supabase.removeChannel(channel) }
+  }, [])
+
+  const visibleLinks = ALL_LINKS.filter(l => activePages.includes(l.slug))
 
   return (
     <footer style={{ background:'#13201A', color:'rgba(255,255,255,.5)', padding:'40px 60px 24px', marginTop:60 }}>
@@ -20,15 +51,15 @@ export default function Footer() {
           </div>
           <div>
             <div style={{ fontSize:9, letterSpacing:'.18em', textTransform:'uppercase', color:'#B8943A', marginBottom:10 }}>{t(locale,'footer.nav')}</div>
-            {[['/',t(locale,'nav.accueil')],['/chevaux',t(locale,'nav.chevaux')],['/etalons',t(locale,'nav.etalons')],['/prestations',t(locale,'nav.prestations')],['/evenements',t(locale,'nav.evenements')]].map(([href,label]) => (
-              <div key={href} style={{ marginBottom:6 }}>
-                <Link href={href} style={{ fontSize:12, color:'rgba(255,255,255,.5)', textDecoration:'none' }}>{label}</Link>
+            {visibleLinks.map(l => (
+              <div key={l.href} style={{ marginBottom:6 }}>
+                <Link href={l.href} style={{ fontSize:12, color:'rgba(255,255,255,.5)', textDecoration:'none' }}>{t(locale, l.key)}</Link>
               </div>
             ))}
           </div>
           <div>
             <div style={{ fontSize:9, letterSpacing:'.18em', textTransform:'uppercase', color:'#B8943A', marginBottom:10 }}>{t(locale,'footer.contact')}</div>
-            <p style={{ fontSize:12, lineHeight:2 }}>Maroc<br/>contact@harasadham.ma</p>
+            <p style={{ fontSize:12, lineHeight:2 }}>{t(locale,'contact.country')}<br/>contact@harasadham.ma</p>
             <Link href="/contact" style={{ display:'inline-block', marginTop:12, fontSize:10, letterSpacing:'.1em', textTransform:'uppercase', padding:'8px 16px', background:'#B8943A', color:'#fff', textDecoration:'none' }}>
               {t(locale,'btn.contact')}
             </Link>
