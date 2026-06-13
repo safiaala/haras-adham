@@ -1,0 +1,74 @@
+export interface Cheval {
+  id: string
+  nom: string
+  age?: number
+  race?: string
+  sexe?: string
+  discipline?: string
+  pedigree?: string
+  statut?: string
+  description?: string
+  prix?: string
+  photos?: string[]
+  en_vedette?: boolean
+  created_at?: string
+}
+
+export interface Etalon {
+  id: string
+  nom: string
+  age?: number
+  race?: string
+  robe?: string
+  pedigree?: string
+  palmares?: string
+  description?: string
+  tarif_saillie?: string
+  methodes?: string[]
+  photo?: string
+  actif?: boolean
+  created_at?: string
+}
+
+export interface Evenement {
+  id: string
+  titre: string
+  date_debut: string
+  date_fin?: string
+  lieu?: string
+  type?: string
+  description?: string
+  photo?: string
+  lien_inscription?: string
+  created_at?: string
+}
+
+export interface Actualite {
+  id: string
+  titre: string
+  contenu?: string
+  extrait?: string
+  photo?: string
+  publie?: boolean
+  created_at?: string
+}
+
+export interface Offre {
+  id: string
+  titre: string
+  type?: string
+  description?: string
+  profil?: string
+  contact?: string
+  active?: boolean
+  created_at?: string
+}
+
+export interface GaleriePhoto {
+  id: string
+  url: string
+  legende?: string
+  categorie?: string
+  ordre?: number
+  created_at?: string
+}
