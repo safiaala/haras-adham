@@ -3,12 +3,13 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { Etalon } from '@/lib/types'
 import { uploadImage } from '@/lib/cloudinary'
+import { TRAITS } from '@/components/EtalonCaracterisation'
 
 const empty = (): Partial<Etalon> => ({
   nom:'', annee_naissance:undefined, race:'Barbe Marocain', robe:'',
   taille_cm:undefined, eleveur:'', studbook:'', tarif_saillie:'',
   description:'', palmares:'', video_url:'', pedigree:'',
-  photos:[], actif:true, methodes:[]
+  photos:[], actif:true, methodes:[], caracterisation:{}
 })
 
 export default function AdminEtalonsPage() {
@@ -185,6 +186,38 @@ export default function AdminEtalonsPage() {
                     </label>
                   </div>
                 </div>
+                {/* CARACTÉRISATION PAX */}
+                <div style={{ borderTop:'.5px solid rgba(195,200,195,.4)', paddingTop:16, marginTop:4 }}>
+                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', marginBottom:14 }}>
+                    Caractérisation PAX (1 → 4)
+                  </label>
+                  <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+                    {TRAITS.map(trait => {
+                      const val = (form.caracterisation || {})[trait.key]
+                      return (
+                        <div key={trait.key}>
+                          <div style={{ fontSize:9, color:'#B8943A', letterSpacing:'.06em', textTransform:'uppercase', marginBottom:4 }}>{trait.cat}</div>
+                          <div style={{ display:'grid', gridTemplateColumns:'100px 1fr 100px', gap:8, alignItems:'center' }}>
+                            <span style={{ fontSize:11, color:'#888', fontStyle:'italic', textAlign:'right' }}>{trait.g}</span>
+                            <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+                              <input type="range" min="1" max="4" step="0.5"
+                                value={val ?? 2.5}
+                                onChange={e => setForm(f => ({ ...f, caracterisation: { ...(f.caracterisation||{}), [trait.key]: parseFloat(e.target.value) } }))}
+                                style={{ flex:1, accentColor:'#C85A2A' }}/>
+                              <span style={{ fontSize:11, fontWeight:600, color:'#C85A2A', minWidth:24, textAlign:'center' }}>{val ?? '—'}</span>
+                              {val != null && (
+                                <button onClick={() => setForm(f => { const c = { ...(f.caracterisation||{}) }; delete c[trait.key]; return { ...f, caracterisation:c } })}
+                                  style={{ fontSize:10, color:'#aaa', background:'none', border:'none', cursor:'pointer', padding:0 }}>✕</button>
+                              )}
+                            </div>
+                            <span style={{ fontSize:11, color:'#888', fontStyle:'italic' }}>{trait.d}</span>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+
                 {msg && <p style={{ fontSize:12, color:'#A32D2D' }}>{msg}</p>}
                 <div style={{ display:'flex', gap:10, justifyContent:'flex-end', marginTop:8 }}>
                   <button onClick={() => setOpen(false)} className="btn-outline">Annuler</button>

@@ -8,6 +8,7 @@ import { t } from '@/lib/translations'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
+import EtalonCaracterisation from '@/components/EtalonCaracterisation'
 
 export default function EtalonDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params)
@@ -191,6 +192,11 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
                   {etalon.production}
                 </p>
               </div>
+            )}
+
+            {/* Caractérisation PAX */}
+            {etalon.caracterisation && Object.keys(etalon.caracterisation).length > 0 && (
+              <EtalonCaracterisation data={etalon.caracterisation}/>
             )}
           </div>
         </div>

@@ -36,6 +36,7 @@ export interface Etalon {
   photo?: string
   photos?: string[]
   video_url?: string
+  caracterisation?: Record<string, number>
   actif?: boolean
   created_at?: string
 }
