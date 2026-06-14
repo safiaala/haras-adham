@@ -30,38 +30,67 @@ export default function EtalonsList() {
       {etalons.length === 0 ? (
         <div style={{ textAlign:'center', padding:60, color:'#888', fontSize:13, fontStyle:'italic' }}>{t(locale,'etalons.empty')}</div>
       ) : (
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))', gap:22 }}>
+        <div style={{ display:'flex', flexDirection:'column', gap:1 }}>
           {etalons.map(e => (
             <Link key={e.id} href={`/etalons/${e.id}`}
-              style={{ border:'.5px solid rgba(195,200,195,.3)', overflow:'hidden', background:'#fff', cursor:'pointer', display:'block', textDecoration:'none', color:'inherit' }}>
-              {(e.photos?.[0] || e.photo)
-                ? <img src={e.photos?.[0] || e.photo} alt={e.nom} style={{ width:'100%', height:260, objectFit:'cover', objectPosition:'top' }}/>
-                : <div style={{ width:'100%', height:260, background:'#f0ece4', display:'flex', alignItems:'center', justifyContent:'center', fontSize:50 }}>🐴</div>
-              }
-              <div style={{ padding:'18px 20px' }}>
-                <div style={{ fontFamily:'Noto Serif,serif', fontSize:20, color:'#13201A', marginBottom:4 }}>{e.nom}</div>
-                {e.robe && <div style={{ fontSize:10, color:'#B8943A', letterSpacing:'.1em', textTransform:'uppercase', marginBottom:8 }}>{e.robe}</div>}
-                {e.annee_naissance && <div style={{ fontSize:11, color:'#888', marginBottom:6 }}>{e.annee_naissance} · {e.race}</div>}
-                {e.description && <p style={{ fontSize:12, color:'#6b6b6b', lineHeight:1.7, marginBottom:10 }}>{e.description}</p>}
-                {e.palmares && (
-                  <div style={{ background:'#f0ece4', padding:'8px 10px', marginBottom:10, borderLeft:'2px solid #B8943A' }}>
-                    <div style={{ fontSize:9, textTransform:'uppercase', letterSpacing:'.1em', color:'#B8943A', marginBottom:3 }}>Palmarès</div>
-                    <div style={{ fontSize:11, color:'#6b6b6b' }}>{e.palmares}</div>
+              style={{ display:'grid', gridTemplateColumns:'320px 1fr', border:'.5px solid rgba(195,200,195,.3)', background:'#fff', cursor:'pointer', textDecoration:'none', color:'inherit', overflow:'hidden' }}>
+              {/* Image */}
+              <div style={{ position:'relative', height:260, flexShrink:0 }}>
+                {(e.photos?.[0] || e.photo)
+                  ? <img src={e.photos?.[0] || e.photo} alt={e.nom} style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'top' }}/>
+                  : <div style={{ width:'100%', height:'100%', background:'#f0ece4', display:'flex', alignItems:'center', justifyContent:'center', fontSize:50 }}>🐴</div>
+                }
+                {e.statut && (
+                  <div style={{ position:'absolute', top:12, left:12 }}>
+                    <span className={`tag ${{ disponible:'tag-green', vendu:'tag-red', pension:'tag-blue', reproduction:'tag-purple' }[e.statut] || 'tag-green'}`}>
+                      {t(locale, `statut.${e.statut}`) || e.statut}
+                    </span>
                   </div>
                 )}
-                {e.tarif_saillie && (
-                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:10, paddingTop:10, borderTop:'.5px solid rgba(195,200,195,.3)' }}>
-                    <span style={{ fontSize:10, color:'#888', textTransform:'uppercase', letterSpacing:'.08em' }}>{t(locale,'etalons.saillie')}</span>
-                    <span style={{ fontSize:13, color:'#B8943A', fontWeight:600 }}>{e.tarif_saillie}</span>
+              </div>
+
+              {/* Infos */}
+              <div style={{ padding:'24px 28px', display:'flex', flexDirection:'column', justifyContent:'space-between', borderLeft:'.5px solid rgba(195,200,195,.2)' }}>
+                <div>
+                  <div style={{ fontFamily:'Noto Serif,serif', fontSize:22, color:'#13201A', marginBottom:4 }}>{e.nom}</div>
+                  {e.robe && <div style={{ fontSize:10, color:'#B8943A', letterSpacing:'.1em', textTransform:'uppercase', marginBottom:10 }}>{e.robe}</div>}
+
+                  <div style={{ display:'flex', flexDirection:'column', gap:0, marginBottom:14 }}>
+                    {[
+                      [t(locale,'etalons.race'),      e.race],
+                      [t(locale,'etalons.naissance'), e.annee_naissance ? String(e.annee_naissance) : null],
+                      [t(locale,'etalons.taille'),    e.taille_cm ? `${e.taille_cm} cm` : null],
+                      [t(locale,'etalons.pere'),      e.nom_pere],
+                      [t(locale,'etalons.mere'),      e.nom_mere],
+                      [t(locale,'etalons.eleveur'),   e.eleveur],
+                      [t(locale,'etalons.methodes'),  e.methodes?.length ? e.methodes.join(', ') : null],
+                    ].filter(([,v]) => v).map(([k, v]) => (
+                      <div key={k as string} style={{ display:'flex', gap:12, borderBottom:'.5px solid rgba(195,200,195,.15)', padding:'6px 0', fontSize:11 }}>
+                        <span style={{ color:'#aaa', minWidth:120, flexShrink:0 }}>{k as string}</span>
+                        <span style={{ fontWeight:500, color:'#13201A' }}>{v as string}</span>
+                      </div>
+                    ))}
                   </div>
-                )}
-                {e.methodes && e.methodes.length > 0 && (
-                  <div style={{ display:'flex', gap:4, flexWrap:'wrap', marginTop:8 }}>
-                    {e.methodes.map(m => <span key={m} className="tag tag-blue">{m}</span>)}
-                  </div>
-                )}
-                <div style={{ marginTop:9, fontSize:10, color:'#B8943A', letterSpacing:'.06em', textTransform:'uppercase' }}>
-                  🔍 {t(locale,'etalons.voir_fiche')}
+
+                  {e.description && (
+                    <p style={{ fontSize:12, color:'#6b6b6b', lineHeight:1.7, marginBottom:10,
+                      display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden' }}>
+                      {e.description}
+                    </p>
+                  )}
+                </div>
+
+                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:12, paddingTop:12, borderTop:'.5px solid rgba(195,200,195,.25)' }}>
+                  {e.tarif_saillie
+                    ? <div>
+                        <div style={{ fontSize:9, color:'#888', textTransform:'uppercase', letterSpacing:'.08em', marginBottom:2 }}>{t(locale,'etalons.saillie')}</div>
+                        <div style={{ fontSize:14, color:'#B8943A', fontWeight:600 }}>{e.tarif_saillie}</div>
+                      </div>
+                    : <div/>
+                  }
+                  <span style={{ fontSize:10, color:'#B8943A', letterSpacing:'.06em', textTransform:'uppercase' }}>
+                    🔍 {t(locale,'etalons.voir_fiche')}
+                  </span>
                 </div>
               </div>
             </Link>
