@@ -1,4 +1,6 @@
 import React from 'react'
+import { t } from '@/lib/translations'
+import { Locale } from '@/lib/locale'
 
 export const TRAITS = [
   { key:'geometrie_forme',      cat:'Géométrie - Forme',      g:'Carré',       d:'Rectangle' },
@@ -26,7 +28,7 @@ function pct(v: number) {
   return ((v - 1) / 3) * 100
 }
 
-export default function EtalonCaracterisation({ data }: { data: Record<string, number> }) {
+export default function EtalonCaracterisation({ data, locale }: { data: Record<string, number>, locale: Locale }) {
   const hasSomeValue = TRAITS.some(t => data[t.key] != null)
   if (!hasSomeValue) return null
 
@@ -34,7 +36,7 @@ export default function EtalonCaracterisation({ data }: { data: Record<string, n
     <div>
       <div style={{ width:40, height:2, background:'#B8943A', marginBottom:14 }}/>
       <div style={{ fontSize:9, letterSpacing:'.22em', textTransform:'uppercase', color:'#B8943A', marginBottom:28 }}>
-        Caractérisation PAX de l&apos;étalon
+        {t(locale,'etalons.pax')}
       </div>
 
       {/* Échelle */}

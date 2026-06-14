@@ -21,15 +21,15 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
   }, [id])
 
   if (loading) {
-    return <div style={{ minHeight:'60vh', display:'flex', alignItems:'center', justifyContent:'center', color:'#888', fontSize:13, fontStyle:'italic' }}>Chargement…</div>
+    return <div style={{ minHeight:'60vh', display:'flex', alignItems:'center', justifyContent:'center', color:'#888', fontSize:13, fontStyle:'italic' }}>{t(locale,'etalons.loading')}</div>
   }
 
   if (!etalon) {
     return (
       <div style={{ minHeight:'60vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:16 }}>
         <div style={{ fontSize:48 }}>🐴</div>
-        <p style={{ color:'#888', fontSize:14 }}>Étalon introuvable.</p>
-        <Link href="/etalons" className="btn-dark">← Retour aux étalons</Link>
+        <p style={{ color:'#888', fontSize:14 }}>{t(locale,'etalons.not_found')}</p>
+        <Link href="/etalons" className="btn-dark">{t(locale,'etalons.retour')}</Link>
       </div>
     )
   }
@@ -87,8 +87,8 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
                 [t(locale,'etalons.naissance'), etalon.annee_naissance ? String(etalon.annee_naissance) : null],
                 [t(locale,'etalons.eleveur'),   etalon.eleveur],
                 [t(locale,'statut.label'),       etalon.statut ? (t(locale, `statut.${etalon.statut}`) || etalon.statut) : null],
-                ['Père',                        etalon.nom_pere],
-                ['Mère',                        etalon.nom_mere],
+                [t(locale,'etalons.pere'),      etalon.nom_pere],
+                [t(locale,'etalons.mere'),      etalon.nom_mere],
                 [t(locale,'etalons.methodes'),  etalon.methodes?.length ? etalon.methodes.join(', ') : null],
               ].filter(([,v]) => v).map(([k, v]) => (
                 <div key={k as string} style={{ display:'flex', gap:12, borderBottom:'.5px solid rgba(195,200,195,.2)', padding:'9px 0', fontSize:11 }}>
@@ -147,7 +147,7 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
             {etalon.origine && (
               <div>
                 <div style={{ width:40, height:2, background:'#B8943A', marginBottom:14 }}/>
-                <div style={{ fontSize:9, letterSpacing:'.22em', textTransform:'uppercase', color:'#B8943A', marginBottom:14 }}>Origine</div>
+                <div style={{ fontSize:9, letterSpacing:'.22em', textTransform:'uppercase', color:'#B8943A', marginBottom:14 }}>{t(locale,'etalons.origine')}</div>
                 <p style={{ fontSize:13, color:'#6b6b6b', lineHeight:1.85, whiteSpace:'pre-wrap', borderLeft:'2px solid rgba(184,148,58,.3)', paddingLeft:16 }}>
                   {etalon.origine}
                 </p>
@@ -173,7 +173,7 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
             {etalon.performance && (
               <div>
                 <div style={{ width:40, height:2, background:'#B8943A', marginBottom:14 }}/>
-                <div style={{ fontSize:9, letterSpacing:'.22em', textTransform:'uppercase', color:'#B8943A', marginBottom:14 }}>Performance</div>
+                <div style={{ fontSize:9, letterSpacing:'.22em', textTransform:'uppercase', color:'#B8943A', marginBottom:14 }}>{t(locale,'etalons.performance')}</div>
                 <div style={{ background:'#f0ece4', padding:'20px 22px' }}>
                   <p style={{ fontSize:13, color:'#5a5a5a', lineHeight:1.85, whiteSpace:'pre-wrap', margin:0 }}>{etalon.performance}</p>
                 </div>
@@ -195,7 +195,7 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
 
             {/* Caractérisation PAX */}
             {etalon.show_caracterisation !== false && etalon.caracterisation && Object.keys(etalon.caracterisation).length > 0 && (
-              <EtalonCaracterisation data={etalon.caracterisation}/>
+              <EtalonCaracterisation data={etalon.caracterisation} locale={locale}/>
             )}
           </div>
         </div>
