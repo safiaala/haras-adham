@@ -55,6 +55,7 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
           <div style={{ display:'flex', flexWrap:'wrap', gap:8, marginBottom:12 }}>
             {etalon.race && <span className="tag tag-amber">{etalon.race}</span>}
             {etalon.robe && <span className="tag tag-blue">{etalon.robe}</span>}
+            {etalon.statut && <span className={`tag ${{ disponible:'tag-green', vendu:'tag-red', pension:'tag-blue', reproduction:'tag-purple' }[etalon.statut] || 'tag-green'}`}>{t(locale, `statut.${etalon.statut}`) || etalon.statut}</span>}
             {etalon.methodes?.map(m => <span key={m} className="tag" style={{ background:'rgba(255,255,255,.12)', color:'#fff' }}>{m}</span>)}
           </div>
           <h1 style={{ fontFamily:'Noto Serif,serif', fontSize:'clamp(2rem,5vw,3.6rem)', color:'#fff', fontStyle:'italic', lineHeight:1.05, marginBottom:8 }}>
@@ -85,7 +86,7 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
                 [t(locale,'etalons.taille'),    etalon.taille_cm ? `${etalon.taille_cm} cm` : null],
                 [t(locale,'etalons.naissance'), etalon.annee_naissance ? String(etalon.annee_naissance) : null],
                 [t(locale,'etalons.eleveur'),   etalon.eleveur],
-                [t(locale,'etalons.studbook'),  etalon.studbook],
+                ['Statut',                      etalon.statut ? (t(locale, `statut.${etalon.statut}`) || etalon.statut) : null],
                 ['Père',                        etalon.nom_pere],
                 ['Mère',                        etalon.nom_mere],
                 [t(locale,'etalons.methodes'),  etalon.methodes?.length ? etalon.methodes.join(', ') : null],
@@ -193,7 +194,7 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
             )}
 
             {/* Caractérisation PAX */}
-            {etalon.caracterisation && Object.keys(etalon.caracterisation).length > 0 && (
+            {etalon.show_caracterisation !== false && etalon.caracterisation && Object.keys(etalon.caracterisation).length > 0 && (
               <EtalonCaracterisation data={etalon.caracterisation}/>
             )}
           </div>

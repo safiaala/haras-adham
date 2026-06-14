@@ -7,10 +7,10 @@ import { TRAITS } from '@/components/EtalonCaracterisation'
 
 const empty = (): Partial<Etalon> => ({
   nom:'', annee_naissance:undefined, race:'Barbe Marocain', robe:'',
-  taille_cm:undefined, eleveur:'', studbook:'', tarif_saillie:'',
+  taille_cm:undefined, statut:'disponible', eleveur:'', tarif_saillie:'',
   nom_pere:'', nom_mere:'', origine:'', description:'', palmares:'',
   performance:'', production:'', video_url:'', pedigree:'',
-  photos:[], actif:true, methodes:[], caracterisation:{}
+  photos:[], actif:true, methodes:[], caracterisation:{}, show_caracterisation:true
 })
 
 export default function AdminEtalonsPage() {
@@ -145,7 +145,13 @@ export default function AdminEtalonsPage() {
                 </div>
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
                   {inp('Éleveur','eleveur')}
-                  {inp('Studbook','studbook')}
+                  <div>
+                    <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>Statut</label>
+                    <select value={form.statut ?? 'disponible'} onChange={e => setForm(f => ({ ...f, statut:e.target.value }))}
+                      style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', background:'#fff' }}>
+                      {['disponible','vendu','pension','reproduction'].map(o => <option key={o} value={o}>{o}</option>)}
+                    </select>
+                  </div>
                 </div>
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
                   {inp('Père','nom_pere')}
@@ -208,9 +214,15 @@ export default function AdminEtalonsPage() {
                 </div>
                 {/* CARACTÉRISATION PAX */}
                 <div style={{ borderTop:'.5px solid rgba(195,200,195,.4)', paddingTop:16, marginTop:4 }}>
-                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', marginBottom:14 }}>
-                    Caractérisation PAX (1 → 4)
-                  </label>
+                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:14 }}>
+                    <label style={{ fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A' }}>
+                      Caractérisation PAX (1 → 4)
+                    </label>
+                    <label style={{ display:'flex', alignItems:'center', gap:6, fontSize:11, cursor:'pointer', color:'#6b6b6b' }}>
+                      <input type="checkbox" checked={form.show_caracterisation ?? true} onChange={e => setForm(f => ({ ...f, show_caracterisation:e.target.checked }))}/>
+                      Afficher sur le site
+                    </label>
+                  </div>
                   <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
                     {TRAITS.map(trait => {
                       const val = (form.caracterisation || {})[trait.key]

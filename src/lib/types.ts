@@ -27,6 +27,7 @@ export interface Etalon {
   taille_cm?: number
   eleveur?: string
   studbook?: string
+  statut?: string
   nom_pere?: string
   nom_mere?: string
   origine?: string
@@ -34,6 +35,7 @@ export interface Etalon {
   palmares?: string
   performance?: string
   production?: string
+  show_caracterisation?: boolean
   description?: string
   tarif_saillie?: string
   methodes?: string[]
