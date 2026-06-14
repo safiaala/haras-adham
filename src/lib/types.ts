@@ -6,6 +6,7 @@ export interface Cheval {
   sexe?: string
   discipline?: string
   pedigree?: string
+  taille_cm?: number
   nom_pere?: string
   nom_mere?: string
   statut?: string
