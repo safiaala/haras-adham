@@ -4,7 +4,12 @@ import { supabase } from '@/lib/supabase'
 import { Etalon } from '@/lib/types'
 import { uploadImage } from '@/lib/cloudinary'
 
-const empty = (): Partial<Etalon> => ({ nom:'', annee_naissance:undefined, race:'Barbe Marocain', robe:'', pedigree:'', palmares:'', description:'', tarif_saillie:'', methodes:[], photo:'', actif:true })
+const empty = (): Partial<Etalon> => ({
+  nom:'', annee_naissance:undefined, race:'Barbe Marocain', robe:'',
+  taille_cm:undefined, eleveur:'', studbook:'', tarif_saillie:'',
+  description:'', palmares:'', video_url:'', pedigree:'',
+  photos:[], actif:true, methodes:[]
+})
 
 export default function AdminEtalonsPage() {
   const [list, setList] = useState<Etalon[]>([])
@@ -13,6 +18,7 @@ export default function AdminEtalonsPage() {
   const [open, setOpen] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [msg, setMsg] = useState('')
 
   async function load() {
     const { data } = await supabase.from('etalons').select('*').order('created_at', { ascending:false })
@@ -20,25 +26,34 @@ export default function AdminEtalonsPage() {
   }
   useEffect(() => { load() }, [])
 
-  function openNew() { setForm(empty()); setEditing(null); setOpen(true) }
-  function openEdit(e: Etalon) { setForm(e); setEditing(e.id); setOpen(true) }
+  function openNew() { setForm(empty()); setEditing(null); setOpen(true); setMsg('') }
+  function openEdit(e: Etalon) { setForm(e); setEditing(e.id); setOpen(true); setMsg('') }
 
   async function handlePhoto(e: React.ChangeEvent<HTMLInputElement>) {
     if (!e.target.files?.[0]) return
     setUploading(true)
     try {
       const url = await uploadImage(e.target.files[0])
-      setForm(f => ({ ...f, photo: url }))
+      setForm(f => ({ ...f, photos: [...(f.photos||[]), url] }))
     } finally { setUploading(false) }
   }
 
+  function removePhoto(url: string) {
+    setForm(f => ({ ...f, photos: (f.photos||[]).filter(p => p !== url) }))
+  }
+
   async function handleSave() {
-    if (!form.nom) return
+    if (!form.nom) { setMsg('Le nom est requis'); return }
     setSaving(true)
     try {
-      if (editing) { await supabase.from('etalons').update(form).eq('id', editing) }
-      else { await supabase.from('etalons').insert(form) }
-      setOpen(false); await load()
+      if (editing) {
+        const { error } = await supabase.from('etalons').update(form).eq('id', editing)
+        if (error) { setMsg(`Erreur : ${error.message}`); return }
+      } else {
+        const { error } = await supabase.from('etalons').insert(form)
+        if (error) { setMsg(`Erreur : ${error.message}`); return }
+      }
+      setOpen(false); setMsg(''); await load()
     } finally { setSaving(false) }
   }
 
@@ -61,12 +76,13 @@ export default function AdminEtalonsPage() {
       <div style={{ maxWidth:1000, margin:'0 auto' }}>
         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:28 }}>
           <div>
-            <a href="/admin" style={{ fontSize:10, color:'#888', textDecoration:'none' }}>← Admin</a>
+            <a href="/admin" style={{ fontSize:10, color:'#888', textDecoration:'none', letterSpacing:'.08em' }}>← Admin</a>
             <h1 style={{ fontFamily:'Noto Serif,serif', fontSize:22, color:'#13201A', marginTop:4 }}>Étalons</h1>
           </div>
           <button onClick={openNew} className="btn-gold">+ Ajouter un étalon</button>
         </div>
 
+        {/* LISTE */}
         <div style={{ background:'#fff', border:'.5px solid rgba(195,200,195,.3)', overflow:'hidden' }}>
           {list.length === 0 ? (
             <div style={{ textAlign:'center', padding:40, color:'#888', fontSize:13, fontStyle:'italic' }}>Aucun étalon. Ajoutez-en un !</div>
@@ -74,7 +90,7 @@ export default function AdminEtalonsPage() {
             <table style={{ width:'100%', borderCollapse:'collapse', fontSize:12, fontFamily:'Plus Jakarta Sans,sans-serif' }}>
               <thead>
                 <tr style={{ background:'#f5f3ef' }}>
-                  {['Photo','Nom','Âge','Robe','Actif','Actions'].map(h => (
+                  {['Photo','Nom','Naissance','Robe','Actif','Actions'].map(h => (
                     <th key={h} style={{ padding:'10px 12px', textAlign:'left', fontSize:9, fontWeight:600, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', borderBottom:'.5px solid rgba(195,200,195,.4)' }}>{h}</th>
                   ))}
                 </tr>
@@ -83,7 +99,9 @@ export default function AdminEtalonsPage() {
                 {list.map(e => (
                   <tr key={e.id} style={{ borderBottom:'.5px solid rgba(195,200,195,.2)' }}>
                     <td style={{ padding:'10px 12px' }}>
-                      {e.photo ? <img src={e.photo} style={{ width:48, height:48, objectFit:'cover' }} alt=""/> : <div style={{ width:48, height:48, background:'#f0ece4', display:'flex', alignItems:'center', justifyContent:'center' }}>🐴</div>}
+                      {(e.photos?.[0] || e.photo)
+                        ? <img src={e.photos?.[0] || e.photo} style={{ width:48, height:48, objectFit:'cover' }} alt=""/>
+                        : <div style={{ width:48, height:48, background:'#f0ece4', display:'flex', alignItems:'center', justifyContent:'center' }}>🐴</div>}
                     </td>
                     <td style={{ padding:'10px 12px', fontWeight:500 }}>{e.nom}</td>
                     <td style={{ padding:'10px 12px', color:'#888' }}>{e.annee_naissance || '—'}</td>
@@ -102,6 +120,7 @@ export default function AdminEtalonsPage() {
           )}
         </div>
 
+        {/* MODAL */}
         {open && (
           <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,.5)', zIndex:100, display:'flex', alignItems:'center', justifyContent:'center', padding:16 }}>
             <div style={{ background:'#fbf9f5', padding:28, width:'100%', maxWidth:600, maxHeight:'90vh', overflowY:'auto' }}>
@@ -118,13 +137,31 @@ export default function AdminEtalonsPage() {
                   {inp('Race','race')}
                   {inp('Robe','robe')}
                 </div>
-                {inp('Pedigree','pedigree')}
-                {inp('Palmarès','palmares')}
-                {inp('Tarif saillie','tarif_saillie')}
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+                  {inp('Taille (cm)','taille_cm','number')}
+                  {inp('Tarif saillie','tarif_saillie')}
+                </div>
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+                  {inp('Éleveur','eleveur')}
+                  {inp('Studbook','studbook')}
+                </div>
                 <div>
                   <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>Description</label>
                   <textarea value={form.description ?? ''} onChange={e => setForm(f => ({ ...f, description:e.target.value }))} rows={3}
                     style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', resize:'vertical' }}/>
+                </div>
+                <div>
+                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>Palmarès</label>
+                  <textarea value={form.palmares ?? ''} onChange={e => setForm(f => ({ ...f, palmares:e.target.value }))} rows={3}
+                    style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', resize:'vertical' }}/>
+                </div>
+                {inp('Lien vidéo (YouTube, Vimeo…)','video_url')}
+                <div>
+                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#888', marginBottom:4 }}>
+                    🔒 Information non publiée (notes internes)
+                  </label>
+                  <textarea value={form.pedigree ?? ''} onChange={e => setForm(f => ({ ...f, pedigree:e.target.value }))} rows={2}
+                    style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.4)', background:'#f5f3ef', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', resize:'vertical' }}/>
                 </div>
                 <div>
                   <label style={{ display:'flex', alignItems:'center', gap:8, fontSize:12, cursor:'pointer' }}>
@@ -132,14 +169,23 @@ export default function AdminEtalonsPage() {
                     Étalon actif (visible sur le site)
                   </label>
                 </div>
+                {/* PHOTOS */}
                 <div>
-                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:8 }}>Photo principale</label>
-                  {form.photo && <img src={form.photo} style={{ width:120, height:120, objectFit:'cover', marginBottom:8 }} alt=""/>}
-                  <label style={{ display:'inline-flex', alignItems:'center', gap:8, fontSize:11, color:'#B8943A', cursor:'pointer', border:'.5px solid rgba(184,148,58,.4)', padding:'6px 12px' }}>
-                    {uploading ? 'Chargement...' : '+ Ajouter une photo'}
-                    <input type="file" accept="image/*" onChange={handlePhoto} style={{ display:'none' }}/>
-                  </label>
+                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:8 }}>Photos</label>
+                  <div style={{ display:'flex', flexWrap:'wrap', gap:8, marginBottom:8 }}>
+                    {(form.photos||[]).map(p => (
+                      <div key={p} style={{ position:'relative', width:80, height:80 }}>
+                        <img src={p} style={{ width:80, height:80, objectFit:'cover' }} alt=""/>
+                        <button onClick={() => removePhoto(p)} style={{ position:'absolute', top:2, right:2, background:'rgba(0,0,0,.6)', border:'none', color:'#fff', width:18, height:18, borderRadius:'50%', cursor:'pointer', fontSize:11, lineHeight:'18px', textAlign:'center' }}>✕</button>
+                      </div>
+                    ))}
+                    <label style={{ width:80, height:80, border:'1.5px dashed rgba(184,148,58,.4)', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', fontSize:22, color:'#B8943A' }}>
+                      {uploading ? '...' : '+'}
+                      <input type="file" accept="image/*" onChange={handlePhoto} style={{ display:'none' }}/>
+                    </label>
+                  </div>
                 </div>
+                {msg && <p style={{ fontSize:12, color:'#A32D2D' }}>{msg}</p>}
                 <div style={{ display:'flex', gap:10, justifyContent:'flex-end', marginTop:8 }}>
                   <button onClick={() => setOpen(false)} className="btn-outline">Annuler</button>
                   <button onClick={handleSave} disabled={saving} className="btn-gold">{saving ? 'Sauvegarde...' : 'Sauvegarder'}</button>

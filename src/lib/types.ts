@@ -6,6 +6,7 @@ export interface Cheval {
   sexe?: string
   discipline?: string
   pedigree?: string
+  video_url?: string
   taille_cm?: number
   nom_pere?: string
   nom_mere?: string
@@ -23,12 +24,18 @@ export interface Etalon {
   annee_naissance?: number
   race?: string
   robe?: string
+  taille_cm?: number
+  eleveur?: string
+  studbook?: string
   pedigree?: string
   palmares?: string
+  production?: string
   description?: string
   tarif_saillie?: string
   methodes?: string[]
   photo?: string
+  photos?: string[]
+  video_url?: string
   actif?: boolean
   created_at?: string
 }

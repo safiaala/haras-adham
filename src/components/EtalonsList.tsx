@@ -32,9 +32,10 @@ export default function EtalonsList() {
       ) : (
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))', gap:22 }}>
           {etalons.map(e => (
-            <div key={e.id} style={{ border:'.5px solid rgba(195,200,195,.3)', overflow:'hidden', background:'#fff' }}>
-              {e.photo
-                ? <img src={e.photo} alt={e.nom} style={{ width:'100%', height:260, objectFit:'cover' }}/>
+            <Link key={e.id} href={`/etalons/${e.id}`}
+              style={{ border:'.5px solid rgba(195,200,195,.3)', overflow:'hidden', background:'#fff', cursor:'pointer', display:'block', textDecoration:'none', color:'inherit' }}>
+              {(e.photos?.[0] || e.photo)
+                ? <img src={e.photos?.[0] || e.photo} alt={e.nom} style={{ width:'100%', height:260, objectFit:'cover', objectPosition:'top' }}/>
                 : <div style={{ width:'100%', height:260, background:'#f0ece4', display:'flex', alignItems:'center', justifyContent:'center', fontSize:50 }}>🐴</div>
               }
               <div style={{ padding:'18px 20px' }}>
@@ -59,8 +60,11 @@ export default function EtalonsList() {
                     {e.methodes.map(m => <span key={m} className="tag tag-blue">{m}</span>)}
                   </div>
                 )}
+                <div style={{ marginTop:9, fontSize:10, color:'#B8943A', letterSpacing:'.06em', textTransform:'uppercase' }}>
+                  🔍 {t(locale,'etalons.voir_fiche')}
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}
@@ -83,6 +87,7 @@ export default function EtalonsList() {
           <Link href="/contact" className="btn-dark">{cfg.etalons_conseil_cta || t(locale,'etalons.rdv')}</Link>
         </div>
       </div>
+
     </section>
   )
 }
