@@ -226,11 +226,12 @@ export default function AdminEtalonsPage() {
                   <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
                     {TRAITS.map(trait => {
                       const val = (form.caracterisation || {})[trait.key]
+                      const labels = trait.fr
                       return (
                         <div key={trait.key}>
-                          <div style={{ fontSize:9, color:'#B8943A', letterSpacing:'.06em', textTransform:'uppercase', marginBottom:4 }}>{trait.cat}</div>
+                          <div style={{ fontSize:9, color:'#B8943A', letterSpacing:'.06em', textTransform:'uppercase', marginBottom:4 }}>{labels.cat}</div>
                           <div style={{ display:'grid', gridTemplateColumns:'100px 1fr 100px', gap:8, alignItems:'center' }}>
-                            <span style={{ fontSize:11, color:'#888', fontStyle:'italic', textAlign:'right' }}>{trait.g}</span>
+                            <span style={{ fontSize:11, color:'#888', fontStyle:'italic', textAlign:'right' }}>{labels.g}</span>
                             <div style={{ display:'flex', alignItems:'center', gap:8 }}>
                               <input type="range" min="1" max="4" step="0.5"
                                 value={val ?? 2.5}
@@ -242,7 +243,7 @@ export default function AdminEtalonsPage() {
                                   style={{ fontSize:10, color:'#aaa', background:'none', border:'none', cursor:'pointer', padding:0 }}>✕</button>
                               )}
                             </div>
-                            <span style={{ fontSize:11, color:'#888', fontStyle:'italic' }}>{trait.d}</span>
+                            <span style={{ fontSize:11, color:'#888', fontStyle:'italic' }}>{labels.d}</span>
                           </div>
                         </div>
                       )
