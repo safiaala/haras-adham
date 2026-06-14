@@ -183,6 +183,7 @@ export default function SectionRenderer({ s }: { s: Section }) {
       return (
         <section style={{ padding:'55px 60px', background: data.fond || '#fbf9f5' }}>
           <div style={{ maxWidth:800, margin:'0 auto' }}>
+            {data.badge && <span style={{ fontSize:10, letterSpacing:'.28em', textTransform:'uppercase', color:'#B8943A', display:'block', marginBottom:10 }}>{data.badge}</span>}
             {data.titre && <h2 style={{ fontFamily:'Noto Serif,serif', fontSize:'1.9rem', color:'#13201A', marginBottom:18 }}>{data.titre}</h2>}
             {data.texte && <p style={{ fontSize:14, color:'#6b6b6b', lineHeight:1.9, whiteSpace:'pre-wrap' }}>{data.texte}</p>}
           </div>
