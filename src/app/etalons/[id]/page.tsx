@@ -5,8 +5,6 @@ import { supabase } from '@/lib/supabase'
 import { Etalon } from '@/lib/types'
 import { useLocale } from '@/lib/useLocale'
 import { t } from '@/lib/translations'
-import Nav from '@/components/Nav'
-import Footer from '@/components/Footer'
 import Link from 'next/link'
 import EtalonCaracterisation from '@/components/EtalonCaracterisation'
 
@@ -23,26 +21,16 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
   }, [id])
 
   if (loading) {
-    return (
-      <>
-        <Nav/>
-        <div style={{ minHeight:'60vh', display:'flex', alignItems:'center', justifyContent:'center', color:'#888', fontSize:13, fontStyle:'italic' }}>Chargement…</div>
-        <Footer/>
-      </>
-    )
+    return <div style={{ minHeight:'60vh', display:'flex', alignItems:'center', justifyContent:'center', color:'#888', fontSize:13, fontStyle:'italic' }}>Chargement…</div>
   }
 
   if (!etalon) {
     return (
-      <>
-        <Nav/>
-        <div style={{ minHeight:'60vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:16 }}>
-          <div style={{ fontSize:48 }}>🐴</div>
-          <p style={{ color:'#888', fontSize:14 }}>Étalon introuvable.</p>
-          <Link href="/etalons" className="btn-dark">← Retour aux étalons</Link>
-        </div>
-        <Footer/>
-      </>
+      <div style={{ minHeight:'60vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:16 }}>
+        <div style={{ fontSize:48 }}>🐴</div>
+        <p style={{ color:'#888', fontSize:14 }}>Étalon introuvable.</p>
+        <Link href="/etalons" className="btn-dark">← Retour aux étalons</Link>
+      </div>
     )
   }
 
@@ -52,7 +40,6 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
 
   return (
     <>
-      <Nav/>
 
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <div style={{ position:'relative', height:'65vh', minHeight:400, overflow:'hidden', background:'#13201A' }}>
@@ -238,7 +225,6 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
         )}
       </div>
 
-      <Footer/>
     </>
   )
 }
