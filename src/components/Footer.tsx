@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useLocale } from '@/lib/useLocale'
 import { t } from '@/lib/translations'
 
@@ -10,8 +11,11 @@ export default function Footer() {
     <footer style={{ background:'#13201A', color:'rgba(255,255,255,.5)', padding:'40px 60px 24px', marginTop:60 }}>
       <div style={{ maxWidth:1400, margin:'0 auto' }}>
         <div style={{ marginBottom:24 }}>
-          <div style={{ fontFamily:'Noto Serif,serif', fontSize:20, color:'#fff', marginBottom:12 }}>
-            {t(locale,'brand.name')} <span style={{ color:'#B8943A' }}>Adham</span>
+          <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:12 }}>
+            <Image src="/logo.png" alt="Logo Élevage Adham" width={40} height={40} style={{ objectFit:'cover', borderRadius:'50%' }}/>
+            <div style={{ fontFamily:'Noto Serif,serif', fontSize:20, color:'#fff' }}>
+              {t(locale,'brand.name')} <span style={{ color:'#B8943A' }}>Adham</span>
+            </div>
           </div>
           <Link href="/contact" style={{ fontSize:10, letterSpacing:'.12em', textTransform:'uppercase', padding:'10px 22px', background:'#B8943A', color:'#fff', textDecoration:'none', fontFamily:'Plus Jakarta Sans,sans-serif', display:'inline-block' }}>
             {t(locale,'btn.contact')}

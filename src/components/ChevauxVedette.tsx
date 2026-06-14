@@ -30,7 +30,7 @@ export default function ChevauxVedette() {
         {chevaux.map(c => (
           <div key={c.id} className="hcard">
             {c.photos?.[0]
-              ? <img src={c.photos[0]} alt={c.nom} style={{ width:'100%', height:190, objectFit:'cover' }}/>
+              ? <img src={c.photos[0]} alt={c.nom} style={{ width:'100%', height:190, objectFit:'cover', objectPosition:'top' }}/>
               : <div style={{ width:'100%', height:190, background:'#f0ece4', display:'flex', alignItems:'center', justifyContent:'center', fontSize:40 }}>🐴</div>
             }
             <div style={{ padding:'12px 14px' }}>

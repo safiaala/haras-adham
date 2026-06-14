@@ -42,9 +42,11 @@ export default function AdminChevauxPage() {
     setSaving(true)
     try {
       if (editing) {
-        await supabase.from('chevaux').update(form).eq('id', editing)
+        const { error } = await supabase.from('chevaux').update(form).eq('id', editing)
+        if (error) { setMsg(`Erreur : ${error.message}`); return }
       } else {
-        await supabase.from('chevaux').insert(form)
+        const { error } = await supabase.from('chevaux').insert(form)
+        if (error) { setMsg(`Erreur : ${error.message}`); return }
       }
       setOpen(false); setMsg(''); await load()
     } finally { setSaving(false) }
@@ -143,19 +145,29 @@ export default function AdminChevauxPage() {
                   {sel('Sexe','sexe',['Étalon','Jument','Hongre','Cheval','Poulain','Pouliche'])}
                 </div>
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
-                  {sel('Discipline','discipline',['cso','dressage','endurance','tbourida','poulain'])}
+                  {inp('Taille (cm)','taille_cm','number')}
+                </div>
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+                  {sel('Discipline','discipline',['show','saut','endurance','polo','attelage','dressage'])}
                   {sel('Statut','statut',['disponible','vendu','pension','reproduction'])}
                 </div>
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
                   {inp('Nom du père','nom_pere')}
                   {inp('Nom de la mère','nom_mere')}
                 </div>
-                {inp('Pedigree','pedigree')}
                 {inp('Prix','prix')}
                 <div>
                   <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>Description</label>
                   <textarea value={form.description ?? ''} onChange={e => setForm(f => ({ ...f, description:e.target.value }))} rows={3}
                     style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', resize:'vertical' }}/>
+                </div>
+                {inp('Lien vidéo (YouTube, Vimeo…)','video_url')}
+                <div>
+                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#888', marginBottom:4 }}>
+                    🔒 Information non publiée (notes internes)
+                  </label>
+                  <textarea value={form.pedigree ?? ''} onChange={e => setForm(f => ({ ...f, pedigree:e.target.value }))} rows={2}
+                    style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.4)', background:'#f5f3ef', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', resize:'vertical' }}/>
                 </div>
                 <div>
                   <label style={{ display:'flex', alignItems:'center', gap:8, fontSize:12, cursor:'pointer' }}>
