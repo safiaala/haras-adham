@@ -31,12 +31,27 @@ export interface Etalon {
   nom_pere?: string
   nom_mere?: string
   origine?: string
+  origine_en?: string
+  origine_es?: string
+  origine_ar?: string
   pedigree?: string
   palmares?: string
+  palmares_en?: string
+  palmares_es?: string
+  palmares_ar?: string
   performance?: string
+  performance_en?: string
+  performance_es?: string
+  performance_ar?: string
   production?: string
+  production_en?: string
+  production_es?: string
+  production_ar?: string
   show_caracterisation?: boolean
   description?: string
+  description_en?: string
+  description_es?: string
+  description_ar?: string
   tarif_saillie?: string
   methodes?: string[]
   photo?: string

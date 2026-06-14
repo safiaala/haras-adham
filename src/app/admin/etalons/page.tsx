@@ -5,13 +5,40 @@ import { Etalon } from '@/lib/types'
 import { uploadImage } from '@/lib/cloudinary'
 import { TRAITS } from '@/components/EtalonCaracterisation'
 
+type Lang = 'fr' | 'en' | 'es' | 'ar'
+const LANGS: { code: Lang; label: string }[] = [
+  { code:'fr', label:'FR' }, { code:'en', label:'EN' },
+  { code:'es', label:'ES' }, { code:'ar', label:'AR' },
+]
+
 const empty = (): Partial<Etalon> => ({
   nom:'', annee_naissance:undefined, race:'Barbe Marocain', robe:'',
   taille_cm:undefined, statut:'disponible', eleveur:'', tarif_saillie:'',
-  nom_pere:'', nom_mere:'', origine:'', description:'', palmares:'',
-  performance:'', production:'', video_url:'', pedigree:'',
+  nom_pere:'', nom_mere:'',
+  description:'', description_en:'', description_es:'', description_ar:'',
+  origine:'', origine_en:'', origine_es:'', origine_ar:'',
+  palmares:'', palmares_en:'', palmares_es:'', palmares_ar:'',
+  performance:'', performance_en:'', performance_es:'', performance_ar:'',
+  production:'', production_en:'', production_es:'', production_ar:'',
+  video_url:'', pedigree:'',
   photos:[], actif:true, methodes:[], caracterisation:{}, show_caracterisation:true
 })
+
+function LangTabs({ active, onChange }: { active: Lang; onChange: (l: Lang) => void }) {
+  return (
+    <div style={{ display:'flex', gap:2, marginBottom:6 }}>
+      {LANGS.map(l => (
+        <button key={l.code} onClick={() => onChange(l.code)}
+          style={{ fontSize:9, padding:'3px 9px', border:`.5px solid ${active===l.code ? '#B8943A' : 'rgba(195,200,195,.5)'}`,
+            background: active===l.code ? 'rgba(184,148,58,.12)' : 'transparent',
+            color: active===l.code ? '#B8943A' : '#aaa', cursor:'pointer',
+            fontFamily:'Plus Jakarta Sans,sans-serif', fontWeight: active===l.code ? 700 : 400 }}>
+          {l.label}
+        </button>
+      ))}
+    </div>
+  )
+}
 
 export default function AdminEtalonsPage() {
   const [list, setList] = useState<Etalon[]>([])
@@ -21,6 +48,11 @@ export default function AdminEtalonsPage() {
   const [uploading, setUploading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [msg, setMsg] = useState('')
+  const [descLang, setDescLang] = useState<Lang>('fr')
+  const [origLang, setOrigLang] = useState<Lang>('fr')
+  const [palmLang, setPalmLang] = useState<Lang>('fr')
+  const [perfLang, setPerfLang] = useState<Lang>('fr')
+  const [prodLang, setProdLang] = useState<Lang>('fr')
 
   async function load() {
     const { data } = await supabase.from('etalons').select('*').order('created_at', { ascending:false })
@@ -28,8 +60,14 @@ export default function AdminEtalonsPage() {
   }
   useEffect(() => { load() }, [])
 
-  function openNew() { setForm(empty()); setEditing(null); setOpen(true); setMsg('') }
-  function openEdit(e: Etalon) { setForm(e); setEditing(e.id); setOpen(true); setMsg('') }
+  function openNew() {
+    setForm(empty()); setEditing(null); setOpen(true); setMsg('')
+    setDescLang('fr'); setOrigLang('fr'); setPalmLang('fr'); setPerfLang('fr'); setProdLang('fr')
+  }
+  function openEdit(e: Etalon) {
+    setForm(e); setEditing(e.id); setOpen(true); setMsg('')
+    setDescLang('fr'); setOrigLang('fr'); setPalmLang('fr'); setPerfLang('fr'); setProdLang('fr')
+  }
 
   async function handlePhoto(e: React.ChangeEvent<HTMLInputElement>) {
     if (!e.target.files?.[0]) return
@@ -72,6 +110,31 @@ export default function AdminEtalonsPage() {
         style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none' }}/>
     </div>
   )
+
+  // Textarea multilingue : key FR = key, autres = key_en / key_es / key_ar
+  function mlKey(base: string, lang: Lang): keyof Etalon {
+    return (lang === 'fr' ? base : `${base}_${lang}`) as keyof Etalon
+  }
+
+  function mlTextarea(label: string, base: string, lang: Lang, setLang: (l:Lang)=>void, rows=3) {
+    const key = mlKey(base, lang)
+    return (
+      <div>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:4 }}>
+          <label style={{ fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b' }}>{label}</label>
+          <LangTabs active={lang} onChange={setLang}/>
+        </div>
+        <textarea value={(form[key] as string) ?? ''} onChange={e => setForm(f => ({ ...f, [key]: e.target.value }))} rows={rows}
+          style={{ width:'100%', padding:'9px 11px', border:`.5px solid ${lang!=='fr' ? 'rgba(184,148,58,.4)' : 'rgba(195,200,195,.6)'}`, fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', resize:'vertical',
+            background: lang!=='fr' ? 'rgba(255,252,244,.6)' : '#fff' }}/>
+        {lang !== 'fr' && !(form[key] as string) && (form[mlKey(base,'fr') as keyof Etalon] as string) && (
+          <div style={{ fontSize:10, color:'#B8943A', marginTop:3, fontStyle:'italic' }}>
+            FR : {(form[mlKey(base,'fr') as keyof Etalon] as string)?.substring(0,80)}…
+          </div>
+        )}
+      </div>
+    )
+  }
 
   return (
     <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
@@ -125,7 +188,7 @@ export default function AdminEtalonsPage() {
         {/* MODAL */}
         {open && (
           <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,.5)', zIndex:100, display:'flex', alignItems:'center', justifyContent:'center', padding:16 }}>
-            <div style={{ background:'#fbf9f5', padding:28, width:'100%', maxWidth:600, maxHeight:'90vh', overflowY:'auto' }}>
+            <div style={{ background:'#fbf9f5', padding:28, width:'100%', maxWidth:620, maxHeight:'90vh', overflowY:'auto' }}>
               <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:20 }}>
                 <h2 style={{ fontFamily:'Noto Serif,serif', fontSize:18, color:'#13201A' }}>{editing ? 'Modifier' : 'Ajouter'} un étalon</h2>
                 <button onClick={() => setOpen(false)} style={{ background:'transparent', border:'none', fontSize:22, cursor:'pointer', color:'#888' }}>✕</button>
@@ -157,31 +220,14 @@ export default function AdminEtalonsPage() {
                   {inp('Père','nom_pere')}
                   {inp('Mère','nom_mere')}
                 </div>
-                <div>
-                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>Description</label>
-                  <textarea value={form.description ?? ''} onChange={e => setForm(f => ({ ...f, description:e.target.value }))} rows={3}
-                    style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', resize:'vertical' }}/>
-                </div>
-                <div>
-                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>Origine</label>
-                  <textarea value={form.origine ?? ''} onChange={e => setForm(f => ({ ...f, origine:e.target.value }))} rows={2}
-                    style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', resize:'vertical' }}/>
-                </div>
-                <div>
-                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>Palmarès</label>
-                  <textarea value={form.palmares ?? ''} onChange={e => setForm(f => ({ ...f, palmares:e.target.value }))} rows={3}
-                    style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', resize:'vertical' }}/>
-                </div>
-                <div>
-                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>Performance</label>
-                  <textarea value={form.performance ?? ''} onChange={e => setForm(f => ({ ...f, performance:e.target.value }))} rows={3}
-                    style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', resize:'vertical' }}/>
-                </div>
-                <div>
-                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>Production</label>
-                  <textarea value={form.production ?? ''} onChange={e => setForm(f => ({ ...f, production:e.target.value }))} rows={2}
-                    style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', resize:'vertical' }}/>
-                </div>
+
+                {/* Champs multilingues */}
+                {mlTextarea('Description','description', descLang, setDescLang, 3)}
+                {mlTextarea('Origine','origine', origLang, setOrigLang, 2)}
+                {mlTextarea('Palmarès','palmares', palmLang, setPalmLang, 3)}
+                {mlTextarea('Performance','performance', perfLang, setPerfLang, 3)}
+                {mlTextarea('Production','production', prodLang, setProdLang, 2)}
+
                 {inp('Lien vidéo (YouTube, Vimeo…)','video_url')}
                 <div>
                   <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#888', marginBottom:4 }}>
@@ -196,6 +242,7 @@ export default function AdminEtalonsPage() {
                     Étalon actif (visible sur le site)
                   </label>
                 </div>
+
                 {/* PHOTOS */}
                 <div>
                   <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:8 }}>Photos</label>
@@ -212,6 +259,7 @@ export default function AdminEtalonsPage() {
                     </label>
                   </div>
                 </div>
+
                 {/* CARACTÉRISATION PAX */}
                 <div style={{ borderTop:'.5px solid rgba(195,200,195,.4)', paddingTop:16, marginTop:4 }}>
                   <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:14 }}>

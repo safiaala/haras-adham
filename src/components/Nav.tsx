@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react'
 import { LOCALES, Locale } from '@/lib/locale'
 import { t } from '@/lib/translations'
 import { supabase } from '@/lib/supabase'
-import { LogoE } from '@/components/Logo'
 
 const ALL_LINKS = [
   { href:'/',             key:'nav.accueil' },
@@ -82,7 +81,8 @@ export default function Nav() {
       <nav style={{ position:'fixed', top:0, width:'100%', zIndex:50, background:'rgba(251,249,245,.93)', backdropFilter:'blur(12px)', borderBottom:'.5px solid rgba(195,200,195,.22)', height:60, padding:'0 28px' }}>
         <div style={{ maxWidth:1400, margin:'0 auto', height:'100%', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
           <Link href="/" style={{ display:'flex', alignItems:'center', gap:10, textDecoration:'none' }}>
-            <LogoE size={42}/>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="Logo" width={42} height={42} style={{ objectFit:'cover', borderRadius:'50%' }}/>
             <div>
               <div style={{ fontFamily:'Noto Serif,serif', fontSize:17, fontWeight:700, letterSpacing:'-.02em', color:'#13201A' }}>{t(locale,'brand.name')} <span style={{ color:'#B8943A' }}>Adham</span></div>
               <div style={{ fontSize:'7.5px', letterSpacing:'.22em', textTransform:'uppercase', color:'#888', marginTop:-1 }}>{t(locale,'nav.elevage')}</div>

@@ -1,6 +1,5 @@
 'use client'
 import Link from 'next/link'
-import { LogoE } from '@/components/Logo'
 import { useLocale } from '@/lib/useLocale'
 import { t } from '@/lib/translations'
 
@@ -12,7 +11,8 @@ export default function Footer() {
       <div style={{ maxWidth:1400, margin:'0 auto' }}>
         <div style={{ marginBottom:24 }}>
           <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:12 }}>
-            <LogoE size={40}/>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="Logo" width={40} height={40} style={{ objectFit:'cover', borderRadius:'50%' }}/>
             <div style={{ fontFamily:'Noto Serif,serif', fontSize:20, color:'#fff' }}>
               {t(locale,'brand.name')} <span style={{ color:'#B8943A' }}>Adham</span>
             </div>

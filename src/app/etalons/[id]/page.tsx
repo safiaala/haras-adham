@@ -20,6 +20,14 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
       .then(({ data }) => { setEtalon(data); setLoading(false) })
   }, [id])
 
+  // Retourne le texte dans la bonne langue avec fallback FR
+  function ml(fr?: string, en?: string, es?: string, ar?: string) {
+    if (locale === 'en' && en) return en
+    if (locale === 'es' && es) return es
+    if (locale === 'ar' && ar) return ar
+    return fr || ''
+  }
+
   if (loading) {
     return <div style={{ minHeight:'60vh', display:'flex', alignItems:'center', justifyContent:'center', color:'#888', fontSize:13, fontStyle:'italic' }}>{t(locale,'etalons.loading')}</div>
   }
@@ -132,66 +140,54 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
           <div style={{ display:'flex', flexDirection:'column', gap:36 }}>
 
             {/* Description */}
-            {etalon.description && (
+            {(() => { const txt = ml(etalon.description, etalon.description_en, etalon.description_es, etalon.description_ar); return txt ? (
               <div>
                 <div style={{ fontSize:9, letterSpacing:'.22em', textTransform:'uppercase', color:'#B8943A', marginBottom:14 }}>
                   {t(locale,'etalons.desc_label')}
                 </div>
-                <p style={{ fontSize:14, color:'#6b6b6b', lineHeight:1.9, whiteSpace:'pre-wrap' }}>
-                  {etalon.description}
-                </p>
+                <p style={{ fontSize:14, color:'#6b6b6b', lineHeight:1.9, whiteSpace:'pre-wrap' }}>{txt}</p>
               </div>
-            )}
+            ) : null })()}
 
             {/* Origine */}
-            {etalon.origine && (
+            {(() => { const txt = ml(etalon.origine, etalon.origine_en, etalon.origine_es, etalon.origine_ar); return txt ? (
               <div>
                 <div style={{ width:40, height:2, background:'#B8943A', marginBottom:14 }}/>
                 <div style={{ fontSize:9, letterSpacing:'.22em', textTransform:'uppercase', color:'#B8943A', marginBottom:14 }}>{t(locale,'etalons.origine')}</div>
-                <p style={{ fontSize:13, color:'#6b6b6b', lineHeight:1.85, whiteSpace:'pre-wrap', borderLeft:'2px solid rgba(184,148,58,.3)', paddingLeft:16 }}>
-                  {etalon.origine}
-                </p>
+                <p style={{ fontSize:13, color:'#6b6b6b', lineHeight:1.85, whiteSpace:'pre-wrap', borderLeft:'2px solid rgba(184,148,58,.3)', paddingLeft:16 }}>{txt}</p>
               </div>
-            )}
+            ) : null })()}
 
             {/* Palmarès */}
-            {etalon.palmares && (
+            {(() => { const txt = ml(etalon.palmares, etalon.palmares_en, etalon.palmares_es, etalon.palmares_ar); return txt ? (
               <div>
                 <div style={{ width:40, height:2, background:'#B8943A', marginBottom:14 }}/>
-                <div style={{ fontSize:9, letterSpacing:'.22em', textTransform:'uppercase', color:'#B8943A', marginBottom:14 }}>
-                  {t(locale,'etalons.palmares')}
-                </div>
+                <div style={{ fontSize:9, letterSpacing:'.22em', textTransform:'uppercase', color:'#B8943A', marginBottom:14 }}>{t(locale,'etalons.palmares')}</div>
                 <div style={{ background:'#f0ece4', padding:'20px 22px' }}>
-                  <p style={{ fontSize:13, color:'#5a5a5a', lineHeight:1.85, whiteSpace:'pre-wrap', margin:0 }}>
-                    {etalon.palmares}
-                  </p>
+                  <p style={{ fontSize:13, color:'#5a5a5a', lineHeight:1.85, whiteSpace:'pre-wrap', margin:0 }}>{txt}</p>
                 </div>
               </div>
-            )}
+            ) : null })()}
 
             {/* Performance */}
-            {etalon.performance && (
+            {(() => { const txt = ml(etalon.performance, etalon.performance_en, etalon.performance_es, etalon.performance_ar); return txt ? (
               <div>
                 <div style={{ width:40, height:2, background:'#B8943A', marginBottom:14 }}/>
                 <div style={{ fontSize:9, letterSpacing:'.22em', textTransform:'uppercase', color:'#B8943A', marginBottom:14 }}>{t(locale,'etalons.performance')}</div>
                 <div style={{ background:'#f0ece4', padding:'20px 22px' }}>
-                  <p style={{ fontSize:13, color:'#5a5a5a', lineHeight:1.85, whiteSpace:'pre-wrap', margin:0 }}>{etalon.performance}</p>
+                  <p style={{ fontSize:13, color:'#5a5a5a', lineHeight:1.85, whiteSpace:'pre-wrap', margin:0 }}>{txt}</p>
                 </div>
               </div>
-            )}
+            ) : null })()}
 
             {/* Production */}
-            {etalon.production && (
+            {(() => { const txt = ml(etalon.production, etalon.production_en, etalon.production_es, etalon.production_ar); return txt ? (
               <div>
                 <div style={{ width:40, height:2, background:'#B8943A', marginBottom:14 }}/>
-                <div style={{ fontSize:9, letterSpacing:'.22em', textTransform:'uppercase', color:'#B8943A', marginBottom:14 }}>
-                  {t(locale,'etalons.production')}
-                </div>
-                <p style={{ fontSize:13, color:'#6b6b6b', lineHeight:1.85, whiteSpace:'pre-wrap' }}>
-                  {etalon.production}
-                </p>
+                <div style={{ fontSize:9, letterSpacing:'.22em', textTransform:'uppercase', color:'#B8943A', marginBottom:14 }}>{t(locale,'etalons.production')}</div>
+                <p style={{ fontSize:13, color:'#6b6b6b', lineHeight:1.85, whiteSpace:'pre-wrap' }}>{txt}</p>
               </div>
-            )}
+            ) : null })()}
 
             {/* Caractérisation PAX */}
             {etalon.show_caracterisation !== false && etalon.caracterisation && Object.keys(etalon.caracterisation).length > 0 && (
