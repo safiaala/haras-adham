@@ -86,7 +86,7 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
                 [t(locale,'etalons.taille'),    etalon.taille_cm ? `${etalon.taille_cm} cm` : null],
                 [t(locale,'etalons.naissance'), etalon.annee_naissance ? String(etalon.annee_naissance) : null],
                 [t(locale,'etalons.eleveur'),   etalon.eleveur],
-                ['Statut',                      etalon.statut ? (t(locale, `statut.${etalon.statut}`) || etalon.statut) : null],
+                [t(locale,'statut.label'),       etalon.statut ? (t(locale, `statut.${etalon.statut}`) || etalon.statut) : null],
                 ['Père',                        etalon.nom_pere],
                 ['Mère',                        etalon.nom_mere],
                 [t(locale,'etalons.methodes'),  etalon.methodes?.length ? etalon.methodes.join(', ') : null],
