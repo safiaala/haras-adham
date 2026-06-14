@@ -15,8 +15,8 @@ export const TRAITS = [
   { key:'pas',                  cat:'Pas',                    g:'Rigide',      d:'Souple' },
   { key:'galop_equilibre',      cat:'Galop - Équilibre',      g:'Sur le nez',  d:'Équilibré' },
   { key:'galop_amplitude',      cat:'Galop - Amplitude',      g:'Court',       d:'Long' },
-  { key:'elasticite',           cat:'Élasticité',             g:'Beaucoup',    d:'Peu' },
-  { key:'force',                cat:'Force',                  g:'Beaucoup',    d:'Peu' },
+  { key:'elasticite',           cat:'Élasticité',             g:'Peu',         d:'Beaucoup' },
+  { key:'force',                cat:'Force',                  g:'Peu',         d:'Beaucoup' },
   { key:'sang',                 cat:'Sang',                   g:'Peu',         d:'Beaucoup' },
 ]
 
