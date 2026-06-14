@@ -69,7 +69,7 @@ export default function ActualitesList() {
                   {n.created_at ? new Date(n.created_at).toLocaleDateString(locale === 'ar' ? 'ar' : locale === 'es' ? 'es' : locale === 'en' ? 'en' : 'fr', { day:'numeric', month:'long', year:'numeric' }) : ''}
                 </div>
                 {n.photo && (
-                  <img src={n.photo} alt={getTitre(n)} style={{ width:'100%', height:160, objectFit:'cover', objectPosition:'top', marginBottom:8 }}/>
+                  <img src={n.photo} alt={getTitre(n)} style={{ width:'100%', height:160, objectFit:'cover', marginBottom:8 }}/>
                 )}
                 {n.auteur && (
                   <div style={{ fontSize:10, color:'#888', fontStyle:'italic' }}>{n.auteur}</div>
@@ -114,7 +114,7 @@ export default function ActualitesList() {
               </div>
               <button onClick={() => setSelected(null)} style={{ background:'transparent', border:'none', fontSize:24, cursor:'pointer', color:'#888', flexShrink:0, marginLeft:16 }}>✕</button>
             </div>
-            {selected.photo && <img src={selected.photo} alt="" style={{ width:'100%', height:260, objectFit:'cover', objectPosition:'top', marginBottom:20 }}/>}
+            {selected.photo && <img src={selected.photo} alt="" style={{ width:'100%', height:260, objectFit:'cover', marginBottom:20 }}/>}
             <p style={{ fontSize:14, color:'#6b6b6b', lineHeight:1.9, whiteSpace:'pre-wrap' }}>{getContenu(selected)}</p>
             <div style={{ marginTop:20, paddingTop:16, borderTop:'.5px solid rgba(195,200,195,.3)', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
               {selected.url_source && (

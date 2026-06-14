@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import Image from 'next/image'
+import { LogoE } from '@/components/Logo'
 import { useLocale } from '@/lib/useLocale'
 import { t } from '@/lib/translations'
 
@@ -12,7 +12,7 @@ export default function Footer() {
       <div style={{ maxWidth:1400, margin:'0 auto' }}>
         <div style={{ marginBottom:24 }}>
           <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:12 }}>
-            <Image src="/logo.png" alt="Logo Élevage Adham" width={40} height={40} style={{ objectFit:'cover', borderRadius:'50%' }}/>
+            <LogoE size={40}/>
             <div style={{ fontFamily:'Noto Serif,serif', fontSize:20, color:'#fff' }}>
               {t(locale,'brand.name')} <span style={{ color:'#B8943A' }}>Adham</span>
             </div>

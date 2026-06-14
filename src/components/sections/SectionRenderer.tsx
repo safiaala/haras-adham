@@ -20,7 +20,7 @@ export default function SectionRenderer({ s }: { s: Section }) {
         <section style={{ position:'relative', minHeight:'90vh', display:'flex', alignItems:'center', overflow:'hidden' }}>
           {data.image && (
             <div style={{ position:'absolute', inset:0 }}>
-              <img src={data.image} alt="" style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'top' }}/>
+              <img src={data.image} alt="" style={{ width:'100%', height:'100%', objectFit:'cover' }}/>
               <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right,rgba(19,32,26,.85),rgba(19,32,26,.4) 55%,transparent)' }}/>
             </div>
           )}
@@ -53,7 +53,7 @@ export default function SectionRenderer({ s }: { s: Section }) {
         </div>
       )
       const imgBlock = data.image
-        ? <img src={data.image} alt="" style={{ width:'100%', height:'100%', objectFit:'cover', objectPosition:'top', minHeight:350 }}/>
+        ? <img src={data.image} alt="" style={{ width:'100%', height:'100%', objectFit:'cover', minHeight:350 }}/>
         : <div style={{ background:'#f0ece4', minHeight:350, display:'flex', alignItems:'center', justifyContent:'center', fontSize:48 }}>🐴</div>
 
       return (
