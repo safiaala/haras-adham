@@ -86,6 +86,8 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
                 [t(locale,'etalons.naissance'), etalon.annee_naissance ? String(etalon.annee_naissance) : null],
                 [t(locale,'etalons.eleveur'),   etalon.eleveur],
                 [t(locale,'etalons.studbook'),  etalon.studbook],
+                ['Père',                        etalon.nom_pere],
+                ['Mère',                        etalon.nom_mere],
                 [t(locale,'etalons.methodes'),  etalon.methodes?.length ? etalon.methodes.join(', ') : null],
               ].filter(([,v]) => v).map(([k, v]) => (
                 <div key={k as string} style={{ display:'flex', gap:12, borderBottom:'.5px solid rgba(195,200,195,.2)', padding:'9px 0', fontSize:11 }}>
@@ -140,15 +142,13 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
               </div>
             )}
 
-            {/* Pedigree / Origines */}
-            {etalon.pedigree && (
+            {/* Origine */}
+            {etalon.origine && (
               <div>
                 <div style={{ width:40, height:2, background:'#B8943A', marginBottom:14 }}/>
-                <div style={{ fontSize:9, letterSpacing:'.22em', textTransform:'uppercase', color:'#B8943A', marginBottom:14 }}>
-                  {t(locale,'etalons.origines')}
-                </div>
+                <div style={{ fontSize:9, letterSpacing:'.22em', textTransform:'uppercase', color:'#B8943A', marginBottom:14 }}>Origine</div>
                 <p style={{ fontSize:13, color:'#6b6b6b', lineHeight:1.85, whiteSpace:'pre-wrap', borderLeft:'2px solid rgba(184,148,58,.3)', paddingLeft:16 }}>
-                  {etalon.pedigree}
+                  {etalon.origine}
                 </p>
               </div>
             )}
@@ -164,6 +164,17 @@ export default function EtalonDetailPage({ params }: { params: Promise<{ id: str
                   <p style={{ fontSize:13, color:'#5a5a5a', lineHeight:1.85, whiteSpace:'pre-wrap', margin:0 }}>
                     {etalon.palmares}
                   </p>
+                </div>
+              </div>
+            )}
+
+            {/* Performance */}
+            {etalon.performance && (
+              <div>
+                <div style={{ width:40, height:2, background:'#B8943A', marginBottom:14 }}/>
+                <div style={{ fontSize:9, letterSpacing:'.22em', textTransform:'uppercase', color:'#B8943A', marginBottom:14 }}>Performance</div>
+                <div style={{ background:'#f0ece4', padding:'20px 22px' }}>
+                  <p style={{ fontSize:13, color:'#5a5a5a', lineHeight:1.85, whiteSpace:'pre-wrap', margin:0 }}>{etalon.performance}</p>
                 </div>
               </div>
             )}

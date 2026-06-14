@@ -8,7 +8,8 @@ import { TRAITS } from '@/components/EtalonCaracterisation'
 const empty = (): Partial<Etalon> => ({
   nom:'', annee_naissance:undefined, race:'Barbe Marocain', robe:'',
   taille_cm:undefined, eleveur:'', studbook:'', tarif_saillie:'',
-  description:'', palmares:'', video_url:'', pedigree:'',
+  nom_pere:'', nom_mere:'', origine:'', description:'', palmares:'',
+  performance:'', production:'', video_url:'', pedigree:'',
   photos:[], actif:true, methodes:[], caracterisation:{}
 })
 
@@ -146,14 +147,33 @@ export default function AdminEtalonsPage() {
                   {inp('Éleveur','eleveur')}
                   {inp('Studbook','studbook')}
                 </div>
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
+                  {inp('Père','nom_pere')}
+                  {inp('Mère','nom_mere')}
+                </div>
                 <div>
                   <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>Description</label>
                   <textarea value={form.description ?? ''} onChange={e => setForm(f => ({ ...f, description:e.target.value }))} rows={3}
                     style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', resize:'vertical' }}/>
                 </div>
                 <div>
+                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>Origine</label>
+                  <textarea value={form.origine ?? ''} onChange={e => setForm(f => ({ ...f, origine:e.target.value }))} rows={2}
+                    style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', resize:'vertical' }}/>
+                </div>
+                <div>
                   <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>Palmarès</label>
                   <textarea value={form.palmares ?? ''} onChange={e => setForm(f => ({ ...f, palmares:e.target.value }))} rows={3}
+                    style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', resize:'vertical' }}/>
+                </div>
+                <div>
+                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>Performance</label>
+                  <textarea value={form.performance ?? ''} onChange={e => setForm(f => ({ ...f, performance:e.target.value }))} rows={3}
+                    style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', resize:'vertical' }}/>
+                </div>
+                <div>
+                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>Production</label>
+                  <textarea value={form.production ?? ''} onChange={e => setForm(f => ({ ...f, production:e.target.value }))} rows={2}
                     style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', resize:'vertical' }}/>
                 </div>
                 {inp('Lien vidéo (YouTube, Vimeo…)','video_url')}
