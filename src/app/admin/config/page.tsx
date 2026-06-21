@@ -29,20 +29,6 @@ const GROUPS = [
     ]
   },
   {
-    label: 'Chiffres clés (page d\'accueil)',
-    emoji: '📊',
-    keys: [
-      { cle:'s1n', label:'Stat 1 — Nombre', placeholder:'45+' },
-      { cle:'s1l', label:'Stat 1 — Label',  placeholder:'Chevaux' },
-      { cle:'s2n', label:'Stat 2 — Nombre', placeholder:'5' },
-      { cle:'s2l', label:'Stat 2 — Label',  placeholder:'Prestations' },
-      { cle:'s3n', label:'Stat 3 — Nombre', placeholder:'12' },
-      { cle:'s3l', label:'Stat 3 — Label',  placeholder:'Titres' },
-      { cle:'s4n', label:'Stat 4 — Nombre', placeholder:'30' },
-      { cle:'s4l', label:'Stat 4 — Label',  placeholder:'Boxes' },
-    ]
-  },
-  {
     label: 'Horaires d\'ouverture',
     emoji: '🕐',
     keys: [
