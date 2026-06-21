@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { deriveToken } from '@/lib/adminToken'
+import { authLimiter } from '@/lib/ratelimit'
 
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0] ?? 'unknown'
+  const { success } = await authLimiter.limit(ip)
+  if (!success) {
+    return NextResponse.json({ error: 'Trop de tentatives. Réessayez dans 10 minutes.' }, { status: 429 })
+  }
+
   let password: string
   try {
     const body = await req.json()

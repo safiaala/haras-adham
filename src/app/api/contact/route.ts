@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { supabaseAdmin } from '@/lib/supabase-admin'
+import { contactLimiter } from '@/lib/ratelimit'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -14,6 +15,12 @@ function sanitize(v: unknown, maxLen = 2000): string {
 }
 
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get('x-forwarded-for')?.split(',')[0] ?? 'unknown'
+  const { success } = await contactLimiter.limit(ip)
+  if (!success) {
+    return NextResponse.json({ error: 'Trop de messages. Réessayez dans une heure.' }, { status: 429 })
+  }
+
   const body = await req.json()
 
   const nom     = sanitize(body.nom,     100)
