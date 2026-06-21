@@ -21,12 +21,10 @@ begin
   end loop;
 end $$;
 
--- Messages : service_role pour tout, anon pour select (boîte de réception admin)
+-- Messages : service_role uniquement (lecture via API route admin authentifiée)
 drop policy if exists "service_role messages write" on public.messages;
 drop policy if exists "lecture admin messages" on public.messages;
+drop policy if exists "anon messages select" on public.messages;
 
 create policy "service_role messages all" on public.messages
   for all to service_role using (true) with check (true);
-
-create policy "anon messages select" on public.messages
-  for select to anon using (true);

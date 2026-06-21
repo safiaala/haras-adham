@@ -1,7 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
 import AdminHeader from '@/components/AdminHeader'
-import { supabase } from '@/lib/supabase'
 import { countryFromTel } from '@/lib/countries'
 
 interface Message {
@@ -21,20 +20,21 @@ export default function AdminMessagesPage() {
   const [loading, setLoading] = useState(true)
 
   async function load() {
-    const { data } = await supabase.from('messages').select('*').order('created_at', { ascending: false })
-    setList(data || [])
+    const res = await fetch('/api/admin/messages')
+    const data = await res.json()
+    setList(Array.isArray(data) ? data : [])
     setLoading(false)
   }
 
   async function markLu(id: string, lu: boolean) {
-    await supabase.from('messages').update({ lu }).eq('id', id)
+    await fetch('/api/admin/messages', { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id, lu }) })
     setList(l => l.map(m => m.id === id ? { ...m, lu } : m))
     if (selected?.id === id) setSelected(s => s ? { ...s, lu } : s)
   }
 
   async function handleDelete(id: string) {
     if (!confirm('Supprimer ce message ?')) return
-    await supabase.from('messages').delete().eq('id', id)
+    await fetch('/api/admin/messages', { method:'DELETE', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id }) })
     setList(l => l.filter(m => m.id !== id))
     if (selected?.id === id) setSelected(null)
   }

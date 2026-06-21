@@ -75,7 +75,7 @@ export default function AdminPage() {
           </div>
           <div style={{ display:'flex', gap:10 }}>
             <Link href="/" target="_blank" style={{ fontSize:10, letterSpacing:'.1em', textTransform:'uppercase', padding:'8px 16px', border:'.5px solid rgba(195,200,195,.5)', color:'#888', textDecoration:'none', fontFamily:'Plus Jakarta Sans,sans-serif' }}>Voir le site →</Link>
-            <a href="/api/admin/logout" className="btn-dark" style={{ fontSize:10 }}>Déconnexion</a>
+            <button className="btn-dark" style={{ fontSize:10, cursor:'pointer' }} onClick={async () => { await fetch('/api/admin/logout', { method:'POST' }); window.location.href = '/admin/login' }}>Déconnexion</button>
           </div>
         </div>
 

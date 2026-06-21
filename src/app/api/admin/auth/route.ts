@@ -2,8 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { deriveToken } from '@/lib/adminToken'
 
 export async function POST(req: NextRequest) {
-  const { password } = await req.json()
-  if (password === process.env.ADMIN_PASSWORD) {
+  let password: string
+  try {
+    const body = await req.json()
+    password = body?.password ?? ''
+  } catch {
+    return NextResponse.json({ error: 'Corps de requête invalide' }, { status: 400 })
+  }
+  if (password && password === process.env.ADMIN_PASSWORD) {
     const token = await deriveToken(password)
     const res = NextResponse.json({ ok: true })
     res.cookies.set('admin_auth', token, {
