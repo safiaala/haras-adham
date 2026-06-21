@@ -114,19 +114,19 @@ export default function ContactPage() {
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
                   {[['nom','contact.nom','text'],['email','contact.email','email']].map(([k,lk,tp]) => (
                     <div key={k}>
-                      <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>{t(locale,lk)}</label>
+                      <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>{t(locale,lk)} <span style={{ color:'#A32D2D' }}>*</span></label>
                       <input type={tp} required value={form[k as keyof typeof form]} onChange={e => setForm({...form,[k]:e.target.value})}
                         style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', background:'#fff' }}/>
                     </div>
                   ))}
                 </div>
                 <div>
-                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>{t(locale,'contact.tel')}</label>
+                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>{t(locale,'contact.tel')} <span style={{ color:'#A32D2D' }}>*</span></label>
                   <input type="tel" required value={form.tel} onChange={e => setForm({...form,tel:e.target.value})}
                     style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', background:'#fff' }}/>
                 </div>
                 <div>
-                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>{t(locale,'contact.sujet')}</label>
+                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>{t(locale,'contact.sujet')} <span style={{ color:'#A32D2D' }}>*</span></label>
                   <select value={form.sujet} onChange={e => setForm({...form,sujet:e.target.value})} required
                     style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', background:'#fff' }}>
                     <option value="">—</option>
@@ -134,7 +134,7 @@ export default function ContactPage() {
                   </select>
                 </div>
                 <div>
-                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>{t(locale,'contact.message')}</label>
+                  <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>{t(locale,'contact.message')} <span style={{ color:'#A32D2D' }}>*</span></label>
                   <textarea required rows={5} value={form.message} onChange={e => setForm({...form,message:e.target.value})}
                     style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', background:'#fff', resize:'vertical' }}/>
                 </div>
@@ -207,9 +207,10 @@ function DomaineMap({ cfg, locale }: { cfg: Record<string,string>; locale: strin
               <p style={{ fontSize:11, color:'rgba(255,255,255,.65)', lineHeight:1.7, margin:'0 0 14px' }}>
                 {locale === 'ar' ? 'نرحب بكم لزيارة الضيعة بموعد مسبق.' : locale === 'es' ? 'Le damos la bienvenida para una visita privada del dominio, con cita previa.' : locale === 'en' ? 'We welcome you for a private visit to the estate by appointment.' : 'Nous vous accueillons pour une visite privée du domaine sur rendez-vous.'}
               </p>
-              <a href="mailto:contact@harasadham.ma"
-                style={{ fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', textDecoration:'none' }}>
-                {locale === 'ar' ? 'اتصل بنا →' : locale === 'es' ? 'Contáctenos →' : locale === 'en' ? 'Contact us →' : 'Nous contacter →'}
+              <a href={cfg.tel ? `tel:${cfg.tel}` : 'tel:+212'}
+                style={{ fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', textDecoration:'none', display:'flex', alignItems:'center', gap:5 }}>
+                <span style={{ fontFamily:'Material Symbols Outlined', fontSize:13 }}>phone</span>
+                {locale === 'ar' ? 'اتصل بنا →' : locale === 'es' ? 'Llamarnos →' : locale === 'en' ? 'Call us →' : 'Nous appeler →'}
               </a>
             </div>
           </div>
