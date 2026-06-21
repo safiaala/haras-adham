@@ -136,7 +136,7 @@ export default function ContactPage() {
                   <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>{t(locale,'contact.tel')} <span style={{ color:'#A32D2D' }}>*</span></label>
                   <div style={{ display:'flex', border:'.5px solid rgba(195,200,195,.6)', background:'#fff' }}>
                     <select value={dialCountry.code} onChange={e => setDialCountry(COUNTRIES.find(c => c.code === e.target.value) ?? COUNTRIES[0])}
-                      style={{ flexShrink:0, padding:'9px 8px', border:'none', borderRight:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', background:'transparent', cursor:'pointer', minWidth:0 }}>
+                      style={{ width:'auto', flexShrink:0, padding:'9px 10px', border:'none', borderRight:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', background:'#f8f6f2', cursor:'pointer' }}>
                       {COUNTRIES.map(c => (
                         <option key={c.code} value={c.code}>{c.flag} {c.dial} — {c.name}</option>
                       ))}
