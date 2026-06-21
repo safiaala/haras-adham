@@ -78,6 +78,16 @@ export default function EtalonsList() {
                       {e.description}
                     </p>
                   )}
+
+                  {(e.palmares || e[`palmares_${locale}` as keyof Etalon]) && (
+                    <div style={{ background:'#faf8f3', border:'.5px solid rgba(184,148,58,.25)', padding:'8px 12px', marginBottom:6 }}>
+                      <div style={{ fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', marginBottom:4 }}>{t(locale,'etalons.palmares_label')}</div>
+                      <p style={{ fontSize:11, color:'#4a4a3a', lineHeight:1.7, margin:0,
+                        display:'-webkit-box', WebkitLineClamp:3, WebkitBoxOrient:'vertical', overflow:'hidden' }}>
+                        {(e[`palmares_${locale}` as keyof Etalon] as string) || e.palmares}
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:12, paddingTop:12, borderTop:'.5px solid rgba(195,200,195,.25)' }}>

@@ -12,6 +12,7 @@ const ALL_LINKS = [
   { href:'/etalons',      key:'nav.etalons' },
   { href:'/prestations',  key:'nav.prestations' },
   { href:'/evenements',   key:'nav.evenements' },
+  { href:'/galerie',      key:'nav.galerie' },
   { href:'/histoire',     key:'nav.histoire' },
   { href:'/actualites',   key:'nav.actualites' },
   { href:'/jobs',         key:'nav.jobs' },
@@ -20,7 +21,7 @@ const ALL_LINKS = [
 const SLUG_MAP: Record<string, string> = {
   '/':'accueil', '/chevaux':'chevaux', '/etalons':'etalons',
   '/prestations':'prestations', '/evenements':'evenements',
-  '/histoire':'histoire', '/actualites':'actualites', '/jobs':'jobs',
+  '/galerie':'galerie', '/histoire':'histoire', '/actualites':'actualites', '/jobs':'jobs',
 }
 
 export default function Nav() {
@@ -36,7 +37,7 @@ export default function Nav() {
       setActivePages(data.filter(p => p.actif).map(p => p.slug))
     } else {
       // fallback si erreur
-      setActivePages(['accueil','chevaux','etalons','prestations','evenements','histoire','actualites','jobs','contact'])
+      setActivePages(['accueil','chevaux','etalons','prestations','evenements','galerie','histoire','actualites','jobs','contact'])
     }
     setLoaded(true)
   }

@@ -90,6 +90,7 @@ export const PAGES = [
   { slug:'etalons',     label:'Étalons',     emoji:'🏆' },
   { slug:'prestations', label:'Prestations', emoji:'🏇' },
   { slug:'evenements',  label:'Événements',  emoji:'📅' },
+  { slug:'galerie',     label:'Galerie',     emoji:'🖼️' },
   { slug:'histoire',    label:'Histoire',    emoji:'📜' },
   { slug:'actualites',  label:'Actualités',  emoji:'📰' },
   { slug:'jobs',        label:'Jobs',        emoji:'💼' },
