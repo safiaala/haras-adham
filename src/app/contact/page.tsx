@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { useLocale } from '@/lib/useLocale'
 import { t } from '@/lib/translations'
 import { supabase } from '@/lib/supabase'
+import { COUNTRIES, type Country } from '@/lib/countries'
 
 function CopyBtn({ value, locale }: { value: string; locale: string }) {
   const [copied, setCopied] = useState(false)
@@ -24,6 +25,7 @@ function CopyBtn({ value, locale }: { value: string; locale: string }) {
 export default function ContactPage() {
   const locale = useLocale()
   const [form, setForm] = useState({ nom:'', email:'', tel:'', sujet:'', message:'' })
+  const [dialCountry, setDialCountry] = useState<Country>(COUNTRIES[0]) // Maroc par défaut
   const [status, setStatus] = useState<'idle'|'sending'|'ok'|'error'>('idle')
   const [cfg, setCfg] = useState<Record<string,string>>({})
 
@@ -35,13 +37,23 @@ export default function ContactPage() {
         setCfg(map)
       }
     })
+    // Géodétection du pays via l'IP (service gratuit, pas de clé requise)
+    fetch('https://ipapi.co/json/')
+      .then(r => r.json())
+      .then((d: { country_code?: string }) => {
+        const found = COUNTRIES.find(c => c.code === d.country_code)
+        if (found) setDialCountry(found)
+      })
+      .catch(() => {/* garde Maroc par défaut */})
   }, [])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setStatus('sending')
+    // Stocker l'indicatif + numéro ensemble pour pouvoir identifier le pays côté admin
+    const telWithDial = form.tel ? `${dialCountry.dial}${form.tel.replace(/^0/, '')}` : ''
     try {
-      const res = await fetch('/api/contact', { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(form) })
+      const res = await fetch('/api/contact', { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({ ...form, tel: telWithDial }) })
       setStatus(res.ok ? 'ok' : 'error')
     } catch { setStatus('error') }
   }
@@ -122,8 +134,17 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>{t(locale,'contact.tel')} <span style={{ color:'#A32D2D' }}>*</span></label>
-                  <input type="tel" required value={form.tel} onChange={e => setForm({...form,tel:e.target.value})}
-                    style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', background:'#fff' }}/>
+                  <div style={{ display:'flex', border:'.5px solid rgba(195,200,195,.6)', background:'#fff' }}>
+                    <select value={dialCountry.code} onChange={e => setDialCountry(COUNTRIES.find(c => c.code === e.target.value) ?? COUNTRIES[0])}
+                      style={{ flexShrink:0, padding:'9px 8px', border:'none', borderRight:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', background:'transparent', cursor:'pointer', minWidth:0 }}>
+                      {COUNTRIES.map(c => (
+                        <option key={c.code} value={c.code}>{c.flag} {c.dial} — {c.name}</option>
+                      ))}
+                    </select>
+                    <input type="tel" required value={form.tel} onChange={e => setForm({...form,tel:e.target.value})}
+                      placeholder="6 12 34 56 78"
+                      style={{ flex:1, padding:'9px 11px', border:'none', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', background:'transparent', minWidth:0 }}/>
+                  </div>
                 </div>
                 <div>
                   <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>{t(locale,'contact.sujet')} <span style={{ color:'#A32D2D' }}>*</span></label>

@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
+import { countryFromTel } from '@/lib/countries'
 
 function toCSV(rows: Record<string, unknown>[]): string {
   if (!rows.length) return ''
@@ -49,7 +50,14 @@ export default function AdminExportPage() {
     setLoading(d.table)
     const { data } = await supabase.from(d.table).select('*').order('created_at', { ascending: false })
     if (data && data.length > 0) {
-      download(toCSV(data), d.filename)
+      // Pour les messages : ajouter une colonne "pays" dérivée de l'indicatif
+      const enriched = d.table === 'messages'
+        ? data.map((row: Record<string, unknown>) => {
+            const pays = countryFromTel(String(row.tel ?? ''))
+            return { ...row, pays: pays ? `${pays.flag} ${pays.name}` : '' }
+          })
+        : data
+      download(toCSV(enriched), d.filename)
       setDone(d.table)
       setTimeout(() => setDone(null), 2000)
     }

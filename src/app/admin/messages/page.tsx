@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
+import { countryFromTel } from '@/lib/countries'
 
 interface Message {
   id: string
@@ -77,7 +78,10 @@ export default function AdminMessagesPage() {
                       <span style={{ fontWeight: m.lu ? 400 : 600, fontSize:13, color:'#13201A' }}>{m.nom}</span>
                       {m.sujet && <span style={{ fontSize:11, color:'#888' }}>— {m.sujet}</span>}
                     </div>
-                    <div style={{ fontSize:11, color:'#888', marginBottom:3 }}>{m.email}</div>
+                    <div style={{ fontSize:11, color:'#888', marginBottom:3, display:'flex', alignItems:'center', gap:5 }}>
+                      {m.tel && (() => { const p = countryFromTel(m.tel!); return p ? <span title={p.name}>{p.flag}</span> : null })()}
+                      {m.email}
+                    </div>
                     <div style={{ fontSize:11, color:'#6b6b6b', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{m.message}</div>
                   </div>
                   <div style={{ fontSize:10, color:'#aaa', flexShrink:0, textAlign:'right' }}>
@@ -96,7 +100,13 @@ export default function AdminMessagesPage() {
                   <div>
                     <div style={{ fontFamily:'Noto Serif,serif', fontSize:18, color:'#13201A', marginBottom:4 }}>{selected.nom}</div>
                     <a href={`mailto:${selected.email}`} style={{ fontSize:12, color:'#B8943A', textDecoration:'none' }}>{selected.email}</a>
-                    {selected.tel && <div style={{ fontSize:12, color:'#888', marginTop:2 }}><a href={`tel:${selected.tel}`} style={{ color:'#888', textDecoration:'none' }}>{selected.tel}</a></div>}
+                    {selected.tel && (() => { const pays = countryFromTel(selected.tel); return (
+                      <div style={{ fontSize:12, color:'#888', marginTop:2, display:'flex', alignItems:'center', gap:6 }}>
+                        {pays && <span title={pays.name}>{pays.flag}</span>}
+                        <a href={`tel:${selected.tel}`} style={{ color:'#888', textDecoration:'none' }}>{selected.tel}</a>
+                        {pays && <span style={{ fontSize:10, color:'#aaa' }}>{pays.name}</span>}
+                      </div>
+                    )})()}
                   </div>
                   <button onClick={() => setSelected(null)} style={{ background:'transparent', border:'none', fontSize:20, cursor:'pointer', color:'#888' }}>✕</button>
                 </div>
