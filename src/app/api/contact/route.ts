@@ -1,14 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { supabaseAdmin } from '@/lib/supabase-admin'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(req: NextRequest) {
-  const { nom, email, sujet, message } = await req.json()
+  const { nom, email, tel, sujet, message } = await req.json()
 
   if (!nom || !email || !message) {
     return NextResponse.json({ error: 'Champs manquants' }, { status: 400 })
   }
+
+  // Sauvegarde systématique en base (indépendant de l'email)
+  await supabaseAdmin.from('messages').insert({ nom, email, tel, sujet, message })
 
   try {
     await resend.emails.send({
@@ -26,6 +30,7 @@ export async function POST(req: NextRequest) {
             <table style="width:100%;font-size:13px;color:#333">
               <tr><td style="padding:6px 0;color:#888;width:80px">Nom</td><td><strong>${nom}</strong></td></tr>
               <tr><td style="padding:6px 0;color:#888">Email</td><td><a href="mailto:${email}">${email}</a></td></tr>
+              ${tel ? `<tr><td style="padding:6px 0;color:#888">Tél</td><td>${tel}</td></tr>` : ''}
               <tr><td style="padding:6px 0;color:#888">Sujet</td><td>${sujet || '—'}</td></tr>
             </table>
             <div style="margin-top:16px;padding:16px;background:#fff;border-left:3px solid #B8943A;font-size:13px;line-height:1.7;color:#333">
@@ -35,9 +40,9 @@ export async function POST(req: NextRequest) {
         </div>
       `,
     })
-    return NextResponse.json({ ok: true })
   } catch (err) {
-    console.error(err)
-    return NextResponse.json({ error: 'Erreur envoi' }, { status: 500 })
+    console.error('Erreur email Resend:', err)
   }
+
+  return NextResponse.json({ ok: true })
 }

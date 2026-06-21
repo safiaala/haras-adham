@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 
 export default function AdminPage() {
-  const [counts, setCounts] = useState([0,0,0,0,0])
+  const [counts, setCounts] = useState([0,0,0,0,0,0])
 
   useEffect(() => {
     Promise.all([
@@ -13,10 +13,11 @@ export default function AdminPage() {
       supabase.from('evenements').select('*', { count:'exact', head:true }),
       supabase.from('actualites').select('*', { count:'exact', head:true }),
       supabase.from('offres').select('*', { count:'exact', head:true }),
+      supabase.from('messages').select('*', { count:'exact', head:true }).eq('lu', false),
     ]).then(results => setCounts(results.map(r => r.count ?? 0)))
   }, [])
 
-  const [nbChevaux, nbEtalons, nbEvents, nbNews, nbOffres] = counts
+  const [nbChevaux, nbEtalons, nbEvents, nbNews, nbOffres, nbMessages] = counts
 
   const sections = [
     { href:'/admin/chevaux',    emoji:'🐴', titre:'Chevaux',     count:nbChevaux,  desc:'Gérer la collection' },
@@ -27,8 +28,11 @@ export default function AdminPage() {
     { href:'/admin/prestations', emoji:'🏇', titre:'Prestations', count:null,       desc:'Sections et photos' },
     { href:'/admin/pages',      emoji:'📝', titre:'Pages',       count:null,       desc:'Accueil, Contact, Navigation' },
     { href:'/admin/editeur',    emoji:'🎨', titre:'Éditeur',     count:null,       desc:'Modifier toutes les pages par blocs' },
-    { href:'/admin/galerie',    emoji:'🖼️', titre:'Galerie',      count:null,       desc:'Photos du domaine et des chevaux' },
-    { href:'/admin/navigation', emoji:'🔀', titre:'Navigation',  count:null,       desc:'Activer/désactiver les pages du menu' },
+    { href:'/admin/galerie',    emoji:'🖼️', titre:'Galerie',      count:null,        desc:'Photos du domaine et des chevaux' },
+    { href:'/admin/navigation', emoji:'🔀', titre:'Navigation',  count:null,        desc:'Activer/désactiver les pages du menu' },
+    { href:'/admin/messages',   emoji:'✉️', titre:'Messages',    count:nbMessages,  desc:'Messages reçus via le formulaire' },
+    { href:'/admin/config',     emoji:'⚙️', titre:'Config site', count:null,        desc:'Adresse, réseaux sociaux, GPS, horaires' },
+    { href:'/admin/export',     emoji:'📥', titre:'Export CSV',  count:null,        desc:'Télécharger les données en Excel/CSV' },
   ]
 
   return (
