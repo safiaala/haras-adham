@@ -18,6 +18,7 @@ const securityHeaders = [
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https://res.cloudinary.com https://*.supabase.co",
       "connect-src 'self' https://*.supabase.co https://ipapi.co https://vitals.vercel-insights.com",
+      "frame-src https://maps.google.com https://www.google.com",
       "frame-ancestors 'none'",
     ].join('; '),
   },
