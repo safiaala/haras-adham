@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import AdminHeader from '@/components/AdminHeader'
 import { supabase } from '@/lib/supabase'
+import { adminDb } from '@/lib/adminDb'
 
 const sections = [
   {
@@ -93,7 +94,7 @@ export default function AdminPagesPage() {
     try {
       await Promise.all(
         Object.entries(config).map(([cle, valeur]) =>
-          supabase.from('config').upsert({ cle, valeur, updated_at: new Date().toISOString() })
+          adminDb.upsert('config', { cle, valeur, updated_at: new Date().toISOString() }, 'cle')
         )
       )
       setSaved(true)

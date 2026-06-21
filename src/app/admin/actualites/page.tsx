@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import AdminHeader from '@/components/AdminHeader'
 import { supabase } from '@/lib/supabase'
+import { adminDb } from '@/lib/adminDb'
 import { uploadImage } from '@/lib/cloudinary'
 
 type Locale = 'fr' | 'en' | 'es' | 'ar'
@@ -63,15 +64,15 @@ export default function AdminActualitesPage() {
     if (!form.titre) return
     setSaving(true)
     try {
-      if (editing) { await supabase.from('actualites').update(form).eq('id', editing) }
-      else { await supabase.from('actualites').insert(form) }
+      if (editing) { await adminDb.update('actualites', editing, form) }
+      else { await adminDb.insert('actualites', form) }
       setOpen(false); await load()
     } finally { setSaving(false) }
   }
 
   async function handleDelete(id: string) {
     if (!confirm('Supprimer cette actualité ?')) return
-    await supabase.from('actualites').delete().eq('id', id)
+    await adminDb.delete('actualites', id)
     await load()
   }
 

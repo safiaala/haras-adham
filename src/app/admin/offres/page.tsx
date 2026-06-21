@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import AdminHeader from '@/components/AdminHeader'
 import { supabase } from '@/lib/supabase'
+import { adminDb } from '@/lib/adminDb'
 import { Offre } from '@/lib/types'
 
 const empty = (): Partial<Offre> => ({ titre:'', type:'emploi', description:'', profil:'', contact:'', active:true })
@@ -23,15 +24,15 @@ export default function AdminOffresPage() {
     if (!form.titre) return
     setSaving(true)
     try {
-      if (editing) { await supabase.from('offres').update(form).eq('id', editing) }
-      else { await supabase.from('offres').insert(form) }
+      if (editing) { await adminDb.update('offres', editing, form) }
+      else { await adminDb.insert('offres', form) }
       setOpen(false); await load()
     } finally { setSaving(false) }
   }
 
   async function handleDelete(id: string) {
     if (!confirm('Supprimer cette offre ?')) return
-    await supabase.from('offres').delete().eq('id', id)
+    await adminDb.delete('offres', id)
     await load()
   }
 

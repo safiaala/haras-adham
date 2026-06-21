@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
+import { adminDb } from '@/lib/adminDb'
 import { GaleriePhoto } from '@/lib/types'
 import AdminHeader from '@/components/AdminHeader'
 
@@ -49,15 +50,15 @@ export default function AdminGaleriePage() {
     if (!form.url) return
     setSaving(true)
     try {
-      if (editing) { await supabase.from('galerie').update(form).eq('id', editing) }
-      else { await supabase.from('galerie').insert(form) }
+      if (editing) { await adminDb.update('galerie', editing, form) }
+      else { await adminDb.insert('galerie', form) }
       setOpen(false); await load()
     } finally { setSaving(false) }
   }
 
   async function handleDelete(id: string) {
     if (!confirm('Supprimer cette photo ?')) return
-    await supabase.from('galerie').delete().eq('id', id)
+    await adminDb.delete('galerie', id)
     await load()
   }
 

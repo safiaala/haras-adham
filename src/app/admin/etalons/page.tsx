@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import AdminHeader from '@/components/AdminHeader'
 import { supabase } from '@/lib/supabase'
+import { adminDb } from '@/lib/adminDb'
 import { Etalon } from '@/lib/types'
 import { uploadImage } from '@/lib/cloudinary'
 import { TRAITS } from '@/components/EtalonCaracterisation'
@@ -88,11 +89,9 @@ export default function AdminEtalonsPage() {
     setSaving(true)
     try {
       if (editing) {
-        const { error } = await supabase.from('etalons').update(form).eq('id', editing)
-        if (error) { setMsg(`Erreur : ${error.message}`); return }
+        await adminDb.update('etalons', editing, form)
       } else {
-        const { error } = await supabase.from('etalons').insert(form)
-        if (error) { setMsg(`Erreur : ${error.message}`); return }
+        await adminDb.insert('etalons', form)
       }
       setOpen(false); setMsg(''); await load()
     } finally { setSaving(false) }
@@ -100,7 +99,7 @@ export default function AdminEtalonsPage() {
 
   async function handleDelete(id: string) {
     if (!confirm('Supprimer cet étalon ?')) return
-    await supabase.from('etalons').delete().eq('id', id)
+    await adminDb.delete('etalons', id)
     await load()
   }
 

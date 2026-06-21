@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import AdminHeader from '@/components/AdminHeader'
 import { supabase } from '@/lib/supabase'
+import { adminDb } from '@/lib/adminDb'
 import { Evenement } from '@/lib/types'
 
 const empty = (): Partial<Evenement> => ({ titre:'', date_debut:'', date_fin:'', lieu:'', type:'autre', description:'', lien_inscription:'' })
@@ -23,15 +24,15 @@ export default function AdminEvenementsPage() {
     if (!form.titre || !form.date_debut) return
     setSaving(true)
     try {
-      if (editing) { await supabase.from('evenements').update(form).eq('id', editing) }
-      else { await supabase.from('evenements').insert(form) }
+      if (editing) { await adminDb.update('evenements', editing, form) }
+      else { await adminDb.insert('evenements', form) }
       setOpen(false); await load()
     } finally { setSaving(false) }
   }
 
   async function handleDelete(id: string) {
     if (!confirm('Supprimer cet événement ?')) return
-    await supabase.from('evenements').delete().eq('id', id)
+    await adminDb.delete('evenements', id)
     await load()
   }
 

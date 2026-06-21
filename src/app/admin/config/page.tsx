@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import AdminHeader from '@/components/AdminHeader'
 import { supabase } from '@/lib/supabase'
+import { adminDb } from '@/lib/adminDb'
 
 type Cfg = Record<string, string>
 
@@ -68,7 +69,7 @@ export default function AdminConfigPage() {
   async function handleSave() {
     setSaving(true)
     const upserts = Object.entries(cfg).map(([cle, valeur]) => ({ cle, valeur }))
-    await supabase.from('config').upsert(upserts, { onConflict: 'cle' })
+    await adminDb.upsert('config', upserts, 'cle')
     setSaving(false)
     setSaved(true)
     setTimeout(() => setSaved(false), 2500)

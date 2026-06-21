@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import AdminHeader from '@/components/AdminHeader'
 import { supabase } from '@/lib/supabase'
+import { adminDb } from '@/lib/adminDb'
 import { PAGES } from '@/lib/sections'
 
 interface PageConfig { slug: string; actif: boolean; ordre: number }
@@ -20,7 +21,7 @@ export default function AdminNavigationPage() {
   async function toggle(slug: string) {
     const page = pages.find(p => p.slug === slug)
     if (!page) return
-    await supabase.from('pages').update({ actif: !page.actif }).eq('slug', slug)
+    await adminDb.updateBy('pages', 'slug', slug, { actif: !page.actif })
     await load()
   }
 
@@ -29,8 +30,8 @@ export default function AdminNavigationPage() {
     const swap = dir === 'up' ? pages[idx-1] : pages[idx+1]
     if (!swap) return
     await Promise.all([
-      supabase.from('pages').update({ ordre: swap.ordre }).eq('slug', slug),
-      supabase.from('pages').update({ ordre: pages[idx].ordre }).eq('slug', swap.slug),
+      adminDb.updateBy('pages', 'slug', slug, { ordre: swap.ordre }),
+      adminDb.updateBy('pages', 'slug', swap.slug, { ordre: pages[idx].ordre }),
     ])
     await load()
   }

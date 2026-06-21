@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import AdminHeader from '@/components/AdminHeader'
 import { supabase } from '@/lib/supabase'
+import { adminDb } from '@/lib/adminDb'
 import { Cheval } from '@/lib/types'
 import { uploadImage } from '@/lib/cloudinary'
 
@@ -43,11 +44,9 @@ export default function AdminChevauxPage() {
     setSaving(true)
     try {
       if (editing) {
-        const { error } = await supabase.from('chevaux').update(form).eq('id', editing)
-        if (error) { setMsg(`Erreur : ${error.message}`); return }
+        await adminDb.update('chevaux', editing, form)
       } else {
-        const { error } = await supabase.from('chevaux').insert(form)
-        if (error) { setMsg(`Erreur : ${error.message}`); return }
+        await adminDb.insert('chevaux', form)
       }
       setOpen(false); setMsg(''); await load()
     } finally { setSaving(false) }
@@ -55,7 +54,7 @@ export default function AdminChevauxPage() {
 
   async function handleDelete(id: string) {
     if (!confirm('Supprimer ce cheval ?')) return
-    await supabase.from('chevaux').delete().eq('id', id)
+    await adminDb.delete('chevaux', id)
     await load()
   }
 

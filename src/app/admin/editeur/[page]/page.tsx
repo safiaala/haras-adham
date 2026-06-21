@@ -1,6 +1,7 @@
 'use client'
 import { useEffect, useState, use } from 'react'
 import { supabase } from '@/lib/supabase'
+import { adminDb } from '@/lib/adminDb'
 import { Section, SectionType, SectionData, SECTION_TYPES, defaultData, PAGES, TranslatableFields, TRANSLATABLE_FIELDS_BY_TYPE } from '@/lib/sections'
 import { uploadImage } from '@/lib/cloudinary'
 import { LOCALES, Locale } from '@/lib/locale'
@@ -24,19 +25,19 @@ export default function PageEditor({ params }: { params: Promise<{ page: string 
 
   async function addSection(type: SectionType) {
     const maxOrdre = sections.reduce((m, s) => Math.max(m, s.ordre), 0)
-    await supabase.from('sections').insert({ page, type, ordre: maxOrdre + 1, actif: true, data: defaultData[type] })
+    await adminDb.insert('sections', { page, type, ordre: maxOrdre + 1, actif: true, data: defaultData[type] })
     setAdding(false)
     await load()
   }
 
   async function deleteSection(id: string) {
     if (!confirm('Supprimer cette section ?')) return
-    await supabase.from('sections').delete().eq('id', id)
+    await adminDb.delete('sections', id)
     await load()
   }
 
   async function toggleActif(s: Section) {
-    await supabase.from('sections').update({ actif: !s.actif }).eq('id', s.id)
+    await adminDb.update('sections', s.id, { actif: !s.actif })
     await load()
   }
 
@@ -45,8 +46,8 @@ export default function PageEditor({ params }: { params: Promise<{ page: string 
     const swap = dir === 'up' ? sections[idx-1] : sections[idx+1]
     if (!swap) return
     await Promise.all([
-      supabase.from('sections').update({ ordre: swap.ordre }).eq('id', s.id),
-      supabase.from('sections').update({ ordre: s.ordre }).eq('id', swap.id),
+      adminDb.update('sections', s.id, { ordre: swap.ordre }),
+      adminDb.update('sections', swap.id, { ordre: s.ordre }),
     ])
     await load()
   }
@@ -55,7 +56,7 @@ export default function PageEditor({ params }: { params: Promise<{ page: string 
     if (!editing) return
     setSaving(true)
     try {
-      await supabase.from('sections').update({ data: editing.data, actif: editing.actif }).eq('id', editing.id)
+      await adminDb.update('sections', editing.id, { data: editing.data, actif: editing.actif })
       setMsg('Sauvegardé ✓')
       setTimeout(() => setMsg(''), 2000)
       await load()
