@@ -37,14 +37,6 @@ export default function ContactPage() {
         setCfg(map)
       }
     })
-    // Géodétection du pays via l'IP (service gratuit, pas de clé requise)
-    fetch('https://ipapi.co/json/')
-      .then(r => r.json())
-      .then((d: { country_code?: string }) => {
-        const found = COUNTRIES.find(c => c.code === d.country_code)
-        if (found) setDialCountry(found)
-      })
-      .catch(() => {/* garde Maroc par défaut */})
   }, [])
 
   async function handleSubmit(e: React.FormEvent) {
@@ -213,21 +205,27 @@ function DomaineMap({ cfg, locale }: { cfg: Record<string,string>; locale: strin
           </div>
 
           {/* Panneau visite privée */}
-          <div style={{ background:'#13201A', padding:'24px 22px', height:'100%', boxSizing:'border-box', display:'flex', flexDirection:'column', justifyContent:'space-between' }}>
+          <div style={{ background:'#13201A', padding:'22px 22px', display:'flex', flexDirection:'column', gap:16, alignSelf:'start' }}>
             <div>
-              <div style={{ fontSize:9, letterSpacing:'.14em', textTransform:'uppercase', color:'rgba(255,255,255,.4)', marginBottom:10 }}>
+              <div style={{ fontSize:9, letterSpacing:'.14em', textTransform:'uppercase', color:'rgba(255,255,255,.4)', marginBottom:8 }}>
                 {locale === 'ar' ? 'زيارة خاصة' : locale === 'es' ? 'Visita privada' : locale === 'en' ? 'Private visit' : 'Visite privée'}
               </div>
-              <div style={{ fontFamily:'Noto Serif,serif', fontSize:'1.1rem', color:'#fff', lineHeight:1.3, marginBottom:14 }}>
+              <div style={{ fontFamily:'Noto Serif,serif', fontSize:'1rem', color:'#fff', lineHeight:1.3, marginBottom:10 }}>
                 {locale === 'ar' ? 'احجز موعداً لزيارة الضيعة' : locale === 'es' ? 'Reserve una visita al dominio' : locale === 'en' ? 'Book a visit to the estate' : 'Prendre rendez-vous pour une visite'}
               </div>
-              <p style={{ fontSize:11, color:'rgba(255,255,255,.55)', lineHeight:1.7, margin:'0 0 24px' }}>
-                {locale === 'ar' ? 'نرحب بكم لزيارة خاصة للضيعة. تواصلوا معنا مباشرةً لتحديد موعد.' : locale === 'es' ? 'Le damos la bienvenida para una visita privada del dominio. Contáctenos directamente para concertar una cita.' : locale === 'en' ? 'We welcome you for a private visit to the estate. Contact us directly to schedule your appointment.' : 'Nous vous accueillons pour une visite privée du domaine. Contactez-nous directement pour convenir d\'un rendez-vous.'}
+              <p style={{ fontSize:11, color:'rgba(255,255,255,.55)', lineHeight:1.6, margin:0 }}>
+                {locale === 'ar' ? 'تواصلوا معنا مباشرةً لتحديد موعد.' : locale === 'es' ? 'Contáctenos directamente para concertar una cita.' : locale === 'en' ? 'Contact us directly to schedule your appointment.' : 'Contactez-nous directement pour convenir d\'un rendez-vous.'}
               </p>
             </div>
+            {cfg.tel && (
+              <div style={{ display:'flex', alignItems:'center', gap:8, padding:'10px 14px', background:'rgba(255,255,255,.06)', borderLeft:'2px solid #B8943A' }}>
+                <span style={{ fontFamily:'Material Symbols Outlined', color:'#B8943A', fontSize:16 }}>phone</span>
+                <span style={{ fontSize:13, color:'#fff', fontFamily:'Plus Jakarta Sans,sans-serif', letterSpacing:'.02em' }}>{cfg.tel}</span>
+              </div>
+            )}
             <a href={cfg.tel ? `tel:${cfg.tel}` : 'tel:+212'}
-              style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:8, padding:'12px 16px', background:'#B8943A', color:'#fff', textDecoration:'none', fontSize:10, letterSpacing:'.12em', textTransform:'uppercase', fontFamily:'Plus Jakarta Sans,sans-serif' }}>
-              <span style={{ fontFamily:'Material Symbols Outlined', fontSize:16 }}>phone</span>
+              style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:8, padding:'11px 16px', background:'#B8943A', color:'#fff', textDecoration:'none', fontSize:10, letterSpacing:'.12em', textTransform:'uppercase', fontFamily:'Plus Jakarta Sans,sans-serif' }}>
+              <span style={{ fontFamily:'Material Symbols Outlined', fontSize:15 }}>phone</span>
               {locale === 'ar' ? 'اتصل بنا' : locale === 'es' ? 'Llamarnos' : locale === 'en' ? 'Call us' : 'Nous appeler'}
             </a>
           </div>
