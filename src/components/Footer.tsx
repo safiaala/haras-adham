@@ -107,18 +107,6 @@ export default function Footer() {
               )}
             </div>
 
-            <div style={{ fontSize:9, letterSpacing:'.2em', textTransform:'uppercase', color:'rgba(255,255,255,.35)', marginBottom:12 }}>{t(locale,'footer.contact')}</div>
-            <div style={{ display:'flex', flexDirection:'column', gap:6, fontSize:12 }}>
-              {cfg.contact_email && (
-                <a href={`mailto:${cfg.contact_email}`} style={{ color:'rgba(255,255,255,.55)', textDecoration:'none' }}>{cfg.contact_email}</a>
-              )}
-              {cfg.contact_tel && (
-                <a href={`tel:${cfg.contact_tel}`} style={{ color:'rgba(255,255,255,.55)', textDecoration:'none' }}>{cfg.contact_tel}</a>
-              )}
-              {cfg.contact_adresse && (
-                <span>{cfg.contact_adresse}</span>
-              )}
-            </div>
           </div>
         </div>
 
