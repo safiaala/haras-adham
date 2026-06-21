@@ -14,7 +14,7 @@ update public.pages set ordre = 10 where slug = 'contact';
 -- Clés config pour les réseaux sociaux (à renseigner via l'admin ou ici)
 insert into public.config (cle, valeur) values
   ('social_youtube',   'https://www.youtube.com/@harasadham1227'),
-  ('social_instagram', ''),
+  ('social_instagram', 'https://www.instagram.com/haras.adham.maroc/'),
   ('social_facebook',  ''),
   ('social_whatsapp',  '')
 on conflict (cle) do nothing;

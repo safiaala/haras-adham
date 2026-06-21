@@ -31,7 +31,7 @@ export default function Footer() {
   }, [])
 
   const youtube   = cfg.social_youtube   || 'https://www.youtube.com/@harasadham1227'
-  const instagram = cfg.social_instagram || ''
+  const instagram = cfg.social_instagram || 'https://www.instagram.com/haras.adham.maroc/'
   const facebook  = cfg.social_facebook  || ''
   const whatsapp  = cfg.social_whatsapp  || ''
 

@@ -102,7 +102,7 @@ export default function ContactPage() {
                 style={{ display:'flex', alignItems:'center', gap:7, fontSize:10, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', textDecoration:'none', border:'.5px solid rgba(184,148,58,.35)', padding:'7px 13px' }}>
                 <span style={{ fontFamily:'Material Symbols Outlined', fontSize:16 }}>play_circle</span>YouTube
               </a>
-              <a href="https://www.instagram.com/haras.adham.maroc/" target="_blank" rel="noreferrer"
+                      <a href={cfg.social_instagram || 'https://www.instagram.com/haras.adham.maroc/'} target="_blank" rel="noreferrer"
                 style={{ display:'flex', alignItems:'center', gap:7, fontSize:10, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', textDecoration:'none', border:'.5px solid rgba(184,148,58,.35)', padding:'7px 13px' }}>
                 <span style={{ fontFamily:'Material Symbols Outlined', fontSize:16 }}>photo_camera</span>Instagram
               </a>
@@ -157,6 +157,96 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      {/* Carte du domaine */}
+      <DomaineMap cfg={cfg} locale={locale}/>
     </>
+  )
+}
+
+function DomaineMap({ cfg, locale }: { cfg: Record<string,string>; locale: string }) {
+  const labels: Record<string, { titre: string; badge: string; acces: string; rdv: string }> = {
+    fr: { titre:'Localiser le Domaine', badge:'Accès & Itinéraire', acces:'Comment venir', rdv:'Prendre rendez-vous →' },
+    en: { titre:'Find the Estate',      badge:'Access & Directions',  acces:'Getting here', rdv:'Book an appointment →' },
+    es: { titre:'Localizar el Dominio', badge:'Acceso & Ruta',        acces:'Cómo llegar',  rdv:'Reservar una cita →' },
+    ar: { titre:'تحديد موقع الضيعة',    badge:'الوصول والاتجاهات',    acces:'كيفية الوصول', rdv:'حجز موعد →' },
+  }
+  const l = labels[locale] || labels.fr
+
+  const lat  = cfg.lat  || '31.6295'
+  const lng  = cfg.lng  || '-7.9811'
+  const addr = cfg.addr || 'Haras Adham, Maroc'
+
+  const mapSrc = `https://maps.google.com/maps?q=${lat},${lng}&z=14&output=embed&hl=${locale}`
+
+  return (
+    <section style={{ background:'#f0ece4' }}>
+      <div style={{ maxWidth:1400, margin:'0 auto', padding:'52px 60px' }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:24, flexWrap:'wrap', gap:12 }}>
+          <div>
+            <span style={{ fontSize:10, letterSpacing:'.28em', textTransform:'uppercase', color:'#B8943A', display:'block', marginBottom:6 }}>{l.badge}</span>
+            <h2 style={{ fontFamily:'Noto Serif,serif', fontSize:'1.8rem', color:'#13201A' }}>{l.titre}</h2>
+          </div>
+          <a href={`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`} target="_blank" rel="noreferrer"
+            style={{ fontSize:10, letterSpacing:'.1em', textTransform:'uppercase', padding:'10px 20px', background:'#13201A', color:'#fff', textDecoration:'none', fontFamily:'Plus Jakarta Sans,sans-serif', whiteSpace:'nowrap' }}>
+            🧭 {l.rdv}
+          </a>
+        </div>
+
+        <div style={{ display:'grid', gridTemplateColumns:'1fr 300px', gap:20, alignItems:'start' }}>
+          {/* Map embed */}
+          <div style={{ border:'.5px solid rgba(195,200,195,.4)', overflow:'hidden', height:400, position:'relative', background:'#e8e4dc' }}>
+            <iframe
+              src={mapSrc}
+              width="100%"
+              height="400"
+              style={{ border:0, display:'block' }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Localisation Haras Adham"
+            />
+          </div>
+
+          {/* Infos accès */}
+          <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
+            <div style={{ background:'#fff', border:'.5px solid rgba(195,200,195,.3)', padding:'18px 20px' }}>
+              <div style={{ fontSize:9, letterSpacing:'.14em', textTransform:'uppercase', color:'#B8943A', marginBottom:10 }}>{l.acces}</div>
+              <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+                {addr && (
+                  <div style={{ display:'flex', gap:10, alignItems:'start', fontSize:12, color:'#4a4a3a', lineHeight:1.6 }}>
+                    <span style={{ fontFamily:'Material Symbols Outlined', color:'#B8943A', fontSize:16, flexShrink:0, marginTop:1 }}>location_on</span>
+                    <span>{addr}</span>
+                  </div>
+                )}
+                {cfg.tel && (
+                  <div style={{ display:'flex', gap:10, alignItems:'center', fontSize:12, color:'#4a4a3a' }}>
+                    <span style={{ fontFamily:'Material Symbols Outlined', color:'#B8943A', fontSize:16, flexShrink:0 }}>phone</span>
+                    <a href={`tel:${cfg.tel}`} style={{ color:'#4a4a3a', textDecoration:'none' }}>{cfg.tel}</a>
+                  </div>
+                )}
+                <div style={{ display:'flex', gap:10, alignItems:'center', fontSize:12, color:'#4a4a3a' }}>
+                  <span style={{ fontFamily:'Material Symbols Outlined', color:'#B8943A', fontSize:16, flexShrink:0 }}>schedule</span>
+                  <span>{locale === 'ar' ? 'الإثنين–السبت 9ص–5م' : locale === 'es' ? 'Lun–Sáb 9h–17h' : locale === 'en' ? 'Mon–Sat 9am–5pm' : 'Lun–Sam 9h–17h'}</span>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ background:'#13201A', padding:'18px 20px' }}>
+              <div style={{ fontSize:9, letterSpacing:'.14em', textTransform:'uppercase', color:'rgba(255,255,255,.4)', marginBottom:8 }}>
+                {locale === 'ar' ? 'زيارة خاصة' : locale === 'es' ? 'Visita privada' : locale === 'en' ? 'Private visit' : 'Visite privée'}
+              </div>
+              <p style={{ fontSize:11, color:'rgba(255,255,255,.65)', lineHeight:1.7, margin:'0 0 14px' }}>
+                {locale === 'ar' ? 'نرحب بكم لزيارة الضيعة بموعد مسبق.' : locale === 'es' ? 'Le damos la bienvenida para una visita privada del dominio, con cita previa.' : locale === 'en' ? 'We welcome you for a private visit to the estate by appointment.' : 'Nous vous accueillons pour une visite privée du domaine sur rendez-vous.'}
+              </p>
+              <a href="mailto:contact@harasadham.ma"
+                style={{ fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', textDecoration:'none' }}>
+                {locale === 'ar' ? 'اتصل بنا →' : locale === 'es' ? 'Contáctenos →' : locale === 'en' ? 'Contact us →' : 'Nous contacter →'}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }
