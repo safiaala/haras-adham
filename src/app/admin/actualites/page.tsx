@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import AdminHeader from '@/components/AdminHeader'
 import { supabase } from '@/lib/supabase'
 import { uploadImage } from '@/lib/cloudinary'
 
@@ -98,13 +99,7 @@ export default function AdminActualitesPage() {
   return (
     <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
       <div style={{ maxWidth:1000, margin:'0 auto' }}>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:28 }}>
-          <div>
-            <a href="/admin" style={{ fontSize:10, color:'#888', textDecoration:'none' }}>← Admin</a>
-            <h1 style={{ fontFamily:'Noto Serif,serif', fontSize:22, color:'#13201A', marginTop:4 }}>Actualités</h1>
-          </div>
-          <button onClick={() => { setForm(empty()); setEditing(null); setOpen(true) }} className="btn-gold">+ Ajouter</button>
-        </div>
+        <AdminHeader title="Actualités" action={<button onClick={() => setOpen(true)} className="btn-gold">+ Ajouter</button>}/>
 
         <div style={{ background:'#fff', border:'.5px solid rgba(195,200,195,.3)', overflow:'hidden' }}>
           {list.length === 0 ? (

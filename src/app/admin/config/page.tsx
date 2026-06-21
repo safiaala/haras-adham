@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import AdminHeader from '@/components/AdminHeader'
 import { supabase } from '@/lib/supabase'
 
 type Cfg = Record<string, string>
@@ -80,16 +81,7 @@ export default function AdminConfigPage() {
   return (
     <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
       <div style={{ maxWidth:800, margin:'0 auto' }}>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:28 }}>
-          <div>
-            <a href="/admin" style={{ fontSize:10, color:'#888', textDecoration:'none' }}>← Admin</a>
-            <h1 style={{ fontFamily:'Noto Serif,serif', fontSize:22, color:'#13201A', marginTop:4 }}>Configuration du site</h1>
-          </div>
-          <button onClick={handleSave} disabled={saving}
-            style={{ fontSize:10, letterSpacing:'.1em', textTransform:'uppercase', padding:'10px 22px', background: saved ? '#3B6D11' : '#B8943A', color:'#fff', border:'none', cursor:'pointer', fontFamily:'Plus Jakarta Sans,sans-serif', transition:'background .3s' }}>
-            {saving ? 'Sauvegarde...' : saved ? '✓ Sauvegardé' : 'Sauvegarder tout'}
-          </button>
-        </div>
+        <AdminHeader title="Configuration du site" />
 
         <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
           {GROUPS.map(g => (

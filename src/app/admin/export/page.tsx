@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import AdminHeader from '@/components/AdminHeader'
 import { supabase } from '@/lib/supabase'
 import { countryFromTel } from '@/lib/countries'
 
@@ -67,11 +68,7 @@ export default function AdminExportPage() {
   return (
     <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
       <div style={{ maxWidth:700, margin:'0 auto' }}>
-        <div style={{ marginBottom:28 }}>
-          <a href="/admin" style={{ fontSize:10, color:'#888', textDecoration:'none' }}>← Admin</a>
-          <h1 style={{ fontFamily:'Noto Serif,serif', fontSize:22, color:'#13201A', marginTop:4 }}>Export des données</h1>
-          <p style={{ fontSize:12, color:'#888', marginTop:4 }}>Téléchargez vos données en format CSV, compatible Excel et Google Sheets.</p>
-        </div>
+        <AdminHeader title="Export des données"/>
 
         <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
           {DATASETS.map(d => {

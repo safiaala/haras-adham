@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import AdminHeader from '@/components/AdminHeader'
 import { supabase } from '@/lib/supabase'
 import { countryFromTel } from '@/lib/countries'
 
@@ -45,17 +46,7 @@ export default function AdminMessagesPage() {
   return (
     <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
       <div style={{ maxWidth:1100, margin:'0 auto' }}>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:28 }}>
-          <div>
-            <a href="/admin" style={{ fontSize:10, color:'#888', textDecoration:'none' }}>← Admin</a>
-            <div style={{ display:'flex', alignItems:'center', gap:12, marginTop:4 }}>
-              <h1 style={{ fontFamily:'Noto Serif,serif', fontSize:22, color:'#13201A' }}>Messages reçus</h1>
-              {nonLus > 0 && (
-                <span style={{ background:'#B8943A', color:'#fff', borderRadius:'50%', width:22, height:22, display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:600 }}>{nonLus}</span>
-              )}
-            </div>
-          </div>
-        </div>
+        <AdminHeader title={`Messages reçus${nonLus > 0 ? ` (${nonLus} non lu${nonLus > 1 ? 's' : ''})` : ''}`}/>
 
         {loading ? (
           <div style={{ textAlign:'center', padding:60, color:'#888', fontSize:13 }}>Chargement…</div>

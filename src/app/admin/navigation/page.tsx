@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import AdminHeader from '@/components/AdminHeader'
 import { supabase } from '@/lib/supabase'
 import { PAGES } from '@/lib/sections'
 
@@ -39,11 +40,7 @@ export default function AdminNavigationPage() {
   return (
     <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
       <div style={{ maxWidth:700, margin:'0 auto' }}>
-        <div style={{ marginBottom:28 }}>
-          <a href="/admin" style={{ fontSize:10, color:'#888', textDecoration:'none' }}>← Admin</a>
-          <h1 style={{ fontFamily:'Noto Serif,serif', fontSize:22, color:'#13201A', marginTop:4 }}>Navigation & Pages</h1>
-          <p style={{ fontSize:12, color:'#888', marginTop:4 }}>Activez ou désactivez les pages du site. Les pages désactivées disparaissent du menu et sont inaccessibles.</p>
-        </div>
+        <AdminHeader title="Navigation & Pages"/>
 
         <div style={{ background:'#fff', border:'.5px solid rgba(195,200,195,.3)', overflow:'hidden' }}>
           {pages.map((p, idx) => {

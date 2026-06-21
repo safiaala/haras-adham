@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import AdminHeader from '@/components/AdminHeader'
 import { supabase } from '@/lib/supabase'
 import { Cheval } from '@/lib/types'
 import { uploadImage } from '@/lib/cloudinary'
@@ -80,13 +81,7 @@ export default function AdminChevauxPage() {
   return (
     <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
       <div style={{ maxWidth:1000, margin:'0 auto' }}>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:28 }}>
-          <div>
-            <a href="/admin" style={{ fontSize:10, color:'#888', textDecoration:'none', letterSpacing:'.08em' }}>← Admin</a>
-            <h1 style={{ fontFamily:'Noto Serif,serif', fontSize:22, color:'#13201A', marginTop:4 }}>Chevaux</h1>
-          </div>
-          <button onClick={openNew} className="btn-gold">+ Ajouter un cheval</button>
-        </div>
+        <AdminHeader title="Chevaux" action={<button onClick={openNew} className="btn-gold">+ Ajouter un cheval</button>}/>
 
         {/* LISTE */}
         <div style={{ background:'#fff', border:'.5px solid rgba(195,200,195,.3)', overflow:'hidden' }}>

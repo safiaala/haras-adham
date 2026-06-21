@@ -2,6 +2,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { supabase } from '@/lib/supabase'
 import { GaleriePhoto } from '@/lib/types'
+import AdminHeader from '@/components/AdminHeader'
 
 const empty = (): Partial<GaleriePhoto> => ({ url:'', legende:'', categorie:'', ordre:0 })
 
@@ -66,13 +67,7 @@ export default function AdminGaleriePage() {
   return (
     <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
       <div style={{ maxWidth:1100, margin:'0 auto' }}>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:28 }}>
-          <div>
-            <a href="/admin" style={{ fontSize:10, color:'#888', textDecoration:'none' }}>← Admin</a>
-            <h1 style={{ fontFamily:'Noto Serif,serif', fontSize:22, color:'#13201A', marginTop:4 }}>Galerie Photos</h1>
-          </div>
-          <button onClick={() => { setForm(empty()); setEditing(null); setOpen(true) }} className="btn-gold">+ Ajouter une photo</button>
-        </div>
+        <AdminHeader title="Galerie photos" />
 
         {list.length === 0 ? (
           <div style={{ background:'#fff', border:'.5px solid rgba(195,200,195,.3)', padding:60, textAlign:'center', color:'#888', fontSize:13, fontStyle:'italic' }}>

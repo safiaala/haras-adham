@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import AdminHeader from '@/components/AdminHeader'
 import { supabase } from '@/lib/supabase'
 
 const sections = [
@@ -103,15 +104,7 @@ export default function AdminPagesPage() {
   return (
     <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
       <div style={{ maxWidth:800, margin:'0 auto' }}>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:28 }}>
-          <div>
-            <a href="/admin" style={{ fontSize:10, color:'#888', textDecoration:'none' }}>← Admin</a>
-            <h1 style={{ fontFamily:'Noto Serif,serif', fontSize:22, color:'#13201A', marginTop:4 }}>Contenu des pages</h1>
-          </div>
-          <button onClick={handleSave} disabled={saving} className="btn-gold">
-            {saved ? '✓ Sauvegardé !' : saving ? 'Sauvegarde...' : 'Sauvegarder tout'}
-          </button>
-        </div>
+        <AdminHeader title="Pages du site" />
 
         <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
           {sections.map(s => (
