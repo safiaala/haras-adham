@@ -12,7 +12,7 @@ function CopyBtn({ value, locale }: { value: string; locale: string }) {
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
-  const label = copied ? t(locale, 'contact.copie') : t(locale, 'contact.copier')
+  const label = copied ? t(locale as import('@/lib/locale').Locale, 'contact.copie') : t(locale as import('@/lib/locale').Locale, 'contact.copier')
   return (
     <button onClick={copy} title={label} style={{ background:'transparent', border:'none', cursor:'pointer', color: copied ? '#3B6D11' : '#B8943A', padding:0, display:'flex', alignItems:'center' }}>
       <span style={{ fontFamily:'Material Symbols Outlined', fontSize:16 }}>{copied ? 'check' : 'content_copy'}</span>
