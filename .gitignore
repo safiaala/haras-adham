@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Sauvegardes de données Supabase (données personnelles — ne jamais commiter)
+backups/
