@@ -75,7 +75,8 @@ export default function Nav() {
     window.dispatchEvent(new CustomEvent('locale-change', { detail: l }))
   }
 
-  const visibleLinks = ALL_LINKS.filter(l => activePages.includes(SLUG_MAP[l.href] || ''))
+  const ALWAYS_VISIBLE = ['/galerie']
+  const visibleLinks = ALL_LINKS.filter(l => ALWAYS_VISIBLE.includes(l.href) || activePages.includes(SLUG_MAP[l.href] || ''))
 
   return (
     <>
