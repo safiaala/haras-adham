@@ -44,7 +44,7 @@ export default function AdminMessagesPage() {
   const nonLus = list.filter(m => !m.lu).length
 
   return (
-    <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
+    <div style={{ padding:40 }}>
       <div style={{ maxWidth:1100, margin:'0 auto' }}>
         <AdminHeader title={`Messages reçus${nonLus > 0 ? ` (${nonLus} non lu${nonLus > 1 ? 's' : ''})` : ''}`}/>
 

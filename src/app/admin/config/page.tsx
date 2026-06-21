@@ -79,7 +79,7 @@ export default function AdminConfigPage() {
   }
 
   return (
-    <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
+    <div style={{ padding:40 }}>
       <div style={{ maxWidth:800, margin:'0 auto' }}>
         <AdminHeader title="Configuration du site" />
 

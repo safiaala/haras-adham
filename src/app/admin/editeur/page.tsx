@@ -3,7 +3,7 @@ import { PAGES } from '@/lib/sections'
 
 export default function EditeurPage() {
   return (
-    <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
+    <div style={{ padding:40 }}>
       <div style={{ maxWidth:900, margin:'0 auto' }}>
         <div style={{ marginBottom:28 }}>
           <a href="/admin" style={{ fontSize:10, color:'#888', textDecoration:'none' }}>← Admin</a>

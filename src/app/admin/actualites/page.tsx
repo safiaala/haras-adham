@@ -97,7 +97,7 @@ export default function AdminActualitesPage() {
   const suffix = locale === 'fr' ? '' : `_${locale}`
 
   return (
-    <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
+    <div style={{ padding:40 }}>
       <div style={{ maxWidth:1000, margin:'0 auto' }}>
         <AdminHeader title="Actualités" action={<button onClick={() => setOpen(true)} className="btn-gold">+ Ajouter</button>}/>
 

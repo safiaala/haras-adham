@@ -50,7 +50,7 @@ export default function AdminPrestationsPage() {
   }
 
   return (
-    <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
+    <div style={{ padding:40 }}>
       <div style={{ maxWidth:800, margin:'0 auto' }}>
         <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:28 }}>
           <div>

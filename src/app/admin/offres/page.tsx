@@ -36,7 +36,7 @@ export default function AdminOffresPage() {
   }
 
   return (
-    <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
+    <div style={{ padding:40 }}>
       <div style={{ maxWidth:900, margin:'0 auto' }}>
         <AdminHeader title="Offres d\'emploi" action={<button onClick={() => setOpen(true)} className="btn-gold">+ Ajouter</button>}/>
 

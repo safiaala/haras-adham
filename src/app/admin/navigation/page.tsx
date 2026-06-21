@@ -38,7 +38,7 @@ export default function AdminNavigationPage() {
   const pageInfo = (slug: string) => PAGES.find(p => p.slug === slug)
 
   return (
-    <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
+    <div style={{ padding:40 }}>
       <div style={{ maxWidth:700, margin:'0 auto' }}>
         <AdminHeader title="Navigation & Pages"/>
 

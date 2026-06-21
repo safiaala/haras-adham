@@ -65,7 +65,7 @@ export default function AdminGaleriePage() {
   )
 
   return (
-    <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
+    <div style={{ padding:40 }}>
       <div style={{ maxWidth:1100, margin:'0 auto' }}>
         <AdminHeader title="Galerie photos" />
 

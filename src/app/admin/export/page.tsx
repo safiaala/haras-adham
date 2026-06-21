@@ -66,7 +66,7 @@ export default function AdminExportPage() {
   }
 
   return (
-    <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
+    <div style={{ padding:40 }}>
       <div style={{ maxWidth:700, margin:'0 auto' }}>
         <AdminHeader title="Export des données"/>
 

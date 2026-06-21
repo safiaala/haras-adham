@@ -138,7 +138,7 @@ export default function AdminEtalonsPage() {
   }
 
   return (
-    <div style={{ minHeight:'100vh', background:'#f5f3ef', padding:40 }}>
+    <div style={{ padding:40 }}>
       <div style={{ maxWidth:1000, margin:'0 auto' }}>
         <AdminHeader title="Étalons" action={<button onClick={openNew} className="btn-gold">+ Ajouter un étalon</button>}/>
 
