@@ -72,8 +72,8 @@ dans Supabase → SQL Editor.
 
 ## Documentation
 
-La documentation technique complète est disponible dans
-`Documentation_Technique_Haras_Adham_v2.docx` (générable via `gen_doc.py`).
+- **Documentation technique** : `Documentation_Technique_Haras_Adham_v2.pdf` (générable via `gen_pdf.py`)
+- **Guide d'utilisation** (fonctionnel, pour l'admin) : `Guide_Utilisation_Haras_Adham.pdf` (générable via `gen_guide.py`)
 
 ## Déploiement
 
