@@ -101,6 +101,9 @@ export interface GaleriePhoto {
   url: string
   legende?: string
   categorie?: string
+  categorie_en?: string
+  categorie_es?: string
+  categorie_ar?: string
   ordre?: number
   created_at?: string
 }

@@ -124,7 +124,10 @@ export default function AdminGaleriePage() {
                   )}
                 </div>
                 {inp('Légende (optionnelle)','legende')}
-                {inp('Catégorie (ex: Étalons, Compétition, Domaine)','categorie')}
+                {inp('Catégorie FR (ex: Domaine)','categorie')}
+                {inp('Catégorie EN','categorie_en')}
+                {inp('Catégorie ES','categorie_es')}
+                {inp('Catégorie AR','categorie_ar')}
                 {inp('Ordre d\'affichage','ordre','number')}
                 <div style={{ display:'flex', gap:10, justifyContent:'flex-end', marginTop:8 }}>
                   <button onClick={() => setOpen(false)} className="btn-outline">Annuler</button>

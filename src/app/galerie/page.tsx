@@ -24,6 +24,16 @@ export default function GaleriePage() {
 
   const visible = filtre === 'all' ? photos : photos.filter(p => p.categorie === filtre)
 
+  // Affiche le nom de catégorie traduit selon la langue (clé de filtrage = valeur FR)
+  function catLabel(catFr: string): string {
+    const p = photos.find(x => x.categorie === catFr)
+    if (!p) return catFr
+    if (locale === 'en' && p.categorie_en) return p.categorie_en
+    if (locale === 'es' && p.categorie_es) return p.categorie_es
+    if (locale === 'ar' && p.categorie_ar) return p.categorie_ar
+    return catFr
+  }
+
   return (
     <>
       <div style={{ paddingTop:60 }}/>
@@ -41,7 +51,7 @@ export default function GaleriePage() {
             {categories.map(c => (
               <button key={c} onClick={() => setFiltre(c)}
                 className={filtre === c ? 'tag tag-amber' : 'tag tag-gray'}
-                style={{ cursor:'pointer', border:'none', fontSize:10 }}>{c}</button>
+                style={{ cursor:'pointer', border:'none', fontSize:10 }}>{catLabel(c)}</button>
             ))}
           </div>
         )}
