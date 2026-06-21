@@ -32,7 +32,7 @@ export default function Footer() {
 
   const youtube   = cfg.social_youtube   || 'https://www.youtube.com/@harasadham1227'
   const instagram = cfg.social_instagram || 'https://www.instagram.com/haras.adham.maroc/'
-  const facebook  = cfg.social_facebook  || ''
+  const facebook  = cfg.social_facebook  || 'https://www.facebook.com/profile.php?id=100093663984809'
   const whatsapp  = cfg.social_whatsapp  || ''
 
   const navLinks = [
