@@ -189,9 +189,9 @@ function DomaineMap({ cfg, locale }: { cfg: Record<string,string>; locale: strin
           <h2 style={{ fontFamily:'Noto Serif,serif', fontSize:'1.8rem', color:'#13201A' }}>{l.titre}</h2>
         </div>
 
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 300px', gap:20, alignItems:'start' }}>
+        <div style={{ display:'flex', gap:20, alignItems:'flex-start' }}>
           {/* Map embed */}
-          <div style={{ border:'.5px solid rgba(195,200,195,.4)', overflow:'hidden', height:400, background:'#e8e4dc' }}>
+          <div style={{ flex:1, border:'.5px solid rgba(195,200,195,.4)', overflow:'hidden', height:400, background:'#e8e4dc' }}>
             <iframe
               src={mapSrc}
               width="100%"
@@ -205,7 +205,7 @@ function DomaineMap({ cfg, locale }: { cfg: Record<string,string>; locale: strin
           </div>
 
           {/* Panneau visite privée */}
-          <div style={{ background:'#13201A', padding:'22px 22px', display:'flex', flexDirection:'column', gap:16, alignSelf:'start' }}>
+          <div style={{ width:280, flexShrink:0, background:'#13201A', padding:'22px 20px', display:'flex', flexDirection:'column', gap:14 }}>
             <div>
               <div style={{ fontSize:9, letterSpacing:'.14em', textTransform:'uppercase', color:'rgba(255,255,255,.4)', marginBottom:8 }}>
                 {locale === 'ar' ? 'زيارة خاصة' : locale === 'es' ? 'Visita privada' : locale === 'en' ? 'Private visit' : 'Visite privée'}
