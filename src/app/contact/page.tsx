@@ -110,7 +110,7 @@ export default function ContactPage() {
                 <div style={{ fontFamily:'Noto Serif,serif', fontSize:20, color:'#13201A', marginBottom:12 }}>{t(locale,'contact.ok')}</div>
                 <p style={{ fontSize:13, color:'#6b6b6b', lineHeight:1.8, maxWidth:320, margin:'0 auto 20px' }}>{t(locale,'contact.ok.desc')}</p>
                 <button onClick={() => setStatus('idle')} className="btn-outline" style={{ fontSize:10 }}>
-                  {locale === 'ar' ? 'إرسال رسالة أخرى' : locale === 'es' ? 'Enviar otro mensaje' : locale === 'en' ? 'Send another message' : 'Envoyer un autre message'}
+                  {t(locale,'contact.autre_message')}
                 </button>
               </div>
             ) : (
@@ -168,13 +168,7 @@ export default function ContactPage() {
 }
 
 function DomaineMap({ cfg, locale }: { cfg: Record<string,string>; locale: string }) {
-  const labels: Record<string, { titre: string; badge: string }> = {
-    fr: { titre:'Localiser le Domaine', badge:'Accès & Itinéraire' },
-    en: { titre:'Find the Estate',      badge:'Access & Directions' },
-    es: { titre:'Localizar el Dominio', badge:'Acceso & Ruta' },
-    ar: { titre:'تحديد موقع الضيعة',    badge:'الوصول والاتجاهات' },
-  }
-  const l = labels[locale] || labels.fr
+  const loc = locale as import('@/lib/locale').Locale
 
   const lat = cfg.lat || '31.6295'
   const lng = cfg.lng || '-7.9811'
@@ -185,8 +179,8 @@ function DomaineMap({ cfg, locale }: { cfg: Record<string,string>; locale: strin
     <section style={{ background:'#f0ece4' }}>
       <div style={{ maxWidth:1400, margin:'0 auto', padding:'52px 60px' }}>
         <div style={{ marginBottom:24 }}>
-          <span style={{ fontSize:10, letterSpacing:'.28em', textTransform:'uppercase', color:'#B8943A', display:'block', marginBottom:6 }}>{l.badge}</span>
-          <h2 style={{ fontFamily:'Noto Serif,serif', fontSize:'1.8rem', color:'#13201A' }}>{l.titre}</h2>
+          <span style={{ fontSize:10, letterSpacing:'.28em', textTransform:'uppercase', color:'#B8943A', display:'block', marginBottom:6 }}>{t(loc,'contact.carte_badge')}</span>
+          <h2 style={{ fontFamily:'Noto Serif,serif', fontSize:'1.8rem', color:'#13201A' }}>{t(loc,'contact.carte_titre')}</h2>
         </div>
 
         <div style={{ display:'flex', gap:20, alignItems:'flex-start' }}>
@@ -208,13 +202,13 @@ function DomaineMap({ cfg, locale }: { cfg: Record<string,string>; locale: strin
           <div style={{ width:280, flexShrink:0, background:'#13201A', padding:'22px 20px', display:'flex', flexDirection:'column', gap:14 }}>
             <div>
               <div style={{ fontSize:9, letterSpacing:'.14em', textTransform:'uppercase', color:'rgba(255,255,255,.4)', marginBottom:8 }}>
-                {locale === 'ar' ? 'زيارة خاصة' : locale === 'es' ? 'Visita privada' : locale === 'en' ? 'Private visit' : 'Visite privée'}
+                {t(loc,'contact.visite_privee')}
               </div>
               <div style={{ fontFamily:'Noto Serif,serif', fontSize:'1rem', color:'#fff', lineHeight:1.3, marginBottom:10 }}>
-                {locale === 'ar' ? 'احجز موعداً لزيارة الضيعة' : locale === 'es' ? 'Reserve una visita al dominio' : locale === 'en' ? 'Book a visit to the estate' : 'Prendre rendez-vous pour une visite'}
+                {t(loc,'contact.rdv_titre')}
               </div>
               <p style={{ fontSize:11, color:'rgba(255,255,255,.55)', lineHeight:1.6, margin:0 }}>
-                {locale === 'ar' ? 'تواصلوا معنا مباشرةً لتحديد موعد.' : locale === 'es' ? 'Contáctenos directamente para concertar una cita.' : locale === 'en' ? 'Contact us directly to schedule your appointment.' : 'Contactez-nous directement pour convenir d\'un rendez-vous.'}
+                {t(loc,'contact.rdv_desc')}
               </p>
             </div>
             {cfg.tel && (
@@ -226,7 +220,7 @@ function DomaineMap({ cfg, locale }: { cfg: Record<string,string>; locale: strin
             <a href={cfg.tel ? `tel:${cfg.tel}` : 'tel:+212'}
               style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:8, padding:'11px 16px', background:'#B8943A', color:'#fff', textDecoration:'none', fontSize:10, letterSpacing:'.12em', textTransform:'uppercase', fontFamily:'Plus Jakarta Sans,sans-serif' }}>
               <span style={{ fontFamily:'Material Symbols Outlined', fontSize:15 }}>phone</span>
-              {locale === 'ar' ? 'اتصل بنا' : locale === 'es' ? 'Llamarnos' : locale === 'en' ? 'Call us' : 'Nous appeler'}
+              {t(loc,'contact.appeler')}
             </a>
           </div>
         </div>
