@@ -103,6 +103,7 @@ export default function AdminPage() {
             { href:'/admin/actualites', emoji:'📰', titre:'Actualités', count:counts.actualites, desc:'Articles' },
             { href:'/admin/offres',     emoji:'💼', titre:'Offres',     count:counts.offres,     desc:'Offres d\'emploi' },
             { href:'/admin/galerie',    emoji:'🖼️', titre:'Galerie',    desc:'Photos du domaine' },
+            { href:'/admin/prestations',emoji:'🏇', titre:'Prestations',desc:'Sections et photos' },
           ]}/>
         </Section>
 
@@ -111,7 +112,6 @@ export default function AdminPage() {
           <CardGrid cards={[
             { href:'/admin/pages',      emoji:'📝', titre:'Pages',      desc:'Activer / désactiver' },
             { href:'/admin/navigation', emoji:'🔀', titre:'Navigation', desc:'Menu principal' },
-            { href:'/admin/prestations',emoji:'🏇', titre:'Prestations',desc:'Sections et photos' },
             { href:'/admin/editeur',    emoji:'🎨', titre:'Éditeur',    desc:'Blocs de contenu' },
           ]}/>
         </Section>
