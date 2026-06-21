@@ -24,6 +24,11 @@ export default function AdminGaleriePage() {
   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (!file) return
+    const ALLOWED = ['image/jpeg','image/png','image/webp','image/gif']
+    if (!ALLOWED.includes(file.type)) {
+      alert('Format non supporté. Utilisez JPG, PNG, WebP ou GIF.')
+      return
+    }
     setUploading(true)
     try {
       const ext = file.name.split('.').pop()
