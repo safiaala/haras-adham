@@ -171,7 +171,11 @@ function DomaineMap({ cfg, locale }: { cfg: Record<string,string>; locale: strin
   const lat = cfg.lat || '31.6295'
   const lng = cfg.lng || '-7.9811'
 
-  const mapSrc = `https://maps.google.com/maps?q=${lat},${lng}&z=14&output=embed&hl=${locale}`
+  const latN = parseFloat(lat)
+  const lngN = parseFloat(lng)
+  const delta = 0.012
+  const mapSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${lngN-delta},${latN-delta},${lngN+delta},${latN+delta}&layer=mapnik&marker=${latN},${lngN}`
+  const mapLink = `https://www.openstreetmap.org/?mlat=${latN}&mlon=${lngN}#map=14/${latN}/${lngN}`
 
   return (
     <section style={{ background:'#f0ece4' }}>
