@@ -37,10 +37,28 @@ export default function AdminExportPage() {
   const [loading, setLoading] = useState<string | null>(null)
   const [done, setDone] = useState<string | null>(null)
 
+  // La table "messages" n'est pas lisible par le client anonyme (RLS) :
+  // elle passe par la route API admin authentifiée.
+  async function fetchRows(table: string): Promise<Record<string, unknown>[]> {
+    if (table === 'messages') {
+      const res = await fetch('/api/admin/messages')
+      if (!res.ok) return []
+      const json = await res.json()
+      return Array.isArray(json) ? json : []
+    }
+    const { data } = await supabase.from(table).select('*').order('created_at', { ascending: false })
+    return data ?? []
+  }
+
   useEffect(() => {
-    Promise.all(DATASETS.map(d =>
-      supabase.from(d.table).select('*', { count:'exact', head:true }).then(r => ({ table: d.table, count: r.count ?? 0 }))
-    )).then(results => {
+    Promise.all(DATASETS.map(async d => {
+      if (d.table === 'messages') {
+        const rows = await fetchRows('messages')
+        return { table: d.table, count: rows.length }
+      }
+      const r = await supabase.from(d.table).select('*', { count:'exact', head:true })
+      return { table: d.table, count: r.count ?? 0 }
+    })).then(results => {
       const map: Record<string, number> = {}
       results.forEach(r => { map[r.table] = r.count })
       setCounts(map)
@@ -49,7 +67,7 @@ export default function AdminExportPage() {
 
   async function handleExport(d: Dataset) {
     setLoading(d.table)
-    const { data } = await supabase.from(d.table).select('*').order('created_at', { ascending: false })
+    const data = await fetchRows(d.table)
     if (data && data.length > 0) {
       // Pour les messages : ajouter une colonne "pays" dérivée de l'indicatif
       const enriched = d.table === 'messages'
