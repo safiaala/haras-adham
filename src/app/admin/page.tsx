@@ -119,10 +119,9 @@ export default function AdminPage() {
         {/* Outils */}
         <Section label="Outils">
           <CardGrid cards={[
-            { href:'/admin/messages',       emoji:'✉️', titre:'Messages',        count:counts.messagesTotal, badge:counts.messagesNonLus, desc:'Formulaire de contact' },
-            { href:'/admin/config',         emoji:'⚙️', titre:'Config',          desc:'Adresse, réseaux sociaux, GPS' },
-            { href:'/admin/export',         emoji:'📥', titre:'Export CSV',      desc:'Données en Excel / CSV' },
-            { href:'/admin/mot-de-passe',   emoji:'🔑', titre:'Mot de passe',    desc:'Changer le mot de passe admin' },
+            { href:'/admin/messages', emoji:'✉️', titre:'Messages',  count:counts.messagesTotal, badge:counts.messagesNonLus, desc:'Formulaire de contact' },
+            { href:'/admin/config',   emoji:'⚙️', titre:'Config',    desc:'Adresse, réseaux sociaux, mot de passe' },
+            { href:'/admin/export',   emoji:'📥', titre:'Export CSV',desc:'Données en Excel / CSV' },
           ]}/>
         </Section>
 

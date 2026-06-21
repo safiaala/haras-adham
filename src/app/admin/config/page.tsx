@@ -6,6 +6,61 @@ import { adminDb } from '@/lib/adminDb'
 
 type Cfg = Record<string, string>
 
+function ChangePassword() {
+  const [form, setForm] = useState({ current: '', next: '', confirm: '' })
+  const [status, setStatus] = useState<'idle'|'loading'|'ok'|'error'>('idle')
+  const [msg, setMsg] = useState('')
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (form.next !== form.confirm) { setStatus('error'); setMsg('Les nouveaux mots de passe ne correspondent pas.'); return }
+    setStatus('loading')
+    try {
+      const res = await fetch('/api/admin/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ currentPassword: form.current, newPassword: form.next }),
+      })
+      const json = await res.json()
+      if (res.ok) { setStatus('ok'); setMsg('Mot de passe modifié.'); setForm({ current:'', next:'', confirm:'' }) }
+      else { setStatus('error'); setMsg(json.error || 'Erreur serveur') }
+    } catch { setStatus('error'); setMsg('Erreur réseau') }
+  }
+
+  return (
+    <div style={{ background:'#fff', border:'.5px solid rgba(195,200,195,.3)', overflow:'hidden' }}>
+      <div style={{ background:'#f5f3ef', padding:'12px 20px', borderBottom:'.5px solid rgba(195,200,195,.3)', display:'flex', alignItems:'center', gap:8 }}>
+        <span style={{ fontSize:16 }}>🔑</span>
+        <span style={{ fontFamily:'Noto Serif,serif', fontSize:15, color:'#13201A' }}>Mot de passe administrateur</span>
+      </div>
+      <form onSubmit={handleSubmit} style={{ padding:'16px 20px', display:'flex', flexDirection:'column', gap:12 }}>
+        {status === 'ok' && <div style={{ background:'#EAF3DE', padding:'10px 14px', color:'#3B6D11', fontSize:12 }}>{msg}</div>}
+        {status === 'error' && <div style={{ background:'#FDE8E8', padding:'10px 14px', color:'#A32D2D', fontSize:12 }}>{msg}</div>}
+        {[
+          { key:'current', label:'Mot de passe actuel' },
+          { key:'next',    label:'Nouveau mot de passe (min. 8 caractères)' },
+          { key:'confirm', label:'Confirmer le nouveau mot de passe' },
+        ].map(({ key, label }) => (
+          <div key={key}>
+            <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>{label}</label>
+            <input type="password" required minLength={key === 'current' ? 1 : 8}
+              value={form[key as keyof typeof form]}
+              onChange={e => setForm({ ...form, [key]: e.target.value })}
+              style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', background:'#fff', boxSizing:'border-box' }}
+            />
+          </div>
+        ))}
+        <div style={{ textAlign:'right' }}>
+          <button type="submit" disabled={status === 'loading'}
+            style={{ fontSize:10, letterSpacing:'.1em', textTransform:'uppercase', padding:'10px 22px', background:'#13201A', color:'#fff', border:'none', cursor:'pointer', fontFamily:'Plus Jakarta Sans,sans-serif', opacity: status === 'loading' ? .6 : 1 }}>
+            {status === 'loading' ? 'Enregistrement...' : 'Changer le mot de passe'}
+          </button>
+        </div>
+      </form>
+    </div>
+  )
+}
+
 const GROUPS = [
   {
     label: 'Contact & Coordonnées',
@@ -92,6 +147,7 @@ export default function AdminConfigPage() {
               </div>
             </div>
           ))}
+          <ChangePassword />
         </div>
 
         <div style={{ marginTop:16, textAlign:'right' }}>
