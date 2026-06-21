@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Nav from '@/components/Nav'
 import Footer from '@/components/Footer'
+import { Analytics } from '@vercel/analytics/next'
 
 export const metadata: Metadata = {
   title: 'Haras Adham — Excellence Équestre Marocaine',
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Nav />
         <main style={{ paddingTop: '60px' }}>{children}</main>
         <Footer />
+        <Analytics />
       </body>
     </html>
   )
