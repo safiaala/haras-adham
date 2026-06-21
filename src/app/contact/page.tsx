@@ -155,37 +155,30 @@ export default function ContactPage() {
 }
 
 function DomaineMap({ cfg, locale }: { cfg: Record<string,string>; locale: string }) {
-  const labels: Record<string, { titre: string; badge: string; acces: string; rdv: string }> = {
-    fr: { titre:'Localiser le Domaine', badge:'Accès & Itinéraire', acces:'Comment venir', rdv:'Prendre rendez-vous →' },
-    en: { titre:'Find the Estate',      badge:'Access & Directions',  acces:'Getting here', rdv:'Book an appointment →' },
-    es: { titre:'Localizar el Dominio', badge:'Acceso & Ruta',        acces:'Cómo llegar',  rdv:'Reservar una cita →' },
-    ar: { titre:'تحديد موقع الضيعة',    badge:'الوصول والاتجاهات',    acces:'كيفية الوصول', rdv:'حجز موعد →' },
+  const labels: Record<string, { titre: string; badge: string }> = {
+    fr: { titre:'Localiser le Domaine', badge:'Accès & Itinéraire' },
+    en: { titre:'Find the Estate',      badge:'Access & Directions' },
+    es: { titre:'Localizar el Dominio', badge:'Acceso & Ruta' },
+    ar: { titre:'تحديد موقع الضيعة',    badge:'الوصول والاتجاهات' },
   }
   const l = labels[locale] || labels.fr
 
-  const lat  = cfg.lat  || '31.6295'
-  const lng  = cfg.lng  || '-7.9811'
-  const addr = cfg.addr || 'Haras Adham, Maroc'
+  const lat = cfg.lat || '31.6295'
+  const lng = cfg.lng || '-7.9811'
 
   const mapSrc = `https://maps.google.com/maps?q=${lat},${lng}&z=14&output=embed&hl=${locale}`
 
   return (
     <section style={{ background:'#f0ece4' }}>
       <div style={{ maxWidth:1400, margin:'0 auto', padding:'52px 60px' }}>
-        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', marginBottom:24, flexWrap:'wrap', gap:12 }}>
-          <div>
-            <span style={{ fontSize:10, letterSpacing:'.28em', textTransform:'uppercase', color:'#B8943A', display:'block', marginBottom:6 }}>{l.badge}</span>
-            <h2 style={{ fontFamily:'Noto Serif,serif', fontSize:'1.8rem', color:'#13201A' }}>{l.titre}</h2>
-          </div>
-          <a href={`https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`} target="_blank" rel="noreferrer"
-            style={{ fontSize:10, letterSpacing:'.1em', textTransform:'uppercase', padding:'10px 20px', background:'#13201A', color:'#fff', textDecoration:'none', fontFamily:'Plus Jakarta Sans,sans-serif', whiteSpace:'nowrap' }}>
-            🧭 {l.rdv}
-          </a>
+        <div style={{ marginBottom:24 }}>
+          <span style={{ fontSize:10, letterSpacing:'.28em', textTransform:'uppercase', color:'#B8943A', display:'block', marginBottom:6 }}>{l.badge}</span>
+          <h2 style={{ fontFamily:'Noto Serif,serif', fontSize:'1.8rem', color:'#13201A' }}>{l.titre}</h2>
         </div>
 
         <div style={{ display:'grid', gridTemplateColumns:'1fr 300px', gap:20, alignItems:'start' }}>
           {/* Map embed */}
-          <div style={{ border:'.5px solid rgba(195,200,195,.4)', overflow:'hidden', height:400, position:'relative', background:'#e8e4dc' }}>
+          <div style={{ border:'.5px solid rgba(195,200,195,.4)', overflow:'hidden', height:400, background:'#e8e4dc' }}>
             <iframe
               src={mapSrc}
               width="100%"
@@ -198,21 +191,24 @@ function DomaineMap({ cfg, locale }: { cfg: Record<string,string>; locale: strin
             />
           </div>
 
-          {/* Infos accès */}
-          <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
-            <div style={{ background:'#13201A', padding:'18px 20px' }}>
-              <div style={{ fontSize:9, letterSpacing:'.14em', textTransform:'uppercase', color:'rgba(255,255,255,.4)', marginBottom:8 }}>
+          {/* Panneau visite privée */}
+          <div style={{ background:'#13201A', padding:'24px 22px', height:'100%', boxSizing:'border-box', display:'flex', flexDirection:'column', justifyContent:'space-between' }}>
+            <div>
+              <div style={{ fontSize:9, letterSpacing:'.14em', textTransform:'uppercase', color:'rgba(255,255,255,.4)', marginBottom:10 }}>
                 {locale === 'ar' ? 'زيارة خاصة' : locale === 'es' ? 'Visita privada' : locale === 'en' ? 'Private visit' : 'Visite privée'}
               </div>
-              <p style={{ fontSize:11, color:'rgba(255,255,255,.65)', lineHeight:1.7, margin:'0 0 14px' }}>
-                {locale === 'ar' ? 'نرحب بكم لزيارة الضيعة بموعد مسبق.' : locale === 'es' ? 'Le damos la bienvenida para una visita privada del dominio, con cita previa.' : locale === 'en' ? 'We welcome you for a private visit to the estate by appointment.' : 'Nous vous accueillons pour une visite privée du domaine sur rendez-vous.'}
+              <div style={{ fontFamily:'Noto Serif,serif', fontSize:'1.1rem', color:'#fff', lineHeight:1.3, marginBottom:14 }}>
+                {locale === 'ar' ? 'احجز موعداً لزيارة الضيعة' : locale === 'es' ? 'Reserve una visita al dominio' : locale === 'en' ? 'Book a visit to the estate' : 'Prendre rendez-vous pour une visite'}
+              </div>
+              <p style={{ fontSize:11, color:'rgba(255,255,255,.55)', lineHeight:1.7, margin:'0 0 24px' }}>
+                {locale === 'ar' ? 'نرحب بكم لزيارة خاصة للضيعة. تواصلوا معنا مباشرةً لتحديد موعد.' : locale === 'es' ? 'Le damos la bienvenida para una visita privada del dominio. Contáctenos directamente para concertar una cita.' : locale === 'en' ? 'We welcome you for a private visit to the estate. Contact us directly to schedule your appointment.' : 'Nous vous accueillons pour une visite privée du domaine. Contactez-nous directement pour convenir d\'un rendez-vous.'}
               </p>
-              <a href={cfg.tel ? `tel:${cfg.tel}` : 'tel:+212'}
-                style={{ fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', textDecoration:'none', display:'flex', alignItems:'center', gap:5 }}>
-                <span style={{ fontFamily:'Material Symbols Outlined', fontSize:13 }}>phone</span>
-                {locale === 'ar' ? 'اتصل بنا →' : locale === 'es' ? 'Llamarnos →' : locale === 'en' ? 'Call us →' : 'Nous appeler →'}
-              </a>
             </div>
+            <a href={cfg.tel ? `tel:${cfg.tel}` : 'tel:+212'}
+              style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:8, padding:'12px 16px', background:'#B8943A', color:'#fff', textDecoration:'none', fontSize:10, letterSpacing:'.12em', textTransform:'uppercase', fontFamily:'Plus Jakarta Sans,sans-serif' }}>
+              <span style={{ fontFamily:'Material Symbols Outlined', fontSize:16 }}>phone</span>
+              {locale === 'ar' ? 'اتصل بنا' : locale === 'es' ? 'Llamarnos' : locale === 'en' ? 'Call us' : 'Nous appeler'}
+            </a>
           </div>
         </div>
       </div>
