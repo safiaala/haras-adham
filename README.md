@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Haras Adham — Site web
 
-## Getting Started
+Site officiel du Haras Adham, haras marocain spécialisé dans l'élevage, la compétition
+et la préservation du Cheval Barbe.
 
-First, run the development server:
+- **Production** : https://haras-adham-nypr.vercel.app/
+- **Stack** : Next.js 16 (App Router) · React 19 · TypeScript · Supabase · Cloudinary · Vercel
+- **Langues** : FR / EN / ES / AR (avec RTL pour l'arabe)
+
+## Démarrage
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ouvrir [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Commande | Description |
+|----------|-------------|
+| `npm run dev` | Serveur de développement |
+| `npm run build` | Build de production (`next build --webpack`) |
+| `npm run start` | Lancer le build de production |
+| `npm run lint` | Vérification ESLint |
 
-## Learn More
+> Le build force le bundler **webpack** (`--webpack`) pour éviter un bug de Turbopack
+> lié au fichier `middleware` lors du build de production.
 
-To learn more about Next.js, take a look at the following resources:
+## Variables d'environnement
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+À placer dans `.env.local` (et dans Vercel → Settings → Environment Variables) :
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+ADMIN_PASSWORD=
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=
+NEXT_PUBLIC_CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
+UPSTASH_REDIS_REST_URL=
+UPSTASH_REDIS_REST_TOKEN=
+RESEND_API_KEY=
+```
 
-## Deploy on Vercel
+## Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Chemin | Contenu |
+|--------|---------|
+| `src/app/` | Pages publiques et espace admin (une route = un dossier) |
+| `src/app/api/` | Routes API serveur (auth, données admin, contact) |
+| `src/app/admin/` | Espace d'administration |
+| `src/components/` | Composants réutilisables |
+| `src/lib/` | Supabase, traductions, authentification, types |
+| `supabase/` | Scripts SQL (schéma, RLS, migrations) |
+| `middleware.ts` | Protection des routes `/admin` |
+| `next.config.ts` | Config Next.js + en-têtes de sécurité (CSP, etc.) |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Administration
+
+L'espace `/admin` est protégé par mot de passe (cookie de session sécurisé, jeton SHA-256).
+Le mot de passe se change depuis **Admin → Config → Mot de passe administrateur**.
+
+## Base de données
+
+Supabase (PostgreSQL) avec RLS activée sur toutes les tables : lecture publique sur le
+contenu, **aucune écriture anonyme** — toute mutation passe par les routes API serveur
+(rôle `service_role`). Les migrations du dossier `supabase/` s'exécutent manuellement
+dans Supabase → SQL Editor.
+
+## Documentation
+
+La documentation technique complète est disponible dans
+`Documentation_Technique_Haras_Adham_v2.docx` (générable via `gen_doc.py`).
+
+## Déploiement
+
+Déploiement continu sur Vercel : chaque push sur `main` déclenche un build et une mise
+en production automatiques.
