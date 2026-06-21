@@ -203,7 +203,7 @@ export default function ChevauxListe() {
               <div style={{ display:'flex', flexDirection:'column', gap:0 }}>
                 {[
                   [t(locale,'chevaux.race'),      selected.race],
-                  [t(locale,'chevaux.naissance'),  selected.annee_naissance ? `${selected.annee_naissance}${age(selected.annee_naissance) ? ' ('+age(selected.annee_naissance)+' ans)' : ''}` : null],
+                  [t(locale,'chevaux.naissance'),  selected.annee_naissance ? `${selected.annee_naissance}${age(selected.annee_naissance) ? ' ('+age(selected.annee_naissance)+' '+t(locale,'chevaux.ans')+')' : ''}` : null],
                   [t(locale,'chevaux.taille'),     selected.taille_cm ? `${selected.taille_cm} cm` : null],
                   [t(locale,'chevaux.sexe'),       selected.sexe ? (t(locale, SEXE_KEY[selected.sexe] || '') || selected.sexe) : null],
                   [t(locale,'chevaux.pere'),       selected.nom_pere],

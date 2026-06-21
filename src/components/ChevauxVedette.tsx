@@ -36,7 +36,7 @@ export default function ChevauxVedette() {
             <div style={{ padding:'12px 14px' }}>
               <div style={{ fontFamily:'Noto Serif,serif', fontSize:15, color:'#13201A', marginBottom:4 }}>{c.nom}</div>
               <div style={{ fontSize:10, color:'#888' }}>{c.annee_naissance || ''}{c.annee_naissance && c.race ? ' · ' : ''}{c.race}</div>
-              {c.discipline && <span className="tag tag-blue" style={{ marginTop:6 }}>{c.discipline.toUpperCase()}</span>}
+              {c.discipline && <span className="tag tag-blue" style={{ marginTop:6 }}>{t(locale, `disc.${c.discipline}`)}</span>}
             </div>
           </div>
         ))}

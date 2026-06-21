@@ -12,9 +12,7 @@ function CopyBtn({ value, locale }: { value: string; locale: string }) {
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
-  const label = copied
-    ? (locale==='en' ? 'Copied!' : locale==='es' ? '¡Copiado!' : locale==='ar' ? 'تم النسخ!' : 'Copié !')
-    : (locale==='en' ? 'Copy' : locale==='es' ? 'Copiar' : locale==='ar' ? 'نسخ' : 'Copier')
+  const label = copied ? t(locale, 'contact.copie') : t(locale, 'contact.copier')
   return (
     <button onClick={copy} title={label} style={{ background:'transparent', border:'none', cursor:'pointer', color: copied ? '#3B6D11' : '#B8943A', padding:0, display:'flex', alignItems:'center' }}>
       <span style={{ fontFamily:'Material Symbols Outlined', fontSize:16 }}>{copied ? 'check' : 'content_copy'}</span>
@@ -54,7 +52,7 @@ export default function ContactPage() {
 
   const infos = [
     { icon:'location_on', key:'contact.addr', val: cfg.addr || '', sub: t(locale,'contact.country') },
-    { icon:'phone',       key:'contact.tel',  val: cfg.tel  || 'À compléter' },
+    { icon:'phone',       key:'contact.tel',  val: cfg.tel  || t(locale, 'contact.tel.fallback') },
     { icon:'mail',        key:'contact.email',val: cfg.email || 'contact@harasadham.ma' },
     { icon:'schedule',    key:'contact.horaires', val: t(locale,'contact.horaires.val') },
   ]

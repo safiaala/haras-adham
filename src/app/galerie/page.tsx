@@ -37,7 +37,7 @@ export default function GaleriePage() {
           <div style={{ display:'flex', gap:6, marginBottom:28, flexWrap:'wrap' }}>
             <button onClick={() => setFiltre('all')}
               className={filtre === 'all' ? 'tag tag-amber' : 'tag tag-gray'}
-              style={{ cursor:'pointer', border:'none', fontSize:10 }}>Tout</button>
+              style={{ cursor:'pointer', border:'none', fontSize:10 }}>{t(locale,'galerie.tout')}</button>
             {categories.map(c => (
               <button key={c} onClick={() => setFiltre(c)}
                 className={filtre === c ? 'tag tag-amber' : 'tag tag-gray'}

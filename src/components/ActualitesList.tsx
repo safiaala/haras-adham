@@ -51,9 +51,9 @@ export default function ActualitesList() {
     return n.contenu_copie
   }
 
-  const readLabel = locale === 'en' ? 'Read article →' : locale === 'es' ? 'Leer artículo →' : locale === 'ar' ? 'قراءة المقال →' : 'Lire l\'article →'
-  const sourceLabel = locale === 'en' ? 'Source' : locale === 'es' ? 'Fuente' : locale === 'ar' ? 'المصدر' : 'Source'
-  const closeLabel = locale === 'en' ? 'Close' : locale === 'es' ? 'Cerrar' : locale === 'ar' ? 'إغلاق' : 'Fermer'
+  const readLabel = t(locale, 'actualites.lire')
+  const sourceLabel = t(locale, 'actualites.source')
+  const closeLabel = t(locale, 'actualites.fermer')
 
   return (
     <section style={{ padding:'40px 60px', maxWidth:1400, margin:'0 auto' }}>
@@ -93,7 +93,7 @@ export default function ActualitesList() {
                   {getContenu(n) && (
                     <button onClick={() => setSelected(n)}
                       style={{ fontSize:10, letterSpacing:'.1em', textTransform:'uppercase', color:'#13201A', border:'.5px solid rgba(19,32,26,.3)', padding:'7px 14px', background:'transparent', cursor:'pointer', fontFamily:'Plus Jakarta Sans,sans-serif' }}>
-                      {n.url_source ? (locale === 'en' ? 'Archived version' : locale === 'es' ? 'Versión archivada' : locale === 'ar' ? 'النسخة المحفوظة' : 'Version archivée') : readLabel.replace('→','')}
+                      {n.url_source ? t(locale, 'actualites.archive') : readLabel.replace('→','').trim()}
                     </button>
                   )}
                 </div>
@@ -119,7 +119,7 @@ export default function ActualitesList() {
             <div style={{ marginTop:20, paddingTop:16, borderTop:'.5px solid rgba(195,200,195,.3)', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
               {selected.url_source && (
                 <a href={selected.url_source} target="_blank" rel="noreferrer" style={{ fontSize:11, color:'#B8943A', textDecoration:'none' }}>
-                  {sourceLabel} original →
+                  {t(locale, 'actualites.source_original')}
                 </a>
               )}
               <button onClick={() => setSelected(null)} className="btn-outline" style={{ fontSize:10 }}>{closeLabel}</button>
