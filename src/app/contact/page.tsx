@@ -97,16 +97,6 @@ export default function ContactPage() {
                 </div>
               ))}
             </div>
-            <div style={{ display:'flex', gap:12, marginTop:24 }}>
-              <a href="https://www.youtube.com/@harasadham1227" target="_blank" rel="noreferrer"
-                style={{ display:'flex', alignItems:'center', gap:7, fontSize:10, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', textDecoration:'none', border:'.5px solid rgba(184,148,58,.35)', padding:'7px 13px' }}>
-                <span style={{ fontFamily:'Material Symbols Outlined', fontSize:16 }}>play_circle</span>YouTube
-              </a>
-                      <a href={cfg.social_instagram || 'https://www.instagram.com/haras.adham.maroc/'} target="_blank" rel="noreferrer"
-                style={{ display:'flex', alignItems:'center', gap:7, fontSize:10, letterSpacing:'.1em', textTransform:'uppercase', color:'#B8943A', textDecoration:'none', border:'.5px solid rgba(184,148,58,.35)', padding:'7px 13px' }}>
-                <span style={{ fontFamily:'Material Symbols Outlined', fontSize:16 }}>photo_camera</span>Instagram
-              </a>
-            </div>
           </div>
 
           <div style={{ background:'#fbf9f5', padding:32 }}>
@@ -132,7 +122,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <label style={{ display:'block', fontSize:9, letterSpacing:'.1em', textTransform:'uppercase', color:'#6b6b6b', marginBottom:4 }}>{t(locale,'contact.tel')}</label>
-                  <input type="tel" value={form.tel} onChange={e => setForm({...form,tel:e.target.value})}
+                  <input type="tel" required value={form.tel} onChange={e => setForm({...form,tel:e.target.value})}
                     style={{ width:'100%', padding:'9px 11px', border:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', background:'#fff' }}/>
                 </div>
                 <div>
@@ -210,28 +200,6 @@ function DomaineMap({ cfg, locale }: { cfg: Record<string,string>; locale: strin
 
           {/* Infos accès */}
           <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
-            <div style={{ background:'#fff', border:'.5px solid rgba(195,200,195,.3)', padding:'18px 20px' }}>
-              <div style={{ fontSize:9, letterSpacing:'.14em', textTransform:'uppercase', color:'#B8943A', marginBottom:10 }}>{l.acces}</div>
-              <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-                {addr && (
-                  <div style={{ display:'flex', gap:10, alignItems:'start', fontSize:12, color:'#4a4a3a', lineHeight:1.6 }}>
-                    <span style={{ fontFamily:'Material Symbols Outlined', color:'#B8943A', fontSize:16, flexShrink:0, marginTop:1 }}>location_on</span>
-                    <span>{addr}</span>
-                  </div>
-                )}
-                {cfg.tel && (
-                  <div style={{ display:'flex', gap:10, alignItems:'center', fontSize:12, color:'#4a4a3a' }}>
-                    <span style={{ fontFamily:'Material Symbols Outlined', color:'#B8943A', fontSize:16, flexShrink:0 }}>phone</span>
-                    <a href={`tel:${cfg.tel}`} style={{ color:'#4a4a3a', textDecoration:'none' }}>{cfg.tel}</a>
-                  </div>
-                )}
-                <div style={{ display:'flex', gap:10, alignItems:'center', fontSize:12, color:'#4a4a3a' }}>
-                  <span style={{ fontFamily:'Material Symbols Outlined', color:'#B8943A', fontSize:16, flexShrink:0 }}>schedule</span>
-                  <span>{locale === 'ar' ? 'الإثنين–السبت 9ص–5م' : locale === 'es' ? 'Lun–Sáb 9h–17h' : locale === 'en' ? 'Mon–Sat 9am–5pm' : 'Lun–Sam 9h–17h'}</span>
-                </div>
-              </div>
-            </div>
-
             <div style={{ background:'#13201A', padding:'18px 20px' }}>
               <div style={{ fontSize:9, letterSpacing:'.14em', textTransform:'uppercase', color:'rgba(255,255,255,.4)', marginBottom:8 }}>
                 {locale === 'ar' ? 'زيارة خاصة' : locale === 'es' ? 'Visita privada' : locale === 'en' ? 'Private visit' : 'Visite privée'}
