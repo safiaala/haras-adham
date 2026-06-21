@@ -33,6 +33,16 @@ export const COUNTRIES: Country[] = [
   { code:'CA', flag:'🇨🇦', name:'Canada',           dial:'+1'   },
 ]
 
+/** Traduit le nom d'un pays selon la locale via l'API navigateur */
+export function countryName(code: string, locale: string): string {
+  try {
+    const dn = new Intl.DisplayNames([locale], { type: 'region' })
+    return dn.of(code) ?? code
+  } catch {
+    return COUNTRIES.find(c => c.code === code)?.name ?? code
+  }
+}
+
 /** Trouve le pays à partir d'un numéro stocké (ex: "+212612345678") */
 export function countryFromTel(tel: string): Country | null {
   if (!tel) return null

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useLocale } from '@/lib/useLocale'
 import { t } from '@/lib/translations'
 import { supabase } from '@/lib/supabase'
-import { COUNTRIES, type Country } from '@/lib/countries'
+import { COUNTRIES, countryName, type Country } from '@/lib/countries'
 
 function CopyBtn({ value, locale }: { value: string; locale: string }) {
   const [copied, setCopied] = useState(false)
@@ -128,7 +128,7 @@ export default function ContactPage() {
                     <select value={dialCountry.code} onChange={e => setDialCountry(COUNTRIES.find(c => c.code === e.target.value) ?? COUNTRIES[0])}
                       style={{ width:'auto', flexShrink:0, padding:'9px 10px', border:'none', borderRight:'.5px solid rgba(195,200,195,.6)', fontSize:13, fontFamily:'Plus Jakarta Sans,sans-serif', outline:'none', background:'#f8f6f2', cursor:'pointer' }}>
                       {COUNTRIES.map(c => (
-                        <option key={c.code} value={c.code}>{c.flag} {c.dial} — {c.name}</option>
+                        <option key={c.code} value={c.code}>{c.flag} {c.dial} — {countryName(c.code, locale)}</option>
                       ))}
                     </select>
                     <input type="tel" required value={form.tel} onChange={e => setForm({...form,tel:e.target.value})}
